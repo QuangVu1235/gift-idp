@@ -21,6 +21,8 @@ class ProductResponse{
   String? type;
   String? tags;
   String? tax;
+  @JsonKey(name: 'cart_info')
+  List<CartInfo>? cartInfo;
   @JsonKey(name: 'data_card')
   List<String>? dataCard;
   String? brandId;
@@ -111,6 +113,7 @@ class ProductResponse{
         this.type,
         this.tags,
         this.tax,
+        this.cartInfo,
         this.dataCard,
         this.brandId,
         this.brandName,
@@ -221,4 +224,28 @@ class Stores {
       _$StoresFromJson(json);
   Map<String, dynamic> toJson() => _$StoresToJson(this);
 
+}
+class CartInfo {
+  int? id;
+  String? code;
+  String? name;
+  int? quantity;
+
+  CartInfo({this.id, this.code, this.name, this.quantity});
+
+  CartInfo.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    code = json['code'];
+    name = json['name'];
+    quantity = json['quantity'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['code'] = this.code;
+    data['name'] = this.name;
+    data['quantity'] = this.quantity;
+    return data;
+  }
 }

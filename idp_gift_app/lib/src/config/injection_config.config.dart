@@ -24,6 +24,7 @@ import '../apis/upload_image/apis/upload_media.dart' as _i27;
 import '../apis/upload_image/upload_file_datasource.dart' as _i34;
 import '../core/dio_cache/dio_cache_manager.dart' as _i4;
 import '../modules/cart/cart_model.dart' as _i36;
+import '../modules/cart/widgets/cart_widget_model.dart' as _i37;
 import '../modules/gift_exchange/lof_gift_exchange/app/list_product_model.dart'
     as _i31;
 import '../modules/main_page_model.dart' as _i6;
@@ -110,6 +111,8 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i35.UploadFileUsecase(get<_i34.UploadFileDatasource>()));
   gh.factory<_i36.CartModel>(
       () => _i36.CartModel(get<_i30.CustomerUserCase>()));
+  gh.factory<_i37.CartWidgetModel>(
+      () => _i37.CartWidgetModel(get<_i30.CustomerUserCase>()));
   return get;
 }
 

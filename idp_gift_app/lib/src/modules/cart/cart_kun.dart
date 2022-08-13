@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/cart/cart_model.dart';
@@ -55,21 +56,26 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                   child: ListView(
                     children: [
-                      ListView.separated(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: entries.length,
-                          itemBuilder: (context, int index) {
-                            return CartKunWidget(
-                              img: entries[index],
-                              name: 'Đồng hồ thông minh Kun (24 QK/ 6KDV)',
-                              giftId: '#123',
-                              quantity: '10',
-                              quantityOfpicks: '20',
-                            );
-                          },
-                        separatorBuilder: (context, index) => const SizedBox(height: 10,),
-                      ),
+                      Obx(
+                            ()=> ListView.separated(
+                              shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: viewModel.dataCart.value?.details?.length ?? 0,
+                                itemBuilder: (context, int index) {
+                                  return CartKunWidget(
+                                    idProduct: viewModel.dataCart.value?.details?[index].productId.toString() ?? '',
+                                    productCode: viewModel.dataCart.value?.details?[index].productCode.toString() ?? '',
+                                    cartInfoCode: 'viewModel.dataCart.value?.details?[index].',
+                                    img: viewModel.dataCart.value?.details?[index].productThumb ?? '',
+                                    name: viewModel.dataCart.value?.details?[index].productThumb ?? '',
+                                    giftId: viewModel.dataCart.value?.details?[index].productId.toString() ?? '',
+                                    quantity: viewModel.dataCart.value?.details?[index].quantity.toString() ?? '',
+                                    quantityOfpicks: viewModel.dataCart.value?.details?[index].quantity.toString() ?? ''
+
+                      );
+                    },
+                    separatorBuilder: (context, index) => const SizedBox(height: 10,),
+                  ),),
                       const SizedBox(height: SpaceValues.space12,),
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/cart_response.dart';
 import 'package:idp_gift_app/src/config/base_api.dart';
 import 'package:injectable/injectable.dart';
@@ -19,6 +20,9 @@ abstract class CustomerAPI {
   //get cart by user
   @GET('v1/cart-exchange')
   Future<CartDataReponse> getCartExchangeByUser();
+
+  @GET('v1/client/exchange-products')
+  Future<ProductResponse> getProductByCode(@Query('code') String code);
 
 
 

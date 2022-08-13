@@ -1,10 +1,12 @@
 import 'package:idp_gift_app/src/apis/customer/customer_api.dart';
+import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/cart_response.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class CustomerDataSource{
   Future<void> addToCartCustomer(dynamic body);
   Future<CartDataReponse> getCartExchangeByUser();
+  Future<ProductResponse> getProductByCode(String code);
 
 }
 @LazySingleton(as: CustomerDataSource)
@@ -20,5 +22,9 @@ class CustomerDataSourceImpl extends CustomerDataSource{
   @override
   Future<CartDataReponse> getCartExchangeByUser()
   => _customerAPI.getCartExchangeByUser();
+
+  @override
+  Future<ProductResponse> getProductByCode(String code)
+  => _customerAPI.getProductByCode(code);
 
 }

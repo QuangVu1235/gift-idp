@@ -28,6 +28,9 @@ ProductResponse _$ProductResponseFromJson(Map<String, dynamic> json) =>
       type: json['type'] as String?,
       tags: json['tags'] as String?,
       tax: json['tax'] as String?,
+      cartInfo: (json['cart_info'] as List<dynamic>?)
+          ?.map((e) => CartInfo.fromJson(e as Map<String, dynamic>))
+          .toList(),
       dataCard: (json['data_card'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -116,6 +119,7 @@ Map<String, dynamic> _$ProductResponseToJson(ProductResponse instance) =>
       'type': instance.type,
       'tags': instance.tags,
       'tax': instance.tax,
+      'cart_info': instance.cartInfo,
       'data_card': instance.dataCard,
       'brandId': instance.brandId,
       'brandName': instance.brandName,

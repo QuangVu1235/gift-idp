@@ -435,16 +435,17 @@ class Details {
   String? createdAt;
 
   @JsonKey(name: 'created_by')
-  String? createdBy;
+  int? createdBy;
 
   @JsonKey(name: 'updated_at')
   String? updatedAt;
 
   @JsonKey(name: 'updated_by')
-  String? updatedBy;
+  int? updatedBy;
 
   Details(
-      {this.id,
+      {
+        this.id,
         this.cartId,
         this.productId,
         this.productCode,
@@ -474,7 +475,8 @@ class Details {
         this.createdAt,
         this.createdBy,
         this.updatedAt,
-        this.updatedBy});
+        this.updatedBy
+      });
 
   factory Details.fromJson(Map<String, dynamic> json) =>
       _$DetailsFromJson(json);
