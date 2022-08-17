@@ -9,41 +9,44 @@ import 'package:get_it/get_it.dart' as _i1;
 import 'package:injectable/injectable.dart' as _i2;
 import 'package:shared_preferences/shared_preferences.dart' as _i9;
 
-import '../../main.dart' as _i15;
-import '../apis/customer/customer_api.dart' as _i28;
-import '../apis/datasoure/customer_datasoure.dart' as _i29;
+import '../../main.dart' as _i17;
+import '../apis/customer/customer_api.dart' as _i30;
+import '../apis/customer/customer_datasoure.dart' as _i31;
+import '../apis/customer/gift_exchange_place.dart' as _i15;
+import '../apis/customer/gift_exchange_place_datasource.dart' as _i16;
 import '../apis/forget_password/forget_password_datasource.dart' as _i13;
 import '../apis/forget_password/services/forget_password_api.dart' as _i12;
-import '../apis/idp/kun/product_datasource.dart' as _i17;
-import '../apis/idp/kun/service/product_api.dart' as _i16;
-import '../apis/signin/services/signin_api.dart' as _i20;
-import '../apis/signin/signin_datasource.dart' as _i21;
-import '../apis/signup/services/signup_api.dart' as _i23;
-import '../apis/signup/signup_datasource.dart' as _i24;
-import '../apis/upload_image/apis/upload_media.dart' as _i27;
-import '../apis/upload_image/upload_file_datasource.dart' as _i34;
+import '../apis/idp/kun/product_datasource.dart' as _i19;
+import '../apis/idp/kun/service/product_api.dart' as _i18;
+import '../apis/signin/services/signin_api.dart' as _i22;
+import '../apis/signin/signin_datasource.dart' as _i23;
+import '../apis/signup/services/signup_api.dart' as _i25;
+import '../apis/signup/signup_datasource.dart' as _i26;
+import '../apis/upload_image/apis/upload_media.dart' as _i29;
+import '../apis/upload_image/upload_file_datasource.dart' as _i37;
 import '../core/dio_cache/dio_cache_manager.dart' as _i4;
-import '../modules/cart/cart_model.dart' as _i36;
-import '../modules/cart/widgets/cart_widget_model.dart' as _i37;
+import '../modules/%20exchange_points/exchange_points_model.dart' as _i33;
+import '../modules/cart/cart_model.dart' as _i39;
+import '../modules/cart/widgets/cart_widget_model.dart' as _i40;
 import '../modules/gift_exchange/lof_gift_exchange/app/list_product_model.dart'
-    as _i31;
+    as _i34;
 import '../modules/main_page_model.dart' as _i6;
 import '../modules/modules_store/%20create_gift_order/create_gift_order_model.dart'
     as _i3;
 import '../modules/modules_store/main_page_store_model.dart' as _i7;
 import '../modules/modules_store/profile_store/statistic_store/model/statistic_store_model.dart'
     as _i10;
-import '../modules/productwidget/product_widget_model.dart' as _i32;
-import '../modules/profile/profiled_model.dart' as _i19;
+import '../modules/productwidget/product_widget_model.dart' as _i35;
+import '../modules/profile/profiled_model.dart' as _i21;
 import '../modules/signin_signup/app/form_pass/form_pass_model.dart' as _i5;
-import '../modules/signin_signup/app/signin/app/signin_model.dart' as _i33;
-import '../modules/splashsreen/splashsreen_model.dart' as _i26;
-import '../usecases/customer_usercase.dart' as _i30;
+import '../modules/signin_signup/app/signin/app/signin_model.dart' as _i36;
+import '../modules/splashsreen/splashsreen_model.dart' as _i28;
+import '../usecases/customer_usercase.dart' as _i32;
 import '../usecases/forget_password_usercase.dart' as _i14;
-import '../usecases/ipd/product_datasource.dart' as _i18;
-import '../usecases/signin_usecase.dart' as _i22;
-import '../usecases/signup_usecase.dart' as _i25;
-import '../usecases/upload_file_usecase.dart' as _i35;
+import '../usecases/ipd/product_datasource.dart' as _i20;
+import '../usecases/signin_usecase.dart' as _i24;
+import '../usecases/signup_usecase.dart' as _i27;
+import '../usecases/upload_file_usecase.dart' as _i38;
 import 'injection_config.dart' as _i8; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
@@ -73,46 +76,52 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i13.ForgetPasswordDatasourceImpl(get<_i12.ForgetPasswordAPI>()));
   gh.lazySingleton<_i14.ForgetPasswordUsecase>(
       () => _i14.ForgetPasswordUsecase(get<_i13.ForgetPasswordDatasource>()));
-  gh.factory<_i15.MyApp>(() => _i15.MyApp(get<_i9.SharedPreferences>()));
-  gh.lazySingleton<_i16.ProductApi>(() => _i16.ProductApi(get<_i11.Dio>()));
-  gh.lazySingleton<_i17.ProductDataSourceKun>(
-      () => _i17.ProductDataSourceKunImpl(get<_i16.ProductApi>()));
-  gh.lazySingleton<_i18.ProductUserCaseKun>(
-      () => _i18.ProductUserCaseKun(get<_i17.ProductDataSourceKun>()));
-  gh.factory<_i19.ProfiledModel>(
-      () => _i19.ProfiledModel(get<_i9.SharedPreferences>()));
-  gh.lazySingleton<_i20.SigninAPI>(() => _i20.SigninAPI(get<_i11.Dio>()));
-  gh.lazySingleton<_i21.SigninDatasource>(
-      () => _i21.SigninDataSourceImpl(get<_i20.SigninAPI>()));
-  gh.lazySingleton<_i22.SigninUsecase>(
-      () => _i22.SigninUsecase(get<_i21.SigninDatasource>()));
-  gh.lazySingleton<_i23.SignupAPI>(() => _i23.SignupAPI(get<_i11.Dio>()));
-  gh.lazySingleton<_i24.SignupDatasource>(
-      () => _i24.SignupDataSourceImpl(get<_i23.SignupAPI>()));
-  gh.lazySingleton<_i25.SignupUsecase>(
-      () => _i25.SignupUsecase(get<_i24.SignupDatasource>()));
-  gh.lazySingleton<_i26.SplashsreenModel>(() =>
-      _i26.SplashsreenModel(get<_i9.SharedPreferences>(), get<_i11.Dio>()));
-  gh.lazySingleton<_i27.UploadMedia>(() => _i27.UploadMedia(get<_i11.Dio>()));
-  gh.lazySingleton<_i28.CustomerAPI>(() => _i28.CustomerAPI(get<_i11.Dio>()));
-  gh.lazySingleton<_i29.CustomerDataSource>(
-      () => _i29.CustomerDataSourceImpl(get<_i28.CustomerAPI>()));
-  gh.lazySingleton<_i30.CustomerUserCase>(
-      () => _i30.CustomerUserCase(get<_i29.CustomerDataSource>()));
-  gh.factory<_i31.ListProductModel>(
-      () => _i31.ListProductModel(get<_i17.ProductDataSourceKun>()));
-  gh.factory<_i32.ProductWidgetModel>(
-      () => _i32.ProductWidgetModel(get<_i30.CustomerUserCase>()));
-  gh.factory<_i33.SigninModel>(() => _i33.SigninModel(
-      get<_i22.SigninUsecase>(), get<_i9.SharedPreferences>()));
-  gh.lazySingleton<_i34.UploadFileDatasource>(
-      () => _i34.UploadFileDatasourceImpl(get<_i27.UploadMedia>()));
-  gh.lazySingleton<_i35.UploadFileUsecase>(
-      () => _i35.UploadFileUsecase(get<_i34.UploadFileDatasource>()));
-  gh.factory<_i36.CartModel>(
-      () => _i36.CartModel(get<_i30.CustomerUserCase>()));
-  gh.factory<_i37.CartWidgetModel>(
-      () => _i37.CartWidgetModel(get<_i30.CustomerUserCase>()));
+  gh.lazySingleton<_i15.GiftExchangePlaceAPI>(
+      () => _i15.GiftExchangePlaceAPI(get<_i11.Dio>()));
+  gh.lazySingleton<_i16.GiftExchangePlaceDatasource>(() =>
+      _i16.GiftExchangePlaceDatasourceImpl(get<_i15.GiftExchangePlaceAPI>()));
+  gh.factory<_i17.MyApp>(() => _i17.MyApp(get<_i9.SharedPreferences>()));
+  gh.lazySingleton<_i18.ProductApi>(() => _i18.ProductApi(get<_i11.Dio>()));
+  gh.lazySingleton<_i19.ProductDataSourceKun>(
+      () => _i19.ProductDataSourceKunImpl(get<_i18.ProductApi>()));
+  gh.lazySingleton<_i20.ProductUserCaseKun>(
+      () => _i20.ProductUserCaseKun(get<_i19.ProductDataSourceKun>()));
+  gh.factory<_i21.ProfiledModel>(
+      () => _i21.ProfiledModel(get<_i9.SharedPreferences>()));
+  gh.lazySingleton<_i22.SigninAPI>(() => _i22.SigninAPI(get<_i11.Dio>()));
+  gh.lazySingleton<_i23.SigninDatasource>(
+      () => _i23.SigninDataSourceImpl(get<_i22.SigninAPI>()));
+  gh.lazySingleton<_i24.SigninUsecase>(
+      () => _i24.SigninUsecase(get<_i23.SigninDatasource>()));
+  gh.lazySingleton<_i25.SignupAPI>(() => _i25.SignupAPI(get<_i11.Dio>()));
+  gh.lazySingleton<_i26.SignupDatasource>(
+      () => _i26.SignupDataSourceImpl(get<_i25.SignupAPI>()));
+  gh.lazySingleton<_i27.SignupUsecase>(
+      () => _i27.SignupUsecase(get<_i26.SignupDatasource>()));
+  gh.lazySingleton<_i28.SplashsreenModel>(() =>
+      _i28.SplashsreenModel(get<_i9.SharedPreferences>(), get<_i11.Dio>()));
+  gh.lazySingleton<_i29.UploadMedia>(() => _i29.UploadMedia(get<_i11.Dio>()));
+  gh.lazySingleton<_i30.CustomerAPI>(() => _i30.CustomerAPI(get<_i11.Dio>()));
+  gh.lazySingleton<_i31.CustomerDataSource>(
+      () => _i31.CustomerDataSourceImpl(get<_i30.CustomerAPI>()));
+  gh.lazySingleton<_i32.CustomerUserCase>(
+      () => _i32.CustomerUserCase(get<_i31.CustomerDataSource>()));
+  gh.factory<_i33.ExChangePointsModel>(
+      () => _i33.ExChangePointsModel(get<_i32.CustomerUserCase>()));
+  gh.factory<_i34.ListProductModel>(
+      () => _i34.ListProductModel(get<_i19.ProductDataSourceKun>()));
+  gh.factory<_i35.ProductWidgetModel>(
+      () => _i35.ProductWidgetModel(get<_i32.CustomerUserCase>()));
+  gh.factory<_i36.SigninModel>(() => _i36.SigninModel(
+      get<_i24.SigninUsecase>(), get<_i9.SharedPreferences>()));
+  gh.lazySingleton<_i37.UploadFileDatasource>(
+      () => _i37.UploadFileDatasourceImpl(get<_i29.UploadMedia>()));
+  gh.lazySingleton<_i38.UploadFileUsecase>(
+      () => _i38.UploadFileUsecase(get<_i37.UploadFileDatasource>()));
+  gh.factory<_i39.CartModel>(
+      () => _i39.CartModel(get<_i32.CustomerUserCase>()));
+  gh.factory<_i40.CartWidgetModel>(() => _i40.CartWidgetModel(
+      get<_i32.CustomerUserCase>(), get<_i39.CartModel>()));
   return get;
 }
 

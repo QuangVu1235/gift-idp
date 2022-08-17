@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:idp_gift_app/src/config/injection_config.dart';
+import 'package:idp_gift_app/src/modules/%20exchange_points/exchange_points_model.dart';
 import 'package:idp_gift_app/src/modules/store/store_screen.dart';
 import 'package:idp_gift_app/src/themes/space_values.dart';
+import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 import 'package:retrofit/http.dart';
 
 import '../../config/assets/icon_assets.dart';
@@ -17,7 +20,7 @@ class ExchangePoints extends StatefulWidget {
   State<StatefulWidget> createState() => _ExchangePoint();
 }
 
-class _ExchangePoint extends State<ExchangePoints> {
+class _ExchangePoint extends ViewWidget<ExchangePoints,ExChangePointsModel> {
   String province = 'Tất cả Tỉnh/Thành Phố';
   var provinces = [
     'Tất cả Tỉnh/Thành Phố',
@@ -180,123 +183,126 @@ class _ExchangePoint extends State<ExchangePoints> {
               SizedBox(
                 height: 20,
               ),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: entries.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () {
-                          Get.to(() => StoreScreen(title: 'Tuệ Lan Shop',));
-                        },
-                        child: Card(
-                          elevation: 0.0,
-                          margin: const EdgeInsets.only(bottom: 10),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.all(SpaceValues.space6),
-                                child: Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.3,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: UIColors.black70, width: 1)),
-                                  child: Image.asset(ImageAssets.qrCode),
-                                ),
-                              ),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: SpaceValues.space4),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+              Obx(()=> Expanded(
+                        child: ListView.builder(
+                            itemCount: viewModel.dataGiftExchangePoints.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                onTap: () {
+                                  Get.to(() => StoreScreen(title: 'Tuệ Lan Shop',));
+                                },
+                                child: Card(
+                                  elevation: 0.0,
+                                  margin: const EdgeInsets.only(bottom: 10),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      const Text(
-                                        'Tuệ Lan Shop',
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          color: UIColors.darkGray,
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.all(SpaceValues.space6),
+                                        child: Container(
+                                          width:
+                                          MediaQuery.of(context).size.width * 0.3,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(10),
+                                              border: Border.all(
+                                                  color: UIColors.black70, width: 1)),
+                                          child: Image.asset(ImageAssets.qrCode),
                                         ),
                                       ),
-                                      const SizedBox(
-                                        height: SpaceValues.space6,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: SpaceValues.space4),
+                                          child: Column(
+                                            crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SvgPicture.asset(
-                                            IconAssets.hardwarePhoneIphone,
-                                            color: UIColors.brandB,
-                                          ),
-                                          const SizedBox(
-                                            width: SpaceValues.space8,
-                                          ),
-                                          const Expanded(
-                                            child: Text(
-                                              '0912 345 678',
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w400,
-                                                color: UIColors.darkGray,
+                                            children: [
+                                              Text(
+                                                viewModel.dataGiftExchangePoints[index].fullName ?? 'Store',
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: UIColors.darkGray,
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: SpaceValues.space6,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SvgPicture.asset(
-                                            IconAssets.actionStore,
-                                            color: UIColors.brandB,
-                                          ),
-                                          const SizedBox(
-                                            width: SpaceValues.space8,
-                                          ),
-                                          const Expanded(
-                                            child: Text(
-                                              '230,Phường Nghĩa Chánh, Thành phố Thủ Đức',
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                color: UIColors.darkGray,
+                                              const SizedBox(
+                                                height: SpaceValues.space6,
                                               ),
-                                            ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    IconAssets.hardwarePhoneIphone,
+                                                    color: UIColors.brandB,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: SpaceValues.space8,
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      viewModel.dataGiftExchangePoints[index].tax ?? '',
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight: FontWeight.w400,
+                                                        color: UIColors.darkGray,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: SpaceValues.space6,
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    IconAssets.actionStore,
+                                                    color: UIColors.brandB,
+                                                  ),
+                                                  const SizedBox(
+                                                    width: SpaceValues.space8,
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      viewModel.dataGiftExchangePoints[index].address ?? '',
+                                                      overflow: TextOverflow.ellipsis,
+                                                      maxLines: 2,
+                                                      style: TextStyle(
+                                                        fontSize: 12,
+                                                        color: UIColors.darkGray,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-              )
+                              );
+                            }),
+                      ))
             ],
           ),
         ),
       ),
     );
   }
+
+  @override
+  ExChangePointsModel createViewModel() => getIt<ExChangePointsModel>();
 }

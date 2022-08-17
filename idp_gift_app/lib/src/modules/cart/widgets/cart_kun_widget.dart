@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/cart/widgets/cart_widget_model.dart';
@@ -10,6 +11,7 @@ import 'package:idp_gift_app/src/themes/ui_colors.dart';
 import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 
 class CartKunWidget extends StatefulWidget{
+  final String idCartDetail;
   final String idProduct;
   final String productCode;
   final String cartInfoCode;
@@ -23,10 +25,11 @@ class CartKunWidget extends StatefulWidget{
     required this.img,
     required this.giftId,
     required this.name,
-    required this.quantity,
+    this.quantity = '0',
     required this.quantityOfpicks,
     required this.idProduct,
     required this.productCode, required this.cartInfoCode,
+    required this.idCartDetail,
 
   }) : super(key: key);
   @override
@@ -110,7 +113,9 @@ class _CartKunWidget extends ViewWidget<CartKunWidget,CartWidgetModel>{
                             primary: UIColors.white,
                             elevation: 0.0,
                           ),
-                          onPressed: (){
+                          onPressed: () async{
+                            await viewModel.deleteCart(widget.idCartDetail);
+                            await viewModel.refreshCart();
                           },
                           child: SvgPicture.asset(SvgImageAssets.trash,height: 20),
                         ),
@@ -130,7 +135,7 @@ class _CartKunWidget extends ViewWidget<CartKunWidget,CartWidgetModel>{
                         ),
                       ),
                       Text(
-                        widget.quantity,
+                        viewModel.productResp.value?.qty.toString() ?? '0',
                         style: TextStyle(
                             color: UIColors.red,
                             fontSize: 12,
@@ -226,7 +231,7 @@ class _CartKunWidget extends ViewWidget<CartKunWidget,CartWidgetModel>{
                         ),
                       ),
                       Expanded(child: SizedBox(),),
-                      SizedBox(
+                      Obx(()=> SizedBox(
                         width: MediaQuery.of(context).size.width *0.26,
                         height: 30,
                         child: InputDecorator(
@@ -245,26 +250,26 @@ class _CartKunWidget extends ViewWidget<CartKunWidget,CartWidgetModel>{
                                 dropdownColor: UIColors.white,
                                 isExpanded: false,
                                 isDense: false,
-                                value: design,
-                                items: designs.map((String items)
+                                value: viewModel.cartInfoCode.value,
+                                items: viewModel.cartInfo.map((items)
                                 =>  DropdownMenuItem(
-                                  value: items,
+                                  value: items.code ?? '',
                                   child: Padding(
-                                    padding: const EdgeInsets.only(left: 5),
-                                    child: Text(items,style:  const TextStyle(
+                                    padding:  EdgeInsets.only(left: 5),
+                                    child: Text(items.name ?? '',style:  const TextStyle(
                                       color: UIColors.fontGray,
                                       fontSize: 10,
                                     ),),
                                   ),
                                 )).toList(),
-                                onChanged: (String? newValue) {
+                                onChanged: (value) {
                                   setState(() {
-                                    design = newValue!;
+                                    viewModel.cartInfoCode.value = value!;
                                   });
                                 }),
                           ),
                         ),
-                      ),
+                      ),),
                       SizedBox(width: SpaceValues.space8,),
                       SizedBox(
                         height: 25 ,

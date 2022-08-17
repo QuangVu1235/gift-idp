@@ -71,7 +71,7 @@ DataCardResponse _$DataCardResponseFromJson(Map<String, dynamic> json) =>
       totalPoint: json['total_point'] as String?,
       fullName: json['full_name'] as String?,
       email: json['email'] as String?,
-      distributorId: json['distributor_id'] as String?,
+      distributorId: json['distributor_id'] as int?,
       distributorCode: json['distributor_code'] as String?,
       distributorName: json['distributor_name'] as String?,
       distributorPhone: json['distributor_phone'] as String?,
@@ -201,6 +201,10 @@ Details _$DetailsFromJson(Map<String, dynamic> json) => Details(
       productUnit: json['product_unit'] as String?,
       productUnitName: json['product_unit_name'] as String?,
       price: json['price'] as int?,
+      cartInfo: (json['card_info'] as List<dynamic>?)
+          ?.map((e) => CardInfo.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      cardCode: json['card_code'] as String?,
       priceFormatted: json['price_formatted'] as String?,
       totalPrice: json['total_price'] as int?,
       totalPriceFormatted: json['total_price_formatted'] as String?,
@@ -235,6 +239,8 @@ Map<String, dynamic> _$DetailsToJson(Details instance) => <String, dynamic>{
       'product_unit': instance.productUnit,
       'product_unit_name': instance.productUnitName,
       'price': instance.price,
+      'card_info': instance.cartInfo,
+      'card_code': instance.cardCode,
       'price_formatted': instance.priceFormatted,
       'total_price': instance.totalPrice,
       'total_price_formatted': instance.totalPriceFormatted,
