@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
@@ -277,19 +278,19 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                                 ),
                                                               )).toList(),
                                                               onChanged: (value) {
-                                                                setState(() async {
+                                                                setState(()  {
                                                                   if(viewModel.cartInfoCode[index].code == value!){
                                                                     viewModel.cartInfoCode[index] = viewModel.dataCart.value?.details?[index].cartInfo?.firstWhere((cartInfo) => cartInfo.code == value) ?? CardInfo();
                                                                   }else {
-                                                                    viewModel.cartInfoCode[index].code = value;
                                                                     viewModel.cartInfoCode[index] = viewModel.dataCart.value?.details?[index].cartInfo?.firstWhere((cartInfo) => cartInfo.code == value) ?? CardInfo();
                                                                      viewModel.updateQuantityOrCode(
                                                                         viewModel.dataCart.value?.details?[index].id.toString() ?? '',
                                                                         viewModel.dataCart.value?.details?[index].quantity,
                                                                         viewModel.cartInfoCode[index].code);
-
+                                                                    viewModel.cartInfoCode[index].code = value;
+                                                                    // viewModel.refresh();
                                                                   }
-                                                                  await viewModel.refresh();
+
                                                                 });
                                                               }),
                                                         ),
@@ -562,7 +563,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                               primary: UIColors.brandA,
                             ) ,
                               onPressed: (){
-
+                                Get.bottomSheet(SelecteAddressDiaLog(viewModel: viewModel));
                               }
                               , child: Row(
                                children: [
@@ -843,5 +844,71 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
 
   @override
   CartModel createViewModel() => getIt<CartModel>();
+}
 
+class SelecteAddressDiaLog extends StatelessWidget {
+  final CartModel viewModel;
+
+  const SelecteAddressDiaLog({Key? key, required this.viewModel})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: UIColors.white,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(SpaceValues.space16),
+            decoration: const BoxDecoration(
+              color: UIColors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: Get.back,
+                  child: SvgPicture.asset(
+                    IconAssets.navigationClose,
+                    color: UIColors.black,
+                  ),
+                ),
+
+                const Text(
+                  'Danh sách địa chỉ',
+                  style: TextStyle(
+                      color: UIColors.black, fontWeight: FontWeight.w700),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox.shrink(),
+              ],
+            ),
+          ),
+          const Divider(height: 1,color: UIColors.black40),
+          Expanded(
+            child: ListView.separated(
+              padding: const EdgeInsets.all(12),
+              itemCount: 8,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  height: 50,
+                  color: UIColors.black40,
+                  child: Center(child: Text('Entry')),
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) => const Divider(color: UIColors.black70,indent: 1),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 }

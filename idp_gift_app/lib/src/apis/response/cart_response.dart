@@ -442,13 +442,14 @@ class Details {
   String? createdAt;
 
   @JsonKey(name: 'created_by')
-  int? createdBy;
+
+  String? createdBy;
 
   @JsonKey(name: 'updated_at')
   String? updatedAt;
 
   @JsonKey(name: 'updated_by')
-  int? updatedBy;
+  String? updatedBy;
 
   Details(
       {

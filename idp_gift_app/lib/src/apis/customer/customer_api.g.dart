@@ -146,6 +146,103 @@ class _CustomerAPI implements CustomerAPI {
     return value;
   }
 
+  @override
+  Future<DataUserAddress> doPostAddressUser(userAddressResponse) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(userAddressResponse.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataUserAddress>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/shipping_address',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataUserAddress.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<DataUserAddress> doPutAddressUser(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataUserAddress>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/shipping_address/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataUserAddress.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<DataUserAddress> doPutAddressUserDefault(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataUserAddress>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/shipping_address/set_default/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataUserAddress.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<DataUserAddress> doDeleteAddressUser(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataUserAddress>(
+            Options(method: 'DELETE', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/shipping_address/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataUserAddress.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<DataUserAddress> doGetAllAddressUser() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataUserAddress>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/shipping_address',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataUserAddress.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<DataUserAddress> doGetAllAddressUserDetail(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataUserAddress>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/shipping_address/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataUserAddress.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

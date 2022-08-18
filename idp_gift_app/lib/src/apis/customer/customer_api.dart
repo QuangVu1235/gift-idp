@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
+import 'package:idp_gift_app/src/apis/response/address/user_address_response.dart';
 import 'package:idp_gift_app/src/apis/response/cart_response.dart';
 import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
 import 'package:idp_gift_app/src/config/base_api.dart';
@@ -50,12 +51,23 @@ abstract class CustomerAPI {
   @GET('v1/client/get-product-by-gift-exchange-points')
   Future<List<ProductResponse>> getAllProductExchangePoints(@Body() Map<String, dynamic> body);
 
+  // Managerment Address
+  @POST('v1/shipping_address')
+  Future<DataUserAddress> doPostAddressUser(@Body() UserAddressResponse userAddressResponse);
 
+  @PUT('v1/shipping_address/{id}')
+  Future<DataUserAddress> doPutAddressUser(@Path('id') String id);
 
+  @PUT('v1/shipping_address/set_default/{id}')
+  Future<DataUserAddress> doPutAddressUserDefault(@Path('id') String id);
 
+  @DELETE('v1/shipping_address/{id}')
+  Future<DataUserAddress> doDeleteAddressUser(@Path('id') String id);
 
+  @GET('v1/shipping_address')
+  Future<DataUserAddress> doGetAllAddressUser();
 
-
-
+  @GET('v1/shipping_address/{id}')
+  Future<DataUserAddress> doGetAllAddressUserDetail(@Path('id') String id);
 
 }

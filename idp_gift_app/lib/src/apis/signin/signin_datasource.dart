@@ -1,10 +1,12 @@
-  import 'package:injectable/injectable.dart';
+  import 'package:idp_gift_app/src/apis/signin/responses/session_id_response.dart';
+import 'package:injectable/injectable.dart';
 import 'package:idp_gift_app/src/apis/signin/responses/list_user_phone_responses.dart';
 import 'package:idp_gift_app/src/apis/signin/responses/signin_responses.dart';
 import 'package:idp_gift_app/src/apis/signin/services/signin_api.dart';
 
 abstract class SigninDatasource {
   Future<SigninResponses> signin(String phone, String password);
+  Future<DataSessionIdResponse> getSessionIdResponseByPhone(String phone);
   Future<void> logout();
   Future<ListUserPhoneResponses> getUserByPhone(String phone);
 }
@@ -27,5 +29,9 @@ class SigninDataSourceImpl extends SigninDatasource {
 
   @override
   Future<ListUserPhoneResponses> getUserByPhone(String phone) => _signinAPI.getUserByPhone(phone);
+
+  @override
+  Future<DataSessionIdResponse> getSessionIdResponseByPhone(String phone)
+  =>_signinAPI.getSessionIdResponseByPhone(phone);
 
 }

@@ -15,7 +15,7 @@ class ProductWidgetModel extends ViewModel{
 
     _customerUserCase.addToCartCustomer({
        "product_id": idProduct,
-       "session_id" : 'eyJpdiI6ImZaRDk5N2ZkZk1kUU5kaDZRTm42dUE9PSIsInZhbHVlIjoiLzc2N2FYZHNUNGZVSERpeVZkZlllcnZUVEVwVThBcHQyczd6QzJtVzA2MD0iLCJtYWMiOiIzMmI1ZGZhYjMwMTUzNTcwYzBhN2YzZjI1YjYyZDdkZTg2NWUzZDk5ZjIwNzUyZjQ4ZjcwODEwNmMxYWE3YjIwIiwidGFnIjoiIn0='
+       "session_id" : _sharedPreferences.getString('uSessionId')
     }).then((value){
        AppUtils().showPopupSuccessWarranty(
          title: 'Thành công',
