@@ -899,9 +899,26 @@ class SelecteAddressDiaLog extends StatelessWidget {
               itemCount: 8,
               itemBuilder: (BuildContext context, int index) {
                 return Container(
-                  height: 50,
                   color: UIColors.black40,
-                  child: Center(child: Text('Entry')),
+                  child: RadioListTile<String>(
+                    title: const Text('Lafayette'),
+
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('data'),
+                        Text('data')
+                      ],
+                    ),
+                    value: '1',
+
+                    groupValue: '1',
+                    onChanged: (value) {
+                      // setState(() {
+                      //   _character = value;
+                      // });
+                    },
+                  ),
                 );
               },
               separatorBuilder: (BuildContext context, int index) => const Divider(color: UIColors.black70,indent: 1),
