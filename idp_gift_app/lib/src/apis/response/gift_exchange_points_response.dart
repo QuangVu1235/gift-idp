@@ -14,6 +14,7 @@ class DataGitExchangePoints {
 @JsonSerializable()
 class GitExchangePointsResp {
   int? id;
+  @JsonKey(name: 'code')
   String? code;
   String? phone;
   String? email;

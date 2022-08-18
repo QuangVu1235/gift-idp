@@ -13,6 +13,8 @@ abstract class CustomerDataSource {
   Future<dynamic> changeStatusOrder(
       String id, String status, String canceledReason);
   Future<DataGitExchangePoints> getAllGiftExchangePoints();
+  Future<List<ProductResponse>> getAllProductExchangePoints(String code);
+
 }
 
 @LazySingleton(as: CustomerDataSource)
@@ -46,4 +48,10 @@ class CustomerDataSourceImpl extends CustomerDataSource {
   @override
   Future<DataGitExchangePoints> getAllGiftExchangePoints()
   => _customerAPI.getAllGiftExchangePoints();
+
+  @override
+  Future<List<ProductResponse>> getAllProductExchangePoints(String code)
+  => _customerAPI.getAllProductExchangePoints({
+        "code": code
+   });
 }

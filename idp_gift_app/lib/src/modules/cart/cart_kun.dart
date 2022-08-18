@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/cart/cart_model.dart';
@@ -175,13 +176,17 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                                 side: BorderSide(color: UIColors.black10,width: 1)
                                                             )
                                                         ),
-                                                        onPressed: (){
-
+                                                        onPressed: () async{
+                                                          await viewModel.updateQuantityOrCode(viewModel.dataCart.value?.details?[index].id.toString() ?? '',
+                                                              (viewModel.dataCart.value?.details?[index].quantity ?? 0 ) - 1,
+                                                              viewModel.cartInfoCode[index].code
+                                                          );
+                                                          viewModel.refresh();
                                                         },
                                                         child: Center(child: SvgPicture.asset(SvgImageAssets.minus,color: UIColors.black40,height: 10,)),
                                                       ),
                                                     ),
-                                                    Container(
+                                                    Obx(()=>Container(
                                                       height: 30,
                                                       decoration: const BoxDecoration(
                                                           border: Border.symmetric(
@@ -195,9 +200,10 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                         padding: EdgeInsets.only(left: 15,right: 15),
                                                         child: Center(
                                                             child: Text(
-                                                                viewModel.dataCart.value?.details?[index].quantity.toString() ?? '',
+                                                              viewModel.dataCart.value?.details?[index].quantity.toString() ?? '',
                                                               style: TextStyle(fontSize:12 ),)),
                                                       ),
+                                                    ),
                                                     ),
                                                     SizedBox(
                                                       height: 30 ,
@@ -214,8 +220,12 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                                 side: BorderSide(color: UIColors.black10,width: 1)
                                                             )
                                                         ),
-                                                        onPressed: (){
-
+                                                        onPressed: () async{
+                                                            await viewModel.updateQuantityOrCode(viewModel.dataCart.value?.details?[index].id.toString() ?? '',
+                                                                (viewModel.dataCart.value?.details?[index].quantity ?? 0 ) + 1,
+                                                                viewModel.cartInfoCode[index].code
+                                                            );
+                                                            viewModel.refresh();
                                                         },
                                                         child: Center(child: SvgPicture.asset(SvgImageAssets.plus,color: UIColors.black40,height: 10,)),
                                                       ),
@@ -241,7 +251,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                       child: InputDecorator(
                                                         decoration:InputDecoration(
                                                             focusColor: UIColors.black10,
-                                                            hintText: "Kiểu dáng",
+                                                            hintText: "Thêm loại thẻ",
                                                             contentPadding: EdgeInsets.only(left: 2),
                                                             border: InputBorder.none,
                                                             enabledBorder: OutlineInputBorder(
@@ -254,7 +264,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                               dropdownColor: UIColors.white,
                                                               isExpanded: false,
                                                               isDense: false,
-                                                              value: viewModel.cartInfoCode[index],
+                                                              value: viewModel.cartInfoCode[index].code,
                                                               items: viewModel.dataCart.value?.details?[index].cartInfo?.map((items)
                                                               =>  DropdownMenuItem(
                                                                 value: items.code ?? '',
@@ -267,8 +277,19 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                                 ),
                                                               )).toList(),
                                                               onChanged: (value) {
-                                                                setState(() {
-                                                                  viewModel.cartInfoCode[index] = value!;
+                                                                setState(() async {
+                                                                  if(viewModel.cartInfoCode[index].code == value!){
+                                                                    viewModel.cartInfoCode[index] = viewModel.dataCart.value?.details?[index].cartInfo?.firstWhere((cartInfo) => cartInfo.code == value) ?? CardInfo();
+                                                                  }else {
+                                                                    viewModel.cartInfoCode[index].code = value;
+                                                                    viewModel.cartInfoCode[index] = viewModel.dataCart.value?.details?[index].cartInfo?.firstWhere((cartInfo) => cartInfo.code == value) ?? CardInfo();
+                                                                     viewModel.updateQuantityOrCode(
+                                                                        viewModel.dataCart.value?.details?[index].id.toString() ?? '',
+                                                                        viewModel.dataCart.value?.details?[index].quantity,
+                                                                        viewModel.cartInfoCode[index].code);
+
+                                                                  }
+                                                                  await viewModel.refresh();
                                                                 });
                                                               }),
                                                         ),
@@ -301,8 +322,8 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                 //kun vận động
                                                 Row(
                                                   children: [
-                                                    const Text(
-                                                      'Kun vận động:',
+                                                     Text(
+                                                      viewModel.cartInfoCode[index].name ?? 'Kun vận động',
                                                       style: TextStyle(
                                                         fontSize: 12,
                                                         fontWeight: FontWeight.w400,
@@ -325,27 +346,36 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                                 side: BorderSide(color: UIColors.black10,width: 1)
                                                             )
                                                         ),
-                                                        onPressed: (){
-
+                                                        onPressed: () async{
+                                                          await viewModel.updateQuantityOrCode(viewModel.dataCart.value?.details?[index].id.toString() ?? '',
+                                                              (viewModel.dataCart.value?.details?[index].quantity ?? 0 ) - 1,
+                                                              viewModel.cartInfoCode[index].code
+                                                          );
+                                                          viewModel.refresh();
                                                         },
                                                         child: Center(child: SvgPicture.asset(SvgImageAssets.minus,color: UIColors.black40,height: 10,)),
                                                       ),
                                                     ),
-                                                    Container(
-                                                      height: 30,
-                                                      decoration: const BoxDecoration(
-                                                          border: Border.symmetric(
-                                                              horizontal:
-                                                              BorderSide(
-                                                                color: UIColors.black10,
-                                                                width: 1,
-                                                              ))
-                                                      ),
-                                                      child: const Padding(
-                                                        padding: EdgeInsets.only(left: 15,right: 15),
-                                                        child: Center(child: Text('10',style: TextStyle(fontSize:12 ),)),
-                                                      ),
-                                                    ),
+                                                 Obx(()=>    Container(
+                                                   height: 30,
+                                                   decoration: const BoxDecoration(
+                                                       border: Border.symmetric(
+                                                           horizontal:
+                                                           BorderSide(
+                                                             color: UIColors.black10,
+                                                             width: 1,
+                                                           ))
+                                                   ),
+                                                   child:  Padding(
+                                                     padding: EdgeInsets.only(left: 15,right: 15),
+                                                     child: Center(child:
+                                                     Text(
+                                                       ((viewModel.cartInfoCode[index].quantity ?? 0) * (viewModel.dataCart.value?.details?[index].quantity ?? 0)).toString(),
+                                                       style: TextStyle(
+                                                           fontSize:12 ),)),
+                                                   ),
+                                                   ),
+                                                 ),
                                                     SizedBox(
                                                       height: 30 ,
                                                       width: 30,
@@ -361,8 +391,12 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                                 side: BorderSide(color: UIColors.black10,width: 1)
                                                             )
                                                         ),
-                                                        onPressed: (){
-
+                                                        onPressed: () async {
+                                                          await viewModel.updateQuantityOrCode(viewModel.dataCart.value?.details?[index].id.toString() ?? '',
+                                                              (viewModel.dataCart.value?.details?[index].quantity ?? 0 ) + 1,
+                                                              viewModel.cartInfoCode[index].code
+                                                          );
+                                                          viewModel.refresh();
                                                         },
                                                         child: Center(child: SvgPicture.asset(SvgImageAssets.plus,color: UIColors.black40,height: 10,)),
                                                       ),

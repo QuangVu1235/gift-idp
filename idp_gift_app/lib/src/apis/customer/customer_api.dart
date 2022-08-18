@@ -46,6 +46,10 @@ abstract class CustomerAPI {
   @GET('v1/client/get-gift-exchange-points')
   Future<DataGitExchangePoints> getAllGiftExchangePoints();
 
+  // getAll product in diem doi qua`
+  @GET('v1/client/get-product-by-gift-exchange-points')
+  Future<List<ProductResponse>> getAllProductExchangePoints(@Body() Map<String, dynamic> body);
+
 
 
 

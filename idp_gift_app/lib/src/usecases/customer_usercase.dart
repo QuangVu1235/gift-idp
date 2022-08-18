@@ -32,4 +32,7 @@ class CustomerUserCase{
   // danh sách điểm đổi quà
   Future<DataGitExchangePoints> getAllGiftExchangePoints()
   => _customerDataSource.getAllGiftExchangePoints();
+
+  Future<List<ProductResponse>> getAllProductExchangePoints(String code)
+  => _customerDataSource.getAllProductExchangePoints(code);
 }

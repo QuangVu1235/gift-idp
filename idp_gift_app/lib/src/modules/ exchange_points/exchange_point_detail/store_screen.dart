@@ -4,23 +4,35 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
+import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
 import 'package:idp_gift_app/src/config/assets/icon_assets.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
+import 'package:idp_gift_app/src/config/injection_config.dart';
+import 'package:idp_gift_app/src/modules/%20exchange_points/exchange_point_detail/exchange_point_detail_model.dart';
 import 'package:idp_gift_app/src/modules/cart/cart_kun.dart';
 import 'package:idp_gift_app/src/modules/cart/cart_lof.dart';
 import 'package:idp_gift_app/src/modules/productwidget/product_widget.dart';
 import 'package:idp_gift_app/src/themes/space_values.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 import 'package:idp_gift_app/src/utils/AppUtils.dart';
+import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 
 class StoreScreen extends StatefulWidget {
   final String title;
+  final String code;
 
-  const StoreScreen({Key? key, required this.title}) : super(key: key);
+  const StoreScreen({Key? key, required this.title, required this.code}) : super(key: key);
   @override
   State<StatefulWidget> createState() =>_StoreScreen();
 }
-class _StoreScreen extends State<StoreScreen>{
+class _StoreScreen extends ViewWidget<StoreScreen,ExChangePointsDetailModel>{
+  @override
+  void initState() {
+    super.initState();
+    viewModel.exChangePointCode.value = widget.code;
+    viewModel.getAllProductInGiftExchangePoints();
+  }
   @override
   Widget build(BuildContext context) {
       return Scaffold(
@@ -120,14 +132,15 @@ class _StoreScreen extends State<StoreScreen>{
                           childAspectRatio: 0.7,
                         ),
                         shrinkWrap: true,
-                        itemCount: 8,
+                        itemCount: 2,
                         itemBuilder: (BuildContext context, int index) {
-                          return const ProductWidget(
-                            productId: 1,
-                            title: 'Binh nước giữa nhiệt Kun(8 QK/ 2 KVĐ)',
-                            avatar: ImageAssets.imggiftproduct,
+                          return ProductWidget(
+                            productId:  0,
+                            title: '',
+                            avatar:  '',
                             qrCode: SvgImageAssets.qrgift,
-                            quantity: '20', card: [],
+                            quantity: '20',
+                            card:  [''],
                           );
                         },
                       ),
@@ -163,5 +176,8 @@ class _StoreScreen extends State<StoreScreen>{
           )
       );
   }
+
+  @override
+  ExChangePointsDetailModel createViewModel() => getIt<ExChangePointsDetailModel>();
 
 }
