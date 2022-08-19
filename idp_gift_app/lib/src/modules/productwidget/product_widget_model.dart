@@ -1,3 +1,5 @@
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:idp_gift_app/src/themes/ui_colors.dart';
 import 'package:idp_gift_app/src/usecases/customer_usercase.dart';
 import 'package:idp_gift_app/src/utils/AppUtils.dart';
 import 'package:idp_gift_app/src/utils/widgets/view_model.dart';
@@ -12,16 +14,16 @@ class ProductWidgetModel extends ViewModel{
   ProductWidgetModel(this._customerUserCase, this._sharedPreferences);
 
   Future<void> addToCart(int idProduct)async {
-
-    _customerUserCase.addToCartCustomer({
-       "product_id": idProduct,
-       "session_id" : _sharedPreferences.getString('uSessionId')
+    loading(() => _customerUserCase.addToCartCustomer({
+      "product_id": idProduct,
+      "session_id" : _sharedPreferences.getString('uSessionId')
     }).then((value){
-       AppUtils().showPopupSuccessWarranty(
-         title: 'Thành công',
-         subtitle: 'Chúc mừng bạn đã tạo đơn quà thành công',
-         button: 'Tiếp tục mua hàng'
-       );
-    });
+      Fluttertoast.showToast(msg: 'Đặt hàng thành công', backgroundColor: UIColors.brandA);
+      // AppUtils().showPopupSuccessWarranty(
+      //   title: 'Thành công',
+      //   subtitle: 'Chúc mừng bạn đã tạo đơn quà thành công',
+      //   button: 'Tiếp tục mua hàng'
+      // );
+    }));
   }
 }

@@ -443,13 +443,13 @@ class Details {
 
   @JsonKey(name: 'created_by')
 
-  String? createdBy;
+  int? createdBy;
 
   @JsonKey(name: 'updated_at')
   String? updatedAt;
 
   @JsonKey(name: 'updated_by')
-  String? updatedBy;
+  int? updatedBy;
 
   Details(
       {

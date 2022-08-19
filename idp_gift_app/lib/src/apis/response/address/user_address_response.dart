@@ -4,7 +4,7 @@ part 'user_address_response.g.dart';
 @JsonSerializable()
 class DataUserAddress {
   @JsonKey(name: 'data')
-  UserAddressResponse? data;
+  List<UserAddressResponse>? data;
 
   DataUserAddress({this.data});
 
@@ -17,7 +17,7 @@ class DataUserAddress {
 class UserAddressResponse {
   int? id;
   @JsonKey(name: 'user_id')
-  String? userId;
+  int? userId;
 
   @JsonKey(name: 'user_name')
   String? userName;
@@ -48,8 +48,11 @@ class UserAddressResponse {
   @JsonKey(name: 'street_address')
   String? streetAddress;
 
+  @JsonKey(name: 'full_address')
+  String? fullAddress;
+
   @JsonKey(name: 'is_default')
-  String? isDefault;
+  int? isDefault;
 
   @JsonKey(name: 'created_at')
   String? createdAt;
@@ -76,6 +79,7 @@ class UserAddressResponse {
         this.wardCode,
         this.wardName,
         this.streetAddress,
+        this.fullAddress,
         this.isDefault,
         this.createdAt,
         this.updatedAt,

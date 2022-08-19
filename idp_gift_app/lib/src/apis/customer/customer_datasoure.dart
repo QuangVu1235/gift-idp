@@ -7,28 +7,39 @@ import 'package:injectable/injectable.dart';
 
 abstract class CustomerDataSource {
   Future<void> addToCartCustomer(dynamic body);
+
   Future<CartDataReponse> getCartExchangeByUser();
+
   Future<DataProductResponse> getProductByCode(String code);
+
   Future<dynamic> deleteCart(String id);
-  Future<void> updateCart(String id,dynamic body);
+
+  Future<dynamic> deleteAllCart(String sessionId);
+
+  Future<void> updateCart(String id, dynamic body);
+
   Future<dynamic> changeStatusOrder(
       String id, String status, String canceledReason);
-  Future<DataGitExchangePoints> getAllGiftExchangePoints();
+
+  Future<DataGitExchangePoints> getAllGiftExchangePoints(body);
+
+  Future<List<ProductResponse>> getProductByExchangePoint(String productName,String code);
+
   Future<List<ProductResponse>> getAllProductExchangePoints(String code);
   //managerAddress
 
-  Future<DataUserAddress> doPostAddressUser(UserAddressResponse userAddressResponse);
+  Future<DataUserAddress> doPostAddressUser(
+      UserAddressResponse userAddressResponse);
 
   Future<DataUserAddress> doPutAddressUser(String id);
 
   Future<DataUserAddress> doPutAddressUserDefault(String id);
 
-  Future<DataUserAddress> doDeleteAddressUser( String id);
+  Future<DataUserAddress> doDeleteAddressUser(String id);
 
   Future<DataUserAddress> doGetAllAddressUser();
 
-  Future<DataUserAddress> doGetAllAddressUserDetail( String id);
-
+  Future<DataUserAddress> doGetAllAddressUserDetail(String id);
 }
 
 @LazySingleton(as: CustomerDataSource)
@@ -52,7 +63,7 @@ class CustomerDataSourceImpl extends CustomerDataSource {
   Future deleteCart(String id) => _customerAPI.deleteCart(id);
 
   @override
-  Future<void> updateCart(String id, body) => _customerAPI.updateCart(id,body);
+  Future<void> updateCart(String id, body) => _customerAPI.updateCart(id, body);
 
   @override
   Future changeStatusOrder(String id, String status, String canceledReason) =>
@@ -60,35 +71,46 @@ class CustomerDataSourceImpl extends CustomerDataSource {
           id, ({"status": status, "canceled_reason": canceledReason}));
 
   @override
-  Future<DataGitExchangePoints> getAllGiftExchangePoints()
-  => _customerAPI.getAllGiftExchangePoints();
+  Future<DataGitExchangePoints> getAllGiftExchangePoints(
+      body) =>
+      _customerAPI.getAllGiftExchangePoints(body);
 
   @override
-  Future<List<ProductResponse>> getAllProductExchangePoints(String code)
-  => _customerAPI.getAllProductExchangePoints({
-        "code": code
-   });
+  Future<List<ProductResponse>> getProductByExchangePoint(String productName, String code)
+  => _customerAPI.getProductByExchangePoint(productName, code);
 
   @override
-  Future<DataUserAddress> doDeleteAddressUser(String id)
-  => _customerAPI.doDeleteAddressUser(id);
+  Future<DataUserAddress> doDeleteAddressUser(String id) =>
+      _customerAPI.doDeleteAddressUser(id);
 
   @override
-  Future<DataUserAddress> doGetAllAddressUser()
-  => _customerAPI.doGetAllAddressUser();
+  Future<DataUserAddress> doGetAllAddressUser() =>
+      _customerAPI.doGetAllAddressUser();
 
   @override
-  Future<DataUserAddress> doGetAllAddressUserDetail(String id)
-  => _customerAPI.doGetAllAddressUserDetail(id);
+  Future<DataUserAddress> doGetAllAddressUserDetail(String id) =>
+      _customerAPI.doGetAllAddressUserDetail(id);
 
   @override
-  Future<DataUserAddress> doPostAddressUser(UserAddressResponse userAddressResponse)
-  => _customerAPI.doPostAddressUser(userAddressResponse);
+  Future<DataUserAddress> doPostAddressUser(
+          UserAddressResponse userAddressResponse) =>
+      _customerAPI.doPostAddressUser(userAddressResponse);
 
   @override
-  Future<DataUserAddress> doPutAddressUser(String id)
-  => _customerAPI.doPutAddressUser(id);
+  Future<DataUserAddress> doPutAddressUser(String id) =>
+      _customerAPI.doPutAddressUser(id);
+
   @override
-  Future<DataUserAddress> doPutAddressUserDefault(String id)
-  => _customerAPI.doPutAddressUserDefault(id);
+  Future<DataUserAddress> doPutAddressUserDefault(String id) =>
+      _customerAPI.doPutAddressUserDefault(id);
+
+  @override
+  Future<List<ProductResponse>> getAllProductExchangePoints(String code) =>
+      _customerAPI.getAllProductExchangePoints(code);
+
+  @override
+  Future deleteAllCart(String sessionId) =>
+      _customerAPI.deleteAllCart(sessionId);
+
+
 }

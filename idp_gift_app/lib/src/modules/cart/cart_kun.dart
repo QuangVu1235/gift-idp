@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
+import 'package:idp_gift_app/src/apis/response/address/user_address_response.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/cart/cart_model.dart';
@@ -571,24 +572,21 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                     Text(' Thay đổi',style: TextStyle(color: UIColors.brandA,fontSize: 12,fontWeight: FontWeight.w400),)
                                 ],
 
-                          ))
-
-
-
+                          )
+                          )
                         ],
                       ),
                       const SizedBox(height: SpaceValues.space12,),
-                      Card(
+                      Obx(()=> Card(
                         elevation: 0.0,
                         margin: EdgeInsets.zero,
                         child: Padding(
                           padding: const EdgeInsets.all(20),
                           child: Column(
-
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children:  [
                                   Text(
                                     'Người nhận',
                                     style: TextStyle(
@@ -597,7 +595,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                     ),
                                   ),
                                   Text(
-                                    'Lâm Thu Đang',
+                                    viewModel.address.value?.fullName ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 12
@@ -608,7 +606,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                               SizedBox(height: 20,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: const [
+                                children:  [
                                   Text(
                                     'Số điện thoại',
                                     style: TextStyle(
@@ -617,7 +615,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                     ),
                                   ),
                                   Text(
-                                    '0335 965 865',
+                                    viewModel.address.value?.phone ?? '',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 12
@@ -638,15 +636,15 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                     ),
                                   ),
                                   SizedBox(width: MediaQuery.of(context).size.width*0.2),
-                                  const Expanded(
+                                  Expanded(
                                     child: Text(
-                                      'dsd, Phường Thạnh Xuân, Quận 12, Thành phố Hồ Chí Minh',
+                                      viewModel.address.value?.fullAddress ?? '',
                                       // maxLines: 3,
                                       // overflow: TextOverflow.fade,
                                       textAlign: TextAlign.end,
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ),
@@ -655,7 +653,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                             ],
                           ),
                         ),
-                      ),
+                      ),),
                       const SizedBox(height: SpaceValues.space12,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -798,8 +796,8 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                 side: BorderSide(color: UIColors.red,width: 1)
                             )
                           ) ,
-                          onPressed: (){
-
+                          onPressed: () async{
+                            await viewModel.deleteAllCart();
                           },
                           child: Text(
                               'Xoá giỏ quà',
@@ -846,11 +844,16 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
   CartModel createViewModel() => getIt<CartModel>();
 }
 
-class SelecteAddressDiaLog extends StatelessWidget {
+class SelecteAddressDiaLog extends StatefulWidget{
   final CartModel viewModel;
 
-  const SelecteAddressDiaLog({Key? key, required this.viewModel})
-      : super(key: key);
+  const SelecteAddressDiaLog({Key? key, required this.viewModel}) : super(key: key);
+  @override
+  State<StatefulWidget> createState()=>_SelecteAddressDiaLog();
+
+}
+
+class _SelecteAddressDiaLog extends State<SelecteAddressDiaLog> {
 
   @override
   Widget build(BuildContext context) {
@@ -893,37 +896,41 @@ class SelecteAddressDiaLog extends StatelessWidget {
             ),
           ),
           const Divider(height: 1,color: UIColors.black40),
-          Expanded(
+          Obx(()=>Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.all(12),
-              itemCount: 8,
+              itemCount: widget.viewModel.dataAddress.length,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  color: UIColors.black40,
-                  child: RadioListTile<String>(
-                    title: const Text('Lafayette'),
-
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('data'),
-                        Text('data')
-                      ],
+                return RadioListTile<UserAddressResponse>(
+                  title:  Text(widget.viewModel.dataAddress[index].fullName ?? '',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700
                     ),
-                    value: '1',
-
-                    groupValue: '1',
-                    onChanged: (value) {
-                      // setState(() {
-                      //   _character = value;
-                      // });
-                    },
                   ),
+                  contentPadding: EdgeInsets.zero,
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10,),
+                      Text(widget.viewModel.dataAddress[index].fullAddress ?? ''),
+                      SizedBox(height: 10,),
+                      Text(widget.viewModel.dataAddress[index].phone ?? ''),
+                    ],
+                  ),
+                  // selected: false,
+                  value: widget.viewModel.dataAddress[index],
+                  groupValue: widget.viewModel.address.value,
+                  onChanged: (value) => setState(()=> {
+                    widget.viewModel.address.value = value,
+                    Get.back()
+                  })
+                    // viewModel.address.refresh();
                 );
               },
               separatorBuilder: (BuildContext context, int index) => const Divider(color: UIColors.black70,indent: 1),
             ),
-          )
+          ))
         ],
       ),
     );

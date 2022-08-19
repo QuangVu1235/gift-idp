@@ -8,9 +8,9 @@ part of 'user_address_response.dart';
 
 DataUserAddress _$DataUserAddressFromJson(Map<String, dynamic> json) =>
     DataUserAddress(
-      data: json['data'] == null
-          ? null
-          : UserAddressResponse.fromJson(json['data'] as Map<String, dynamic>),
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => UserAddressResponse.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$DataUserAddressToJson(DataUserAddress instance) =>
@@ -21,7 +21,7 @@ Map<String, dynamic> _$DataUserAddressToJson(DataUserAddress instance) =>
 UserAddressResponse _$UserAddressResponseFromJson(Map<String, dynamic> json) =>
     UserAddressResponse(
       id: json['id'] as int?,
-      userId: json['user_id'] as String?,
+      userId: json['user_id'] as int?,
       userName: json['user_name'] as String?,
       fullName: json['full_name'] as String?,
       phone: json['phone'] as String?,
@@ -32,7 +32,8 @@ UserAddressResponse _$UserAddressResponseFromJson(Map<String, dynamic> json) =>
       wardCode: json['ward_code'] as String?,
       wardName: json['ward_name'] as String?,
       streetAddress: json['street_address'] as String?,
-      isDefault: json['is_default'] as String?,
+      fullAddress: json['full_address'] as String?,
+      isDefault: json['is_default'] as int?,
       createdAt: json['created_at'] as String?,
       updatedAt: json['updated_at'] as String?,
       createdBy: json['created_by'] as String?,
@@ -54,6 +55,7 @@ Map<String, dynamic> _$UserAddressResponseToJson(
       'ward_code': instance.wardCode,
       'ward_name': instance.wardName,
       'street_address': instance.streetAddress,
+      'full_address': instance.fullAddress,
       'is_default': instance.isDefault,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,

@@ -80,6 +80,22 @@ class _CustomerAPI implements CustomerAPI {
   }
 
   @override
+  Future<dynamic> deleteAllCart(sessionId) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
+            method: 'DELETE', headers: _headers, extra: _extra)
+        .compose(
+            _dio.options, '/v1/client/remove-cart-exchange-detail/${sessionId}',
+            queryParameters: queryParameters, data: _data)
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
   Future<void> updateCart(id, body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -111,9 +127,10 @@ class _CustomerAPI implements CustomerAPI {
   }
 
   @override
-  Future<DataGitExchangePoints> getAllGiftExchangePoints() async {
+  Future<DataGitExchangePoints> getAllGiftExchangePoints(map) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(map);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
@@ -127,19 +144,38 @@ class _CustomerAPI implements CustomerAPI {
   }
 
   @override
-  Future<List<ProductResponse>> getAllProductExchangePoints(body) async {
+  Future<List<ProductResponse>> getProductByExchangePoint(
+      productName, code) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'product_name': productName};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<ProductResponse>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options,
+                    '/v1/client/get-product-by-gift-exchange-points/${code}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => ProductResponse.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<ProductResponse>> getAllProductExchangePoints(code) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body);
     final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<ProductResponse>>(Options(
-                method: 'GET', headers: _headers, extra: _extra)
-            .compose(
-                _dio.options, 'v1/client/get-product-by-gift-exchange-points',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+        _setStreamType<List<ProductResponse>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options,
+                    'v1/client/get-product-by-gift-exchange-points/${code}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) => ProductResponse.fromJson(i as Map<String, dynamic>))
         .toList();
@@ -240,6 +276,22 @@ class _CustomerAPI implements CustomerAPI {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = DataUserAddress.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<StatusOrderResp> confirmOrderExchange(body) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = body;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<StatusOrderResp>(
+            Options(method: 'PUT', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/confirm-order-exchange',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = StatusOrderResp.fromJson(_result.data!);
     return value;
   }
 

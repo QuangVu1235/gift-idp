@@ -30,6 +30,7 @@ class _StoreScreen extends ViewWidget<StoreScreen,ExChangePointsDetailModel>{
   @override
   void initState() {
     super.initState();
+    print(widget.code);
     viewModel.exChangePointCode.value = widget.code;
     viewModel.getAllProductInGiftExchangePoints();
   }
@@ -58,7 +59,7 @@ class _StoreScreen extends ViewWidget<StoreScreen,ExChangePointsDetailModel>{
                       fontWeight: FontWeight.w400,
                       color: UIColors.fontGray),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: UIColors.black10),
+                    borderSide: const BorderSide(color: UIColors.black10),
                     borderRadius: BorderRadius.circular(SpaceValues.space8),
                   ),
                   suffixIconConstraints: const BoxConstraints(
@@ -83,6 +84,9 @@ class _StoreScreen extends ViewWidget<StoreScreen,ExChangePointsDetailModel>{
                     ),
                   ),
                 ),
+                onSubmitted: (value){
+                  viewModel.findProductByName(value);
+                },
               ),
               SizedBox(height: SpaceValues.space12,),
               Row(
@@ -92,7 +96,7 @@ class _StoreScreen extends ViewWidget<StoreScreen,ExChangePointsDetailModel>{
                       primary: UIColors.greenKun
                     ),
                     onPressed: () {
-
+                      viewModel.getAllProductInGiftExchangePoints();
                     },
                     child: Text(
                         'Quà kun'
@@ -121,33 +125,37 @@ class _StoreScreen extends ViewWidget<StoreScreen,ExChangePointsDetailModel>{
                 ],
               ),
               SizedBox(height: SpaceValues.space12,),
-              Expanded(
-                // margin: const EdgeInsets.only(left: 5),
-                  child: ListView(
-                    children: [
-                      GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.7,
+              Obx(()=>  Visibility(
+                visible: viewModel.dataProducts.isNotEmpty,
+                child: Obx(()=>Expanded(
+                  // margin: const EdgeInsets.only(left: 5),
+                    child: ListView(
+                      children: [
+                        GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.7,
+                          ),
+                          shrinkWrap: true,
+                          itemCount: viewModel.dataProducts.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return ProductWidget(
+                              productId:  viewModel.dataProducts[index].id ?? 0,
+                              title: viewModel.dataProducts[index].name ?? '',
+                              avatar:  viewModel.dataProducts[index].thumbnail ?? '',
+                              qrCode: SvgImageAssets.qrgift,
+                              quantity: viewModel.dataProducts[index].qty.toString(),
+                              card:  viewModel.dataProducts[index].dataCard ?? [''],
+                            );
+                          },
                         ),
-                        shrinkWrap: true,
-                        itemCount: 2,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ProductWidget(
-                            productId:  0,
-                            title: '',
-                            avatar:  '',
-                            qrCode: SvgImageAssets.qrgift,
-                            quantity: '20',
-                            card:  [''],
-                          );
-                        },
-                      ),
-                    ],
+                      ],
 
-                  )
-              ),
+                    )
+                ),),
+                replacement: Text('Không tìm thấy sản phẩm'),
+              ),)
             ],
           ),
         ),

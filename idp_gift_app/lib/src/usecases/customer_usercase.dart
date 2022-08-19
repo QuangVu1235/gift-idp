@@ -7,7 +7,9 @@ import 'package:injectable/injectable.dart';
 
 @LazySingleton()
 class CustomerUserCase{
+
   final CustomerDataSource _customerDataSource;
+
   @factoryMethod
   CustomerUserCase(this._customerDataSource);
 
@@ -27,12 +29,19 @@ class CustomerUserCase{
   // delete cart
   Future deleteCart(String id)
   => _customerDataSource.deleteCart(id);
+
+  Future deleteAllCart(String sessionId)
+  => _customerDataSource.deleteAllCart(sessionId);
   //update cart
   Future<void> updateCart(String id, body)
   => _customerDataSource.updateCart(id, body);
   // danh sách điểm đổi quà
-  Future<DataGitExchangePoints> getAllGiftExchangePoints()
-  => _customerDataSource.getAllGiftExchangePoints();
+  Future<DataGitExchangePoints> getAllGiftExchangePoints(body)
+  => _customerDataSource.getAllGiftExchangePoints(body);
+
+  // tìm sp trong điểm đổi quà
+  Future<List<ProductResponse>> getProductByExchangePoint(String productName, String code)
+  => _customerDataSource.getProductByExchangePoint(productName, code);
 
   Future<List<ProductResponse>> getAllProductExchangePoints(String code)
   => _customerDataSource.getAllProductExchangePoints(code);

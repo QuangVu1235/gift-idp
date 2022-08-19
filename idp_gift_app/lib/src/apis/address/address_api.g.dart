@@ -18,7 +18,7 @@ class _AddressAPI implements AddressAPI {
   String? baseUrl;
 
   @override
-  Future<CityResponses> getCity() async {
+  Future<CityResponses> getCities() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -26,7 +26,7 @@ class _AddressAPI implements AddressAPI {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CityResponses>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'v0/1/cities',
+                .compose(_dio.options, '/v0/1/cities',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CityResponses.fromJson(_result.data!);
@@ -34,24 +34,7 @@ class _AddressAPI implements AddressAPI {
   }
 
   @override
-  Future<CityResponses> getCityChange(map) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(map);
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<CityResponses>(
-            Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'v0/1/cities',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = CityResponses.fromJson(_result.data!);
-    return value;
-  }
-
-  @override
-  Future<DistrictResponses> getDistrict(codeCity) async {
+  Future<DistrictResponses> getDistricts(cityCode) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -59,7 +42,7 @@ class _AddressAPI implements AddressAPI {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<DistrictResponses>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'v0/${codeCity}/districts',
+                .compose(_dio.options, '/v0/${cityCode}/districts',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = DistrictResponses.fromJson(_result.data!);
@@ -67,7 +50,7 @@ class _AddressAPI implements AddressAPI {
   }
 
   @override
-  Future<WardResponses> fetchWard(districtId) async {
+  Future<WardResponses> getWards(districtCode) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -75,7 +58,7 @@ class _AddressAPI implements AddressAPI {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<WardResponses>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'v0/${districtId}/wards',
+                .compose(_dio.options, '/v0/${districtCode}/wards',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = WardResponses.fromJson(_result.data!);

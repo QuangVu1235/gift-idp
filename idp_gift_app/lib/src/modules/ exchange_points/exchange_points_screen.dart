@@ -46,7 +46,7 @@ class _ExchangePoint extends ViewWidget<ExchangePoints, ExChangePointsModel> {
             children: [
               Row(
                 children: [
-                  SizedBox(
+                  Obx(()=>SizedBox(
                     width: MediaQuery.of(context).size.width * 0.44,
                     child: InputDecorator(
                       decoration: InputDecoration(
@@ -57,7 +57,7 @@ class _ExchangePoint extends ViewWidget<ExchangePoints, ExChangePointsModel> {
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: UIColors.black10),
                           borderRadius:
-                              BorderRadius.circular(SpaceValues.space8),
+                          BorderRadius.circular(SpaceValues.space8),
                         ),
                       ),
                       child: DropdownButtonHideUnderline(
@@ -65,34 +65,33 @@ class _ExchangePoint extends ViewWidget<ExchangePoints, ExChangePointsModel> {
                             dropdownColor: UIColors.white,
                             isExpanded: false,
                             isDense: false,
-                            value: province,
-                            items: provinces
-                                .map((String items) => DropdownMenuItem(
-                                      value: items,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 3),
-                                        child: Text(
-                                          items,
-                                          style: const TextStyle(
-                                              color: UIColors.fontGray,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                    ))
+                            value: viewModel.city.value,
+                            items: viewModel.cities.value
+                                .map((city) => DropdownMenuItem(
+                              value: city.code ?? '',
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 3),
+                                child: Text(
+                                  city.name ?? 'Chọn Tỉnh/ Thành phố',
+                                  style: const TextStyle(
+                                      color: UIColors.fontGray,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                            ))
                                 .toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                province = newValue!;
-                              });
+                            onChanged: (value) {
+                              viewModel.city.value = value;
+                              viewModel.loadDistricts();
                             }),
                       ),
                     ),
-                  ),
+                  ),),
                   SizedBox(
                     width: SpaceValues.space4,
                   ),
-                  SizedBox(
+                  Obx(()=>SizedBox(
                     width: MediaQuery.of(context).size.width * 0.43,
                     child: InputDecorator(
                       decoration: InputDecoration(
@@ -102,42 +101,46 @@ class _ExchangePoint extends ViewWidget<ExchangePoints, ExChangePointsModel> {
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: UIColors.black10),
                           borderRadius:
-                              BorderRadius.circular(SpaceValues.space8),
+                          BorderRadius.circular(SpaceValues.space8),
                         ),
                       ),
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                             isExpanded: false,
-                            value: district,
-                            items: districts
-                                .map((String items) => DropdownMenuItem(
-                                      value: items,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 5),
-                                        child: Text(
-                                          items,
-                                          style: const TextStyle(
-                                              color: UIColors.fontGray,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                      ),
-                                    ))
+                            value: viewModel.district.value,
+                            items: viewModel.districts.value
+                                .map((district) => DropdownMenuItem(
+                              value: district.code ?? '',
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 5),
+                                child: Text(
+                                  district.name ?? 'Chọn Quận/Huyện',
+                                  style: const TextStyle(
+                                      color: UIColors.fontGray,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                            ))
                                 .toList(),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                district = newValue!;
-                              });
-                            }),
+                            onChanged: viewModel.districts.length > 1 ?
+                                (value) {
+                              viewModel.district.value = value;
+                              viewModel.refresh();
+                              // viewModel.loadWards();
+                            } :
+                            null,
+                            ),
                       ),
                     ),
-                  ),
+                  ),)
                 ],
               ),
               SizedBox(
                 height: SpaceValues.space16,
               ),
               TextField(
+                controller: viewModel.inPutSearch,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(14),
                   prefixIconConstraints: const BoxConstraints.expand(
@@ -156,6 +159,7 @@ class _ExchangePoint extends ViewWidget<ExchangePoints, ExChangePointsModel> {
                       maxHeight: SpaceValues.space24, minWidth: 0),
                   suffixIcon: InkWell(
                     onTap: () {
+                      viewModel.getAllGiftExchangePoints(viewModel.inPutSearch.text);
                       FocusScopeNode currentFocus = FocusScope.of(context);
                       if (!currentFocus.hasPrimaryFocus) {
                         currentFocus.unfocus();
@@ -179,142 +183,152 @@ class _ExchangePoint extends ViewWidget<ExchangePoints, ExChangePointsModel> {
                     ),
                   ),
                 ),
+                onSubmitted: (value) {
+                  print(value);
+                  viewModel.getAllGiftExchangePoints(value);
+                }
               ),
               SizedBox(
                 height: 20,
               ),
-              Obx(() => Expanded(
-                    child: ListView.builder(
-                        itemCount: viewModel.dataGiftExchangePoints.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () {
-                              Get.to(() =>  StoreScreen(
-                                    code: viewModel.dataGiftExchangePoints[index].code ?? '',
-                                    title: viewModel.dataGiftExchangePoints[index].fullName ?? '',
-                                  ));
-                            },
-                            child: Card(
-                              elevation: 0.0,
-                              margin: const EdgeInsets.only(bottom: 10),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(
-                                        SpaceValues.space6),
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.3,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          border: Border.all(
-                                              color: UIColors.black70,
-                                              width: 1)),
-                                      child: Image.asset(ImageAssets.qrCode),
-                                    ),
+              Obx(()=>Visibility(
+                replacement: Text('Không tìm thấy điểm đổi quà!!'),
+                visible: viewModel.dataGiftExchangePoints.value.isNotEmpty,
+                child:  Obx(() => Expanded(
+                  child: ListView.builder(
+                      itemCount: viewModel.dataGiftExchangePoints.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                          onTap: () {
+                            Get.to(() =>  StoreScreen(
+                              code: viewModel.dataGiftExchangePoints[index].code ?? '',
+                              title: viewModel.dataGiftExchangePoints[index].fullName ?? '',
+                            ));
+                          },
+                          child: Card(
+                            elevation: 0.0,
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(
+                                      SpaceValues.space6),
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.3,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                        BorderRadius.circular(10),
+                                        border: Border.all(
+                                            color: UIColors.black70,
+                                            width: 1)),
+                                    child: Image.asset(ImageAssets.qrCode),
                                   ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: SpaceValues.space4),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            viewModel
-                                                    .dataGiftExchangePoints[
-                                                        index]
-                                                    .fullName ??
-                                                'Store',
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
-                                              color: UIColors.darkGray,
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: SpaceValues.space4),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          viewModel
+                                              .dataGiftExchangePoints[
+                                          index]
+                                              .fullName ??
+                                              'Store',
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            color: UIColors.darkGray,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: SpaceValues.space6,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          children: [
+                                            SvgPicture.asset(
+                                              IconAssets.hardwarePhoneIphone,
+                                              color: UIColors.brandB,
                                             ),
-                                          ),
-                                          const SizedBox(
-                                            height: SpaceValues.space6,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                IconAssets.hardwarePhoneIphone,
-                                                color: UIColors.brandB,
-                                              ),
-                                              const SizedBox(
-                                                width: SpaceValues.space8,
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  viewModel
-                                                          .dataGiftExchangePoints[
-                                                              index]
-                                                          .tax ??
-                                                      '',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: UIColors.darkGray,
-                                                  ),
+                                            const SizedBox(
+                                              width: SpaceValues.space8,
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                viewModel
+                                                    .dataGiftExchangePoints[
+                                                index]
+                                                    .tax ??
+                                                    '',
+                                                overflow:
+                                                TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: UIColors.darkGray,
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: SpaceValues.space6,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SvgPicture.asset(
-                                                IconAssets.actionStore,
-                                                color: UIColors.brandB,
-                                              ),
-                                              const SizedBox(
-                                                width: SpaceValues.space8,
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  viewModel
-                                                          .dataGiftExchangePoints[
-                                                              index]
-                                                          .address ??
-                                                      '',
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 2,
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: UIColors.darkGray,
-                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: SpaceValues.space6,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            SvgPicture.asset(
+                                              IconAssets.actionStore,
+                                              color: UIColors.brandB,
+                                            ),
+                                            const SizedBox(
+                                              width: SpaceValues.space8,
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                viewModel
+                                                    .dataGiftExchangePoints[
+                                                index]
+                                                    .address ??
+                                                    '',
+                                                overflow:
+                                                TextOverflow.ellipsis,
+                                                maxLines: 2,
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: UIColors.darkGray,
                                                 ),
                                               ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          );
-                        }),
-                  ))
+                          ),
+                        );
+                      }),
+                )),
+              ))
+
+
             ],
           ),
         ),

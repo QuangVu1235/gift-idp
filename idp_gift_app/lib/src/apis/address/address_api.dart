@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:dio/dio.dart';
 import 'package:idp_gift_app/src/apis/response/address/city_responses.dart';
 import 'package:idp_gift_app/src/apis/response/address/district_responses.dart';
@@ -6,25 +8,21 @@ import 'package:idp_gift_app/src/config/base_api.dart';
 import 'package:injectable/injectable.dart';
 
 import 'package:retrofit/http.dart' as _retrofit;
-
 part 'address_api.g.dart';
 
 @lazySingleton
 @_retrofit.RestApi(baseUrl: BaseApi.idpRoot)
 abstract class AddressAPI {
   @factoryMethod
-  factory AddressAPI(Dio dio) => AddressAPI(dio);
+  factory AddressAPI(Dio dio) => _AddressAPI(dio);
 
-  @_retrofit.GET("v0/1/cities")
-  Future<CityResponses> getCity();
+  @_retrofit.GET('/v0/1/cities')
+  Future<CityResponses> getCities();
 
-  @_retrofit.GET("v0/1/cities")
-  Future<CityResponses> getCityChange(@_retrofit.Queries() Map<String, dynamic> map);
+  @_retrofit.GET('/v0/{city_code}/districts')
+  Future<DistrictResponses> getDistricts(@_retrofit.Path('city_code') String cityCode);
 
-  @_retrofit.GET("v0/{idcity}/districts")
-  Future<DistrictResponses> getDistrict(@_retrofit.Path("idcity") String codeCity);
-
-  @_retrofit.GET('v0/{districtId}/wards')
-  Future<WardResponses> fetchWard(@_retrofit.Path("districtId") String districtId);
+  @_retrofit.GET('/v0/{district_code}/wards')
+  Future<WardResponses> getWards(@_retrofit.Path('district_code') String districtCode);
 
 }
