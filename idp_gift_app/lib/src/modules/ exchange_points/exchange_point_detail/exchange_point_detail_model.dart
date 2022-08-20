@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:idp_gift_app/src/apis/customer/customer_datasoure.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
+import 'package:idp_gift_app/src/modules/%20exchange_points/exchange_point_detail/store_screen.dart';
 import 'package:idp_gift_app/src/usecases/customer_usercase.dart';
 import 'package:idp_gift_app/src/utils/widgets/view_model.dart';
 import 'package:injectable/injectable.dart';
@@ -10,6 +11,7 @@ import 'package:injectable/injectable.dart';
 class ExChangePointsDetailModel extends ViewModel{
   final CustomerUserCase _customerUserCase;
   RxString exChangePointCode = ''.obs;
+  Rxn<GitExchangePointsResp> gitExchangePointsResp = Rxn();
   RxList<ProductResponse> dataProducts = RxList.empty();
 
   @override

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/address/user_address_response.dart';
 import 'package:idp_gift_app/src/apis/response/cart_response.dart';
+import 'package:idp_gift_app/src/apis/response/confirmorder/confirm_order_request.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 import 'package:idp_gift_app/src/usecases/customer_usercase.dart';
 import 'package:idp_gift_app/src/utils/AppUtils.dart';
@@ -22,6 +23,8 @@ class CartModel extends ViewModel {
   RxList<CardInfo> cartInfoCode = RxList.empty();
   RxList<UserAddressResponse> dataAddress = RxList.empty();
   Rxn<UserAddressResponse> address = Rxn();
+  RxString message = ''.obs;
+  RxBool checkPoint = true.obs;
   // RxList<String> cartInfoCode = RxList.empty();
 
   CartModel(this._customerUserCase, this._sharedPreferences);
@@ -29,40 +32,40 @@ class CartModel extends ViewModel {
   @override
   void initState() {
     super.initState();
-    loading(() =>  refresh());
+    loading(() => refresh());
+
   }
 
-  Future<void> refresh() => Future.wait([
-        doGetAllCartByUser(),
-        getAddressByUser()
-      ]);
+  Future<void> refresh() =>
+      Future.wait([doGetAllCartByUser(), getAddressByUser(), checkPoints()]);
 
   Future<void> doGetAllCartByUser() async {
     _customerUserCase.getCartExchangeByUser().then((value) {
       dataCart.value = value.data;
       dataCart.value?.details?.forEach((detail) async {
-        if(((detail.cardCode ?? '')).isEmpty){
+        if (((detail.cardCode ?? '')).isEmpty) {
           // cartInfoCode.add(detail.cartInfo?.first.code ?? '');
           print('Chạy đc không');
           cartInfoCode.add(detail.cartInfo?.first ?? CardInfo());
-          await updateQuantityOrCode(detail.id.toString(), detail.quantity, detail.cartInfo?.first.code);
-        }else{
-          print(detail.cartInfo?.firstWhere((card) => card.code == detail.cardCode).code);
+          await updateQuantityOrCode(detail.id.toString(), detail.quantity,
+              detail.cartInfo?.first.code);
+        } else {
+          print(detail.cartInfo
+              ?.firstWhere((card) => card.code == detail.cardCode)
+              .code);
           // cartInfoCode.add((detail.cartInfo?.firstWhere((card) => card.code == detail.cardCode).code) ?? '');
-          cartInfoCode.add((detail.cartInfo?.firstWhere((card) => card.code == detail.cardCode) ?? CardInfo()));
+          cartInfoCode.add((detail.cartInfo
+                  ?.firstWhere((card) => card.code == detail.cardCode) ??
+              CardInfo()));
         }
       });
     });
   }
 
-  Future<void> updateQuantityOrCode(String id, int? quantity, String? cardCode)async {
+  Future<void> updateQuantityOrCode(
+      String id, int? quantity, String? cardCode) async {
     _customerUserCase.updateCart(
-        id,
-        ({
-          'quantity': quantity,
-          'card_code': cardCode
-        })
-    );
+        id, ({'quantity': quantity, 'card_code': cardCode}));
   }
 
   Future<void> getProductByCode() async {
@@ -72,95 +75,138 @@ class CartModel extends ViewModel {
     });
   }
 
-  Future<void> getAddressByUser() async{
-   await _customerUserCase.doGetAllAddressUser().then((value) async {
+  Future<void> getAddressByUser() async {
+    await _customerUserCase.doGetAllAddressUser().then((value) async {
       dataAddress.value = value.data ?? [];
       print('>>>>>>>>>>>>>>>>>>>');
-      print(value.data?.firstWhere((address) => address.isDefault == 1).fullAddress);
-      address.value = value.data?.firstWhere((address) => address.isDefault == 1);
-
+      print(value.data
+          ?.firstWhere((address) => address.isDefault == 1)
+          .fullAddress);
+      address.value =
+          value.data?.firstWhere((address) => address.isDefault == 1);
     });
+  }
 
+  Future<void> checkPoints() async {
+    if (dataCart.value?.distributorCityCode == '') {
+      checkPoint.value = false;
+    }else{
+      checkPoint.value = true;
+    }
+  }
+
+  ConfirmOrderRequest? request;
+  Future<void> confirmOrder() async {
+    message.value = '';
+    ConfirmOrderRequest request = ConfirmOrderRequest(
+        sessionId: _sharedPreferences.getString('uSessionId'),
+        phone: address.value?.phone,
+        cityCode: address.value?.cityCode,
+        districtCode: address.value?.districtCode,
+        wardCode: address.value?.wardCode,
+        streetAddress: address.value?.streetAddress,
+        fullName: address.value?.fullName,
+        distributorId: dataCart.value?.distributorId,
+        distributorCode: dataCart.value?.distributorCode,
+        distributorName: dataCart.value?.distributorName,
+        orderChannel: 'APP');
+    loading(() async {
+      if (!validate()) {
+        throw message.value;
+      }
+      await _customerUserCase.confirmOrderExchange(request).then((value) async {
+        await AppUtils().showPopupSuccessWarranty(
+            isSuccess: true,
+            title: 'Thành công',
+            subtitle: 'Chúc mừng bạn tạo đơn hàng thành công',
+            button: 'Tiếp tục đổi quà');
+        dataCart.value?.details?.clear();
+        dataCart.refresh();
+      });
+    }).then((value) => Get.back());
+  }
+
+  bool validate() {
+    bool result = true;
+    if (address.value == null) {
+      message.value = message.value + 'Không bỏ trống địa chỉ\n';
+      result = false;
+    }
+    if (dataCart.value?.distributorId == null) {
+      message.value = message.value + 'Không bỏ trống điểm đổi quà';
+      result = false;
+    }
+    return result;
   }
 
   Future<void> deleteCart(String id) async {
-    AppUtils().showPopupConfirm(
-      action: [
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: UIColors.white,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    side: BorderSide(color: UIColors.black40)
-                )
-              ),
-              onPressed: (){
-                  Get.back();
-              },
-              child: const Text(
-                  'Huỷ',
-                style: TextStyle(
-                  color: UIColors.black,
-                  fontWeight: FontWeight.w400
-                ),
-              )
-          ),
-        const SizedBox(width: 8,),
-          ElevatedButton(
-              onPressed: () async{
-                await _customerUserCase.deleteCart(id);
-                await refresh();
-                Get.back();
-              },
-              child: const Text(
-                'Đồng ý',
-                style: TextStyle(
-                    fontWeight: FontWeight.w400
-                ),
-              )
-          ),
-        SizedBox(width: 16,)
-      ]
-    );
+    AppUtils().showPopupConfirm(action: [
+      ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: UIColors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  side: BorderSide(color: UIColors.black40))),
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text(
+            'Huỷ',
+            style:
+                TextStyle(color: UIColors.black, fontWeight: FontWeight.w400),
+          )),
+      const SizedBox(
+        width: 8,
+      ),
+      ElevatedButton(
+          onPressed: () async {
+            await _customerUserCase.deleteCart(id);
+            await refresh();
+            Get.back();
+          },
+          child: const Text(
+            'Đồng ý',
+            style: TextStyle(fontWeight: FontWeight.w400),
+          )),
+      SizedBox(
+        width: 16,
+      )
+    ]);
   }
+
   Future<void> deleteAllCart() async {
-    AppUtils().showPopupConfirm(
-        action: [
-          ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  primary: UIColors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                      side: BorderSide(color: UIColors.black40)
-                  )
-              ),
-              onPressed: (){
-                Get.back();
-              },
-              child: const Text(
-                'Huỷ',
-                style: TextStyle(
-                    color: UIColors.black,
-                    fontWeight: FontWeight.w400
-                ),
-              )
-          ),
-          const SizedBox(width: 8,),
-          ElevatedButton(
-              onPressed: () async{
-                await _customerUserCase.deleteAllCart(_sharedPreferences.getString('uSessionId') ?? '');
-                await refresh();
-                Get.back();
-              },
-              child: const Text(
-                'Đồng ý',
-                style: TextStyle(
-                    fontWeight: FontWeight.w400
-                ),
-              )
-          ),
-          SizedBox(width: 16,)
-        ]
-    );
+    AppUtils().showPopupConfirm(action: [
+      ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: UIColors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  side: BorderSide(color: UIColors.black40))),
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text(
+            'Huỷ',
+            style:
+                TextStyle(color: UIColors.black, fontWeight: FontWeight.w400),
+          )),
+      const SizedBox(
+        width: 8,
+      ),
+      ElevatedButton(
+          onPressed: () async {
+            await _customerUserCase.deleteAllCart(
+                _sharedPreferences.getString('uSessionId') ?? '');
+            await refresh();
+            Get.back();
+          },
+          child: const Text(
+            'Đồng ý',
+            style: TextStyle(fontWeight: FontWeight.w400),
+          )),
+      SizedBox(
+        width: 16,
+      )
+    ]);
   }
 }

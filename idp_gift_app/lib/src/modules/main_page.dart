@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:idp_gift_app/src/config/assets/icon_assets.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
-import 'package:idp_gift_app/src/modules/order_manager/app/order_manager_screen.dart';
+import 'package:idp_gift_app/src/modules/order_manager/order_manager_screen.dart';
 import 'package:idp_gift_app/src/modules/profile/profile_screen.dart';
 import 'package:idp_gift_app/src/modules/homepage/homepage_screen.dart';
 

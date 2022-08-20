@@ -1,22 +1,24 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:idp_gift_app/src/config/assets/icon_assets.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
-import 'package:idp_gift_app/src/modules/order_manager/detal_order_manager/app/detail_order_screen_final.dart';
-import 'package:idp_gift_app/src/modules/order_manager/detal_order_manager/app/detail_order_widget.dart';
+import 'package:idp_gift_app/src/modules/modules_store/main_page_store.dart';
+import 'package:idp_gift_app/src/modules/order_manager/widget/detail_order_widget.dart';
 import 'package:idp_gift_app/src/themes/space_values.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 
-class DetailOrderScreen2 extends StatefulWidget {
-  const DetailOrderScreen2({Key? key}) : super(key: key);
+class DetailOrderScreenFinal extends StatefulWidget {
+  const DetailOrderScreenFinal({Key? key}) : super(key: key);
 
   @override
-  State<DetailOrderScreen2> createState() => _DetailOrderScreen2State();
+  State<DetailOrderScreenFinal> createState() => _DetailOrderScreenFinalState();
 }
 
-class _DetailOrderScreen2State extends State<DetailOrderScreen2> {
+class _DetailOrderScreenFinalState extends State<DetailOrderScreenFinal> {
+
   final List<String> entries = <String>['A', 'B',];
 
   @override
@@ -77,7 +79,7 @@ class _DetailOrderScreen2State extends State<DetailOrderScreen2> {
                     ),
                   ),
                   child: const Center(
-                      child: Text('Đơn hàng điểm đổi quà',
+                      child: Text('Đơn hàng online',
                         style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
@@ -323,7 +325,7 @@ class _DetailOrderScreen2State extends State<DetailOrderScreen2> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Hoàng Anh Shop', style: TextStyle(
-                        fontWeight: FontWeight.w700
+                      fontWeight: FontWeight.w700
                     ),),
                     const SizedBox(
                       height: SpaceValues.space8,
@@ -356,12 +358,16 @@ class _DetailOrderScreen2State extends State<DetailOrderScreen2> {
             children: [
               Expanded(
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: UIColors.grey,
+                    elevation: 0.0
+                  ),
                   onPressed: () {
-                    Get.to(DetailOrderScreenFinal());
+                    Get.to(MainPageStore());
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Đã giao hàng'),
+                    child: Text('Đơn hàng hoàn tất'),
                   ),),
               ),
 

@@ -2,7 +2,9 @@ import 'package:idp_gift_app/src/apis/customer/customer_api.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/address/user_address_response.dart';
 import 'package:idp_gift_app/src/apis/response/cart_response.dart';
+import 'package:idp_gift_app/src/apis/response/confirmorder/confirm_order.dart';
 import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
+import 'package:idp_gift_app/src/apis/response/order_resp.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class CustomerDataSource {
@@ -40,6 +42,10 @@ abstract class CustomerDataSource {
   Future<DataUserAddress> doGetAllAddressUser();
 
   Future<DataUserAddress> doGetAllAddressUserDetail(String id);
+
+  Future<StatusOrderResp> confirmOrderExchange(dynamic body);
+
+  Future<DataOrderResponse> getAllOrdersByUser();
 }
 
 @LazySingleton(as: CustomerDataSource)
@@ -111,6 +117,14 @@ class CustomerDataSourceImpl extends CustomerDataSource {
   @override
   Future deleteAllCart(String sessionId) =>
       _customerAPI.deleteAllCart(sessionId);
+
+  @override
+  Future<StatusOrderResp> confirmOrderExchange(body)
+  => _customerAPI.confirmOrderExchange(body);
+
+  @override
+  Future<DataOrderResponse> getAllOrdersByUser()
+  => _customerAPI.getAllOrdersByUser();
 
 
 }

@@ -5,6 +5,7 @@ import 'package:idp_gift_app/src/apis/response/address/user_address_response.dar
 import 'package:idp_gift_app/src/apis/response/cart_response.dart';
 import 'package:idp_gift_app/src/apis/response/confirmorder/confirm_order.dart';
 import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
+import 'package:idp_gift_app/src/apis/response/order_resp.dart';
 import 'package:idp_gift_app/src/config/base_api.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/http.dart';
@@ -81,5 +82,8 @@ abstract class CustomerAPI {
   //Danh sach đơn hàng
   @PUT('v1/confirm-order-exchange')
   Future<StatusOrderResp> confirmOrderExchange(@Body() dynamic body);
+
+  @GET('v1/list-orders-exchange')
+  Future<DataOrderResponse> getAllOrdersByUser();
 
 }

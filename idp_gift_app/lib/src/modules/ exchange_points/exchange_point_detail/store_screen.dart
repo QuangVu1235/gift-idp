@@ -21,8 +21,9 @@ import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 class StoreScreen extends StatefulWidget {
   final String title;
   final String code;
+  final GitExchangePointsResp gitExchangePointsResp;
 
-  const StoreScreen({Key? key, required this.title, required this.code}) : super(key: key);
+  const StoreScreen({Key? key, required this.title, required this.code, required this.gitExchangePointsResp}) : super(key: key);
   @override
   State<StatefulWidget> createState() =>_StoreScreen();
 }
@@ -30,7 +31,7 @@ class _StoreScreen extends ViewWidget<StoreScreen,ExChangePointsDetailModel>{
   @override
   void initState() {
     super.initState();
-    print(widget.code);
+    viewModel.gitExchangePointsResp.value = widget.gitExchangePointsResp;
     viewModel.exChangePointCode.value = widget.code;
     viewModel.getAllProductInGiftExchangePoints();
   }
@@ -147,6 +148,8 @@ class _StoreScreen extends ViewWidget<StoreScreen,ExChangePointsDetailModel>{
                               qrCode: SvgImageAssets.qrgift,
                               quantity: viewModel.dataProducts[index].qty.toString(),
                               card:  viewModel.dataProducts[index].dataCard ?? [''],
+                              gitExchangePointsResp: widget.gitExchangePointsResp,
+
                             );
                           },
                         ),

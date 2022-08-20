@@ -103,7 +103,7 @@ DataCardResponse _$DataCardResponseFromJson(Map<String, dynamic> json) =>
       sellerName: json['seller_name'] as String?,
       notificationDistributor: json['notification_distributor'] as int?,
       shippingError: json['shipping_error'] as String?,
-    );
+    )..distributorAddress = json['distributor_address'] as String?;
 
 Map<String, dynamic> _$DataCardResponseToJson(DataCardResponse instance) =>
     <String, dynamic>{
@@ -159,6 +159,7 @@ Map<String, dynamic> _$DataCardResponseToJson(DataCardResponse instance) =>
       'distributor_id': instance.distributorId,
       'distributor_code': instance.distributorCode,
       'distributor_name': instance.distributorName,
+      'distributor_address': instance.distributorAddress,
       'distributor_phone': instance.distributorPhone,
       'distributor_lat': instance.distributorLat,
       'distributor_long': instance.distributorLong,

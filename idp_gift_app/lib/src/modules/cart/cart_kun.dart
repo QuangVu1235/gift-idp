@@ -669,7 +669,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                         ],
                       ),
                       const SizedBox(height: SpaceValues.space12,),
-                      Card(
+                      Obx(()=>Card(
                         elevation: 0.0,
                         margin: EdgeInsets.zero,
                         child: Padding(
@@ -704,27 +704,27 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                       , child: Checkbox(
                                       checkColor: Colors.white,
                                       shape: CircleBorder(),
-                                      value: isChecked,
+                                      value: viewModel.checkPoint.value,
                                       onChanged: (bool? value){
                                         setState(() {
-                                          if(isChecked){
-                                            isChecked = true;
-                                          }
-                                          isChecked = value!;
-
+                                          // viewModel.checkPoint.value = value!;
+                                          // if(!value){
+                                          //   viewModel.dataCart.value?.distributorId = null;
+                                          //   viewModel.dataCart.refresh();
+                                          // }
                                         });
                                       },
                                       activeColor: UIColors.brandA,
                                     ),
                                     ),
                                   )
-                              ],),
+                                ],),
                               SizedBox(width: SpaceValues.space12,),
 
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children:  const [
+                                children:   [
                                   Text(
                                     'Địa chỉ: ',
                                     style: TextStyle(
@@ -734,7 +734,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                   ),
                                   Expanded(
                                     child: Text(
-                                      'dsd, Phường Thạnh Xuân, Quận 12, Thành phố Hồ Chí Minh',
+                                      viewModel.dataCart.value?.distributorAddress ?? '',
                                       // maxLines: 3,
                                       // overflow: TextOverflow.fade,
                                       textAlign: TextAlign.start,
@@ -749,7 +749,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                             ],
                           ),
                         ),
-                      ),
+                      ),),
                       const SizedBox(height: SpaceValues.space12,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -818,7 +818,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                               )
                           ) ,
                           onPressed: (){
-
+                            viewModel.confirmOrder();
                           },
                           child: Text(
                             'Xác nhận đơn quà',

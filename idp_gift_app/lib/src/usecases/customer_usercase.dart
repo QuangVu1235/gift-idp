@@ -2,7 +2,9 @@ import 'package:idp_gift_app/src/apis/customer/customer_datasoure.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/address/user_address_response.dart';
 import 'package:idp_gift_app/src/apis/response/cart_response.dart';
+import 'package:idp_gift_app/src/apis/response/confirmorder/confirm_order.dart';
 import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
+import 'package:idp_gift_app/src/apis/response/order_resp.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton()
@@ -68,4 +70,12 @@ class CustomerUserCase{
   
   Future<DataUserAddress> doPutAddressUserDefault(String id)
   => _customerDataSource.doPutAddressUserDefault(id);
+
+  //confirmOrder
+  Future<StatusOrderResp> confirmOrderExchange(body)
+  => _customerDataSource.confirmOrderExchange(body);
+
+  //getAllOrderByUser
+  Future<DataOrderResponse> getAllOrdersByUser()
+  => _customerDataSource.getAllOrdersByUser();
 }

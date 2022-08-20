@@ -171,6 +171,9 @@ class DataCardResponse{
   @JsonKey(name: 'distributor_name')
   String? distributorName;
 
+  @JsonKey(name: 'distributor_address')
+  String? distributorAddress;
+
   @JsonKey(name: 'distributor_phone')
   String? distributorPhone;
 
