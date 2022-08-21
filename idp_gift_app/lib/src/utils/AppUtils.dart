@@ -96,7 +96,7 @@ class AppUtils {
             offset: const Offset(0, -16),
             child: Visibility(
               visible: isSuccess,
-              child: SvgPicture.asset(IconAssets.actionCheckCircle, color: UIColors.brandA, width: 45),
+              child: SvgPicture.asset(IconAssets.actionCheckCircle, color: Colors.green, width: 45),
               replacement: SvgPicture.asset(IconAssets.navigationCancel, color: const Color(0xFFFA4D4E), width: 45),
             ),
           ),
@@ -108,7 +108,9 @@ class AppUtils {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: SpaceValues.space8,),
+          const SizedBox(
+            height: SpaceValues.space8,
+          ),
           Visibility(
             visible: subtitle.isNotEmpty,
             child: ConstrainedBox(
@@ -125,13 +127,19 @@ class AppUtils {
             ),
           ),
           const SizedBox(
-            height: SpaceValues.space12,
+            height: SpaceValues.space8,
           ),
           SizedBox(
-            width: MediaQuery.of(Get.context!).size.width * .5,
+            width: MediaQuery.of(Get.context!).size.width * .3,
             child: ElevatedButton(
               onPressed: Get.back,
-              child: Text(button),
+              child: Text(
+                  button,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400
+                ),
+              ),
             ),
           ),
           const SizedBox(

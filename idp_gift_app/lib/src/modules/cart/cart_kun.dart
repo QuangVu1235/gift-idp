@@ -10,7 +10,6 @@ import 'package:idp_gift_app/src/apis/response/address/user_address_response.dar
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/cart/cart_model.dart';
-import 'package:idp_gift_app/src/modules/cart/widgets/cart_kun_widget.dart';
 import 'package:idp_gift_app/src/modules/global_modules/widget/global_image.dart';
 import 'package:idp_gift_app/src/themes/space_values.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';

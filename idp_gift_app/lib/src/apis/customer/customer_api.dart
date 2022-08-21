@@ -65,13 +65,13 @@ abstract class CustomerAPI {
   Future<DataUserAddress> doPostAddressUser(@Body() UserAddressResponse userAddressResponse);
 
   @PUT('v1/shipping_address/{id}')
-  Future<DataUserAddress> doPutAddressUser(@Path('id') String id);
+  Future<DataUserAddress> doPutAddressUser(@Path('id') String id,@Body() userAddressResponse);
 
   @PUT('v1/shipping_address/set_default/{id}')
   Future<DataUserAddress> doPutAddressUserDefault(@Path('id') String id);
 
   @DELETE('v1/shipping_address/{id}')
-  Future<DataUserAddress> doDeleteAddressUser(@Path('id') String id);
+  Future<dynamic> doDeleteAddressUser(@Path('id') String id);
 
   @GET('v1/shipping_address')
   Future<DataUserAddress> doGetAllAddressUser();

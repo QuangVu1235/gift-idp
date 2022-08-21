@@ -33,11 +33,11 @@ abstract class CustomerDataSource {
   Future<DataUserAddress> doPostAddressUser(
       UserAddressResponse userAddressResponse);
 
-  Future<DataUserAddress> doPutAddressUser(String id);
+  Future<DataUserAddress> doPutAddressUser(String id, UserAddressResponse userAddressResponse);
 
   Future<DataUserAddress> doPutAddressUserDefault(String id);
 
-  Future<DataUserAddress> doDeleteAddressUser(String id);
+  Future<dynamic> doDeleteAddressUser(String id);
 
   Future<DataUserAddress> doGetAllAddressUser();
 
@@ -86,7 +86,7 @@ class CustomerDataSourceImpl extends CustomerDataSource {
   => _customerAPI.getProductByExchangePoint(productName, code);
 
   @override
-  Future<DataUserAddress> doDeleteAddressUser(String id) =>
+  Future<dynamic> doDeleteAddressUser(String id) =>
       _customerAPI.doDeleteAddressUser(id);
 
   @override
@@ -103,8 +103,8 @@ class CustomerDataSourceImpl extends CustomerDataSource {
       _customerAPI.doPostAddressUser(userAddressResponse);
 
   @override
-  Future<DataUserAddress> doPutAddressUser(String id) =>
-      _customerAPI.doPutAddressUser(id);
+  Future<DataUserAddress> doPutAddressUser(String id,UserAddressResponse userAddressResponse) =>
+      _customerAPI.doPutAddressUser(id,userAddressResponse);
 
   @override
   Future<DataUserAddress> doPutAddressUserDefault(String id) =>

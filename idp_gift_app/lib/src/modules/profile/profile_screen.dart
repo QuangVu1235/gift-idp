@@ -186,7 +186,7 @@ class _ProfileScreenState extends ViewWidget<ProfileScreen, ProfiledModel> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(AddressBookScreen());
+                  Get.to(const AddressBookScreen());
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * .9,

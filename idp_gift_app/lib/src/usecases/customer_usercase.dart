@@ -49,7 +49,7 @@ class CustomerUserCase{
   => _customerDataSource.getAllProductExchangePoints(code);
   //manager Address
   
-  Future<DataUserAddress> doDeleteAddressUser(String id)
+  Future<dynamic> doDeleteAddressUser(String id)
   => _customerDataSource.doDeleteAddressUser(id);
 
   
@@ -61,12 +61,12 @@ class CustomerUserCase{
   => _customerDataSource.doGetAllAddressUserDetail(id);
 
   
-  Future<DataUserAddress> doPostAddressUser(UserAddressResponse userAddressResponse)
+  Future<dynamic> doPostAddressUser(UserAddressResponse userAddressResponse)
   => _customerDataSource.doPostAddressUser(userAddressResponse);
 
   
-  Future<DataUserAddress> doPutAddressUser(String id)
-  => _customerDataSource.doPutAddressUser(id);
+  Future<dynamic> doPutAddressUser(String id,UserAddressResponse userAddressResponse)
+  => _customerDataSource.doPutAddressUser(id,userAddressResponse);
   
   Future<DataUserAddress> doPutAddressUserDefault(String id)
   => _customerDataSource.doPutAddressUserDefault(id);

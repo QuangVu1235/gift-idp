@@ -200,11 +200,11 @@ class _CustomerAPI implements CustomerAPI {
   }
 
   @override
-  Future<DataUserAddress> doPutAddressUser(id) async {
+  Future<DataUserAddress> doPutAddressUser(id, userAddressResponse) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
+    final _data = userAddressResponse;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<DataUserAddress>(
             Options(method: 'PUT', headers: _headers, extra: _extra)
@@ -232,18 +232,17 @@ class _CustomerAPI implements CustomerAPI {
   }
 
   @override
-  Future<DataUserAddress> doDeleteAddressUser(id) async {
+  Future<dynamic> doDeleteAddressUser(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<DataUserAddress>(
-            Options(method: 'DELETE', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'v1/shipping_address/${id}',
-                    queryParameters: queryParameters, data: _data)
-                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = DataUserAddress.fromJson(_result.data!);
+    final _result = await _dio.fetch(_setStreamType<dynamic>(
+        Options(method: 'DELETE', headers: _headers, extra: _extra)
+            .compose(_dio.options, 'v1/shipping_address/${id}',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
     return value;
   }
 
