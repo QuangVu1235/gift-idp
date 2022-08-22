@@ -18,6 +18,21 @@ class _GiftExchangePlaceAPI implements GiftExchangePlaceAPI {
   String? baseUrl;
 
   @override
+  Future<dynamic> addToCartGiftExchange(body) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = body;
+    final _result = await _dio.fetch(_setStreamType<dynamic>(
+        Options(method: 'POST', headers: _headers, extra: _extra)
+            .compose(_dio.options, 'v1/client/add-to-cart-exchange',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data;
+    return value;
+  }
+
+  @override
   Future<dynamic> changeStatusOrder(id, body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -49,17 +64,18 @@ class _GiftExchangePlaceAPI implements GiftExchangePlaceAPI {
   }
 
   @override
-  Future<dynamic> doGetAllOrdersOfCustomer() async {
+  Future<DataOrderResponse> doGetAllOrdersOfCustomer() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options, 'v1/my-orders-exchange',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataOrderResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/orders-exchange-of-gift-exchange',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataOrderResponse.fromJson(_result.data!);
     return value;
   }
 
@@ -94,14 +110,14 @@ class _GiftExchangePlaceAPI implements GiftExchangePlaceAPI {
   }
 
   @override
-  Future<dynamic> addToCart(body) async {
+  Future<dynamic> confirmOrderByGiftExchange(body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = body;
     final _result = await _dio.fetch(_setStreamType<dynamic>(
         Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, 'v1/client/add-to-cart-exchange',
+            .compose(_dio.options, 'v1/gift-place-confirm-order-exchange',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = _result.data;

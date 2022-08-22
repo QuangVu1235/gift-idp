@@ -83,7 +83,9 @@ abstract class CustomerAPI {
   @PUT('v1/confirm-order-exchange')
   Future<StatusOrderResp> confirmOrderExchange(@Body() dynamic body);
 
-  @GET('v1/list-orders-exchange')
+  @GET('v1/my-orders-exchange')
   Future<DataOrderResponse> getAllOrdersByUser();
+  // @GET('v1/list-orders-exchange')
+  // Future<DataOrderResponse> getAllOrdersByUser();
 
 }

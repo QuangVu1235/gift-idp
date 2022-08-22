@@ -33,7 +33,6 @@ class CartModel extends ViewModel {
   void initState() {
     super.initState();
     loading(() => refresh());
-
   }
 
   Future<void> refresh() =>
@@ -78,25 +77,29 @@ class CartModel extends ViewModel {
   Future<void> getAddressByUser() async {
     await _customerUserCase.doGetAllAddressUser().then((value) async {
       dataAddress.value = value.data ?? [];
-      print('>>>>>>>>>>>>>>>>>>>');
-      print(value.data
-          ?.firstWhere((address) => address.isDefault == 1)
-          .fullAddress);
-      address.value =
-          value.data?.firstWhere((address) => address.isDefault == 1);
+      // print('>>>>>>>>>>>>>>>>>>>');
+      // print(value.data
+      //     ?.firstWhere((address) => address.isDefault == 1)
+      //     .fullAddress);
+      // address.value =
+      //     value.data?.firstWhere((address) => address.isDefault == 1);
     });
   }
 
   Future<void> checkPoints() async {
     if (dataCart.value?.distributorCityCode == '') {
       checkPoint.value = false;
-    }else{
+    } else {
       checkPoint.value = true;
     }
   }
 
   ConfirmOrderRequest? request;
   Future<void> confirmOrder() async {
+    if (!validate()) {
+      loading(() =>  throw message.value);
+      return;
+    }
     message.value = '';
     ConfirmOrderRequest request = ConfirmOrderRequest(
         sessionId: _sharedPreferences.getString('uSessionId'),
@@ -111,9 +114,6 @@ class CartModel extends ViewModel {
         distributorName: dataCart.value?.distributorName,
         orderChannel: 'APP');
     loading(() async {
-      if (!validate()) {
-        throw message.value;
-      }
       await _customerUserCase.confirmOrderExchange(request).then((value) async {
         await AppUtils().showPopupSuccessWarranty(
             isSuccess: true,
@@ -139,7 +139,7 @@ class CartModel extends ViewModel {
     return result;
   }
 
-  Future<void> deleteCart(String id) async {
+  Future<void> deleteCart(String id, int index) async {
     AppUtils().showPopupConfirm(action: [
       ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -160,9 +160,13 @@ class CartModel extends ViewModel {
       ),
       ElevatedButton(
           onPressed: () async {
-            await _customerUserCase.deleteCart(id);
-            await refresh();
-            Get.back();
+            await _customerUserCase.deleteCart(id).then((value) async {
+              dataCart.value?.details?.removeAt(index);
+              dataCart.refresh();
+              cartInfoCode.remove(cartInfoCode[index]);
+              await doGetAllCartByUser();
+              Get.back();
+            });
           },
           child: const Text(
             'Đồng ý',

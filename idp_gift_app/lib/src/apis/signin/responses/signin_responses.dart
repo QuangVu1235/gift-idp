@@ -24,4 +24,6 @@ class SigninResponses {
   String? accountStatus;
   @JsonKey(name: 'group_code')
   String? groupCode;
+  @JsonKey(name: 'is_gift_place')
+  dynamic isGiftPlace;
 }

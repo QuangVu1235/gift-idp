@@ -76,10 +76,10 @@ class SigninModel extends ViewModel {
         ? 'Bearer ${value.token}'
         : BaseApi.idpStoreToken,
       });
-      if(value.groupCode == 'GUEST'){
+      if(value.isGiftPlace == 0){
         sharedPreferences.setString('ROLE', 'GUEST');
         Get.offAll(const MainPage(indexTab: 0,));
-      }else if(value.groupCode == 'AGENT'){
+      }else if(value.isGiftPlace == 1){
         sharedPreferences.setString('ROLE', 'AGENT');
         Get.offAll(const MainPageStore(indexTab: 0,));
       }

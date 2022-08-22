@@ -42,7 +42,7 @@ class OrderResponse {
   String? customerStar;
   String? commentForCustomer;
   String? partnerId;
-  List<String>? cardInfo;
+  List<CardInfo>? cardInfo;
   String? note;
   String? shippingAddressId;
   String? streetId;
@@ -342,7 +342,12 @@ class OrderResponse {
     customerStar = json['customer_star'];
     commentForCustomer = json['comment_for_customer'];
     partnerId = json['partner_id'];
-    cardInfo = json['card_info'].cast<String>();
+    if (json['card_info'] != null) {
+      cardInfo = <CardInfo>[];
+      json['card_info'].forEach((v) {
+        cardInfo!.add(new CardInfo.fromJson(v));
+      });
+    }
     note = json['note'];
     shippingAddressId = json['shipping_address_id'];
     streetId = json['street_id'];
@@ -521,7 +526,9 @@ class OrderResponse {
     data['customer_star'] = this.customerStar;
     data['comment_for_customer'] = this.commentForCustomer;
     data['partner_id'] = this.partnerId;
-    data['card_info'] = this.cardInfo;
+    if (this.cardInfo != null) {
+      data['card_info'] = this.cardInfo!.map((v) => v.toJson()).toList();
+    }
     data['note'] = this.note;
     data['shipping_address_id'] = this.shippingAddressId;
     data['street_id'] = this.streetId;
@@ -725,6 +732,7 @@ class Details {
   String? commented;
   String? pointInput;
   String? serialNo;
+  String? cardName;
 
   Details(
       {this.id,
@@ -763,7 +771,8 @@ class Details {
       this.isComment,
       this.commented,
       this.pointInput,
-      this.serialNo});
+      this.serialNo,
+      this.cardName});
 
   Details.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -803,6 +812,7 @@ class Details {
     commented = json['commented'];
     pointInput = json['point_input'];
     serialNo = json['serial_no'];
+    cardName = json['card_name'];
   }
 
   Map<String, dynamic> toJson() {
@@ -844,6 +854,29 @@ class Details {
     data['commented'] = this.commented;
     data['point_input'] = this.pointInput;
     data['serial_no'] = this.serialNo;
+    data['card_name'] = this.cardName;
+    return data;
+  }
+}
+
+class CardInfo {
+  int? quantity;
+  String? cardCode;
+  String? cardName;
+
+  CardInfo({this.quantity, this.cardCode, this.cardName});
+
+  CardInfo.fromJson(Map<String, dynamic> json) {
+    quantity = json['quantity'];
+    cardCode = json['card_code'];
+    cardName = json['card_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['quantity'] = this.quantity;
+    data['card_code'] = this.cardCode;
+    data['card_name'] = this.cardName;
     return data;
   }
 }

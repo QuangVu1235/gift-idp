@@ -224,9 +224,9 @@ Details _$DetailsFromJson(Map<String, dynamic> json) => Details(
       note: json['note'] as String?,
       optionDetails: json['option_details'] as String?,
       createdAt: json['created_at'] as String?,
-      createdBy: json['created_by'] as int?,
+      createdBy: json['created_by'],
       updatedAt: json['updated_at'] as String?,
-      updatedBy: json['updated_by'] as int?,
+      updatedBy: json['updated_by'],
     );
 
 Map<String, dynamic> _$DetailsToJson(Details instance) => <String, dynamic>{

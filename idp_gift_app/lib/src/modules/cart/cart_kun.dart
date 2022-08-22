@@ -120,7 +120,8 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                           elevation: 0.0,
                                                         ),
                                                         onPressed: () async{
-                                                          await viewModel.deleteCart(viewModel.dataCart.value?.details?[index].id.toString() ?? '');
+                                                          await viewModel.deleteCart(viewModel.dataCart.value?.details?[index].id.toString() ?? '', index);
+
                                                         },
                                                         child: SvgPicture.asset(SvgImageAssets.trash,height: 20),
                                                       ),
@@ -557,99 +558,106 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                 fontSize: 14
                             ),
                           ),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              onSurface: UIColors.brandA,
-                              primary: UIColors.brandA,
-                            ) ,
+                          Obx(()=>TextButton(
+                              style: TextButton.styleFrom(
+                                onSurface: UIColors.brandA,
+                                primary: UIColors.brandA,
+                              ) ,
                               onPressed: (){
                                 Get.bottomSheet(SelecteAddressDiaLog(viewModel: viewModel));
                               }
                               , child: Row(
-                               children: [
-                                    SvgPicture.asset(SvgImageAssets.driveFileRename,color: UIColors.brandA,height: 20,),
-                                    Text(' Thay đổi',style: TextStyle(color: UIColors.brandA,fontSize: 12,fontWeight: FontWeight.w400),)
-                                ],
+                            children: [
+                              SvgPicture.asset(SvgImageAssets.driveFileRename,color: UIColors.brandA,height: 20,),
+                              Text(viewModel.address.value != null
+                                  ? ' Thay đổi' :
+                              ' Chọn địa chỉ',
+                                style: TextStyle(color: UIColors.brandA,fontSize: 12,fontWeight: FontWeight.w400),)
+                            ],
 
                           )
-                          )
+                          ))
                         ],
                       ),
                       const SizedBox(height: SpaceValues.space12,),
-                      Obx(()=> Card(
-                        elevation: 0.0,
-                        margin: EdgeInsets.zero,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children:  [
-                                  Text(
-                                    'Người nhận',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12
-                                    ),
-                                  ),
-                                  Text(
-                                    viewModel.address.value?.fullName ?? '',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 20,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children:  [
-                                  Text(
-                                    'Số điện thoại',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12
-                                    ),
-                                  ),
-                                  Text(
-                                    viewModel.address.value?.phone ?? '',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 20,),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children:  [
-                                  Text(
-                                    'Địa chỉ',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12
-                                    ),
-                                  ),
-                                  SizedBox(width: MediaQuery.of(context).size.width*0.2),
-                                  Expanded(
-                                    child: Text(
-                                      viewModel.address.value?.fullAddress ?? '',
-                                      // maxLines: 3,
-                                      // overflow: TextOverflow.fade,
-                                      textAlign: TextAlign.end,
+                      Obx(()=> Visibility(
+                        replacement: SizedBox.shrink(),
+                        visible: viewModel.address.value != null,
+                        child: Card(
+                          elevation: 0.0,
+                          margin: EdgeInsets.zero,
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children:  [
+                                    Text(
+                                      'Người nhận',
                                       style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    Text(
+                                      viewModel.address.value?.fullName ?? '',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children:  [
+                                    Text(
+                                      'Số điện thoại',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12
+                                      ),
+                                    ),
+                                    Text(
+                                      viewModel.address.value?.phone ?? '',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children:  [
+                                    Text(
+                                      'Địa chỉ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12
+                                      ),
+                                    ),
+                                    SizedBox(width: MediaQuery.of(context).size.width*0.2),
+                                    Expanded(
+                                      child: Text(
+                                        viewModel.address.value?.fullAddress ?? '',
+                                        // maxLines: 3,
+                                        // overflow: TextOverflow.fade,
+                                        textAlign: TextAlign.end,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),),
