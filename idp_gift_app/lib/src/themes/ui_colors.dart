@@ -52,5 +52,6 @@ class UIColors {
   static const Color greenKUN = Color(0xFFDCD9D9);
   static const Color greenKun = Color(0xFF50B49F);
   static const Color grey = Color(0xFFDCD9D9);
+  static const Color blue = Color(0xFF1B68B5);
 
 }
