@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:idp_gift_app/src/apis/signin/responses/session_id_response.dart';
 import 'package:injectable/injectable.dart';
 import 'package:idp_gift_app/src/apis/signin/responses/list_user_phone_responses.dart';
 import 'package:idp_gift_app/src/apis/signin/responses/signin_responses.dart';
@@ -16,6 +17,9 @@ abstract class SigninAPI {
 
   @POST('client/auth/login')
   Future<SigninResponses> signin(@Body() Map<String, dynamic> map);
+
+  @GET('v1/client/session')
+  Future<DataSessionIdResponse> getSessionIdResponseByPhone(@Query('phone') String phone);
 
   @GET('/auth/logout')
   Future<void> Logout();

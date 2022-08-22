@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/global_modules/widget/global_image.dart';
 import 'package:idp_gift_app/src/modules/productwidget/product_widget_model.dart';
@@ -27,6 +28,7 @@ class ProductWidget extends StatefulWidget {
     this.width = 180,
     this.height = 270,
     this.quantity='',
+    this.gitExchangePointsResp
   }) : super(key: key);
 
   final int productId;
@@ -41,6 +43,7 @@ class ProductWidget extends StatefulWidget {
   final double width;
   final double height;
   final String qrCode;
+  final GitExchangePointsResp? gitExchangePointsResp;
 
   @override
   State<ProductWidget> createState() => _ProductWidgetState();
@@ -52,6 +55,12 @@ class _ProductWidgetState extends ViewWidget<ProductWidget,ProductWidgetModel> {
   String get herotag {
     _herotag ??= '${widget.productId.toString()}${Random().nextDouble()}';
     return _herotag!;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.gitExchangePointsResp.value = widget.gitExchangePointsResp;
   }
 
   @override

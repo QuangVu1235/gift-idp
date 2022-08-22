@@ -1,3 +1,4 @@
+import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'cart_response.g.dart';
 
@@ -162,13 +163,16 @@ class DataCardResponse{
   String? email;
 
   @JsonKey(name: 'distributor_id')
-  String? distributorId;
+  int? distributorId;
 
   @JsonKey(name: 'distributor_code')
   String? distributorCode;
 
   @JsonKey(name: 'distributor_name')
   String? distributorName;
+
+  @JsonKey(name: 'distributor_address')
+  String? distributorAddress;
 
   @JsonKey(name: 'distributor_phone')
   String? distributorPhone;
@@ -382,6 +386,12 @@ class Details {
   @JsonKey(name: 'price')
   int? price;
 
+  @JsonKey(name: 'card_info')
+  List<CardInfo>? cartInfo;
+
+  @JsonKey(name: 'card_code')
+  String? cardCode;
+
   @JsonKey(name: 'price_formatted')
   String? priceFormatted;
 
@@ -435,16 +445,18 @@ class Details {
   String? createdAt;
 
   @JsonKey(name: 'created_by')
-  String? createdBy;
+
+  int? createdBy;
 
   @JsonKey(name: 'updated_at')
   String? updatedAt;
 
   @JsonKey(name: 'updated_by')
-  String? updatedBy;
+  int? updatedBy;
 
   Details(
-      {this.id,
+      {
+        this.id,
         this.cartId,
         this.productId,
         this.productCode,
@@ -454,6 +466,8 @@ class Details {
         this.productUnit,
         this.productUnitName,
         this.price,
+        this.cartInfo,
+        this.cardCode,
         this.priceFormatted,
         this.totalPrice,
         this.totalPriceFormatted,
@@ -474,7 +488,8 @@ class Details {
         this.createdAt,
         this.createdBy,
         this.updatedAt,
-        this.updatedBy});
+        this.updatedBy
+      });
 
   factory Details.fromJson(Map<String, dynamic> json) =>
       _$DetailsFromJson(json);

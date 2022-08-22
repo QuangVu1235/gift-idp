@@ -50,34 +50,7 @@ class SigninModel extends ViewModel {
     inputPhone.text=='store'?Get.offAll(() => const MainPageStore()):Get.offAll(() => const MainPage());
   }
 
-  Future<ListUserPhoneResponses?> loadUserList({bool notifice = false}) async {
-    String? valid = Validator.phone(inputPhone.text);
-    if ((valid ?? '').isNotEmpty) { // has error
-      listUserResponse.value = null;
-      userSeletected.value = null;
-      if (notifice) {
-        throw valid!;
-      }
-    }
-    else {
-      try {
-        listUserResponse.value = await signinUsecase.getUserByPhone(inputPhone.text);
-        if ((listUserResponse.value?.data?.length ?? 0) == 1) {
-          userSeletected.value = listUserResponse.value!.data!.first.code;
-        }
-        else if ((listUserResponse.value?.data?.length ?? 0) < 1){
-          listUserResponse.value = null;
-          userSeletected.value = null;
-          throw 'Không tìm thấy tài khoản phù hợp với số điện thoại "${inputPhone.text}"';
-        }
-      } catch (except) {
-        if (notifice) {
-          rethrow;
-        }
-      }
-    }
-    return listUserResponse.value;
-  }
+
 
   void onLogin() async {
     if (!(formKey.currentState?.validate() ?? false)) {
@@ -85,6 +58,11 @@ class SigninModel extends ViewModel {
       return;
     }
     loading(() async {
+      signinUsecase.getSessionIdResponseByPhone(inputPhone.text).then((value) {
+          if(value.data?.sessionId != null){
+            sharedPreferences.setString('uSessionId', value.data?.sessionId.toString() ?? '');
+          }
+      });
       SigninResponses value = await signinUsecase.signin(inputPhone.text, inputPassword.text);
       if ((value.token ?? '').isEmpty) {
         throw 'Số điện thoại hoặc mật khẩu không đúng';

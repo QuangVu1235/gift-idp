@@ -3,28 +3,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:idp_gift_app/src/apis/response/order_resp.dart';
 import 'package:idp_gift_app/src/config/assets/icon_assets.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
-import 'package:idp_gift_app/src/modules/modules_store/main_page_store.dart';
-import 'package:idp_gift_app/src/modules/order_manager/detal_order_manager/app/detail_order_widget.dart';
+import 'package:idp_gift_app/src/config/injection_config.dart';
+import 'package:idp_gift_app/src/modules/order_manager/detal_order_manager/app/detail_order_model.dart';
+import 'package:idp_gift_app/src/modules/order_manager/widget/detail_order_widget.dart';
 import 'package:idp_gift_app/src/themes/space_values.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
+import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 
-class DetailOrderScreenFinal extends StatefulWidget {
-  const DetailOrderScreenFinal({Key? key}) : super(key: key);
+class DetailOrderScreen extends StatefulWidget {
+  final OrderResponse orderResponse;
+  const DetailOrderScreen({Key? key,  required this.orderResponse}) : super(key: key);
 
   @override
-  State<DetailOrderScreenFinal> createState() => _DetailOrderScreenFinalState();
+  State<DetailOrderScreen> createState() => _DetailOrderScreenState();
 }
 
-class _DetailOrderScreenFinalState extends State<DetailOrderScreenFinal> {
+class _DetailOrderScreenState extends ViewWidget<DetailOrderScreen,DetailOrderModel> {
 
   final List<String> entries = <String>['A', 'B',];
+  @override
+  void initState() {
+    super.initState();
+    viewModel.orderResponse.value = widget.orderResponse;
+    viewModel.refresh();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(viewModel.orderResponse.value?.code ?? ''),
         elevation: 0.0,
         backgroundColor: UIColors.white,
       ),
@@ -174,11 +185,11 @@ class _DetailOrderScreenFinalState extends State<DetailOrderScreenFinal> {
                 ) ,),
             ),
             const SizedBox(height: SpaceValues.space16,),
-
             SizedBox(
               child: Expanded(
                 child: ListView.separated(
                     shrinkWrap: true,
+                    itemCount: viewModel.orderResponse.value?.details?.length ?? 0,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder:  (context, int index){
                       return DetailWidget(
@@ -192,10 +203,9 @@ class _DetailOrderScreenFinalState extends State<DetailOrderScreenFinal> {
                       );
                     },
                     separatorBuilder:(context, index) => const SizedBox(height: 10,),
-                    itemCount: entries.length),
+                    ),
               ),
             ),
-
             const Padding(
               padding:  EdgeInsets.only(top: 15,bottom: 15),
               child: Text('Thông tin đơn quà',
@@ -359,15 +369,27 @@ class _DetailOrderScreenFinalState extends State<DetailOrderScreenFinal> {
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: UIColors.grey,
-                    elevation: 0.0
+                    primary: UIColors.white,
+                    side: BorderSide(
+                      width: 3*0.5,
+                      color: UIColors.red,
+                    ),
                   ),
+                  onPressed: () {  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text('Hủy đơn',style: TextStyle(color: UIColors.red),),
+                  ),),
+              ),
+              const SizedBox(width: 6,),
+              Expanded(
+                child: ElevatedButton(
                   onPressed: () {
-                    Get.to(MainPageStore());
+                    // Get.to(DetailOrderScreen2());
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Đơn hàng hoàn tất'),
+                    child: Text('Xác nhận đơn'),
                   ),),
               ),
 
@@ -377,4 +399,7 @@ class _DetailOrderScreenFinalState extends State<DetailOrderScreenFinal> {
       ),
     );
   }
+
+  @override
+  DetailOrderModel createViewModel() => getIt<DetailOrderModel>();
 }

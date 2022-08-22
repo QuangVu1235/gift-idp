@@ -5,9 +5,8 @@ import 'package:get/get.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/profile/addressbook/addressbook_screen.dart';
 import 'package:idp_gift_app/src/modules/profile/profiled_model.dart';
-import 'package:idp_gift_app/src/modules/profile/profiledetail/profile_detail_screen.dart';
+import 'package:idp_gift_app/src/modules/profile/profiledetail/setting_profile.dart';
 import 'package:idp_gift_app/src/modules/profile/support/support_screen.dart';
-import 'package:idp_gift_app/src/modules/signin_signup/app/signin/app/signin_screen.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 
@@ -154,7 +153,7 @@ class _ProfileScreenState extends ViewWidget<ProfileScreen, ProfiledModel> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(ProfileDetailScreen());
+                  Get.to(SettingProfile());
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * .9,
@@ -187,7 +186,7 @@ class _ProfileScreenState extends ViewWidget<ProfileScreen, ProfiledModel> {
               ),
               GestureDetector(
                 onTap: () {
-                  Get.to(AddressBookScreen());
+                  Get.to(const AddressBookScreen());
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width * .9,

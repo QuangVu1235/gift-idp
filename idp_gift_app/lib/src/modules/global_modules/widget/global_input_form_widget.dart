@@ -129,8 +129,9 @@ class _GlobalInputFormWidgetState extends State<GlobalInputFormWidget> {
             suffixIcon: widget.suffixIcon,
             prefixIcon: widget.prefixIcon,
             enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(
-              color: UIColors.brandA,
+              color: UIColors.black40,
               width: 1.0,
             ),
           ),

@@ -35,6 +35,22 @@ class _SigninAPI implements SigninAPI {
   }
 
   @override
+  Future<DataSessionIdResponse> getSessionIdResponseByPhone(phone) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'phone': phone};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataSessionIdResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/client/session',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataSessionIdResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<void> Logout() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

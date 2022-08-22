@@ -249,7 +249,7 @@ class IconAssets {
   static const String actionChangeHistoryFill =
       'resources/icons/action/change_history_fill.svg';
   static const String actionCheckCircle =
-      'resources/icons/action/check_circle.svg';
+      'resources/icons/action/action.svg';
   static const String actionCheckCircleFill =
       'resources/icons/action/check_circle_fill.svg';
   static const String actionCheckCircleOutline =

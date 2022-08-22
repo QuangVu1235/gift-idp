@@ -21,6 +21,8 @@ class ProductResponse{
   String? type;
   String? tags;
   String? tax;
+  @JsonKey(name: 'card_info')
+  List<CardInfo>? cardInfo;
   @JsonKey(name: 'data_card')
   List<String>? dataCard;
   String? brandId;
@@ -111,6 +113,7 @@ class ProductResponse{
         this.type,
         this.tags,
         this.tax,
+        this.cardInfo,
         this.dataCard,
         this.brandId,
         this.brandName,
@@ -221,4 +224,17 @@ class Stores {
       _$StoresFromJson(json);
   Map<String, dynamic> toJson() => _$StoresToJson(this);
 
+}
+@JsonSerializable()
+class CardInfo {
+  int? id;
+  String? code;
+  String? name;
+  int? quantity;
+
+  CardInfo({this.id, this.code, this.name, this.quantity});
+
+  factory CardInfo.fromJson(Map<String, dynamic> json) =>
+      _$CardInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$CardInfoToJson(this);
 }

@@ -71,7 +71,7 @@ DataCardResponse _$DataCardResponseFromJson(Map<String, dynamic> json) =>
       totalPoint: json['total_point'] as String?,
       fullName: json['full_name'] as String?,
       email: json['email'] as String?,
-      distributorId: json['distributor_id'] as String?,
+      distributorId: json['distributor_id'] as int?,
       distributorCode: json['distributor_code'] as String?,
       distributorName: json['distributor_name'] as String?,
       distributorPhone: json['distributor_phone'] as String?,
@@ -103,7 +103,7 @@ DataCardResponse _$DataCardResponseFromJson(Map<String, dynamic> json) =>
       sellerName: json['seller_name'] as String?,
       notificationDistributor: json['notification_distributor'] as int?,
       shippingError: json['shipping_error'] as String?,
-    );
+    )..distributorAddress = json['distributor_address'] as String?;
 
 Map<String, dynamic> _$DataCardResponseToJson(DataCardResponse instance) =>
     <String, dynamic>{
@@ -159,6 +159,7 @@ Map<String, dynamic> _$DataCardResponseToJson(DataCardResponse instance) =>
       'distributor_id': instance.distributorId,
       'distributor_code': instance.distributorCode,
       'distributor_name': instance.distributorName,
+      'distributor_address': instance.distributorAddress,
       'distributor_phone': instance.distributorPhone,
       'distributor_lat': instance.distributorLat,
       'distributor_long': instance.distributorLong,
@@ -201,6 +202,10 @@ Details _$DetailsFromJson(Map<String, dynamic> json) => Details(
       productUnit: json['product_unit'] as String?,
       productUnitName: json['product_unit_name'] as String?,
       price: json['price'] as int?,
+      cartInfo: (json['card_info'] as List<dynamic>?)
+          ?.map((e) => CardInfo.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      cardCode: json['card_code'] as String?,
       priceFormatted: json['price_formatted'] as String?,
       totalPrice: json['total_price'] as int?,
       totalPriceFormatted: json['total_price_formatted'] as String?,
@@ -219,9 +224,9 @@ Details _$DetailsFromJson(Map<String, dynamic> json) => Details(
       note: json['note'] as String?,
       optionDetails: json['option_details'] as String?,
       createdAt: json['created_at'] as String?,
-      createdBy: json['created_by'] as String?,
+      createdBy: json['created_by'] as int?,
       updatedAt: json['updated_at'] as String?,
-      updatedBy: json['updated_by'] as String?,
+      updatedBy: json['updated_by'] as int?,
     );
 
 Map<String, dynamic> _$DetailsToJson(Details instance) => <String, dynamic>{
@@ -235,6 +240,8 @@ Map<String, dynamic> _$DetailsToJson(Details instance) => <String, dynamic>{
       'product_unit': instance.productUnit,
       'product_unit_name': instance.productUnitName,
       'price': instance.price,
+      'card_info': instance.cartInfo,
+      'card_code': instance.cardCode,
       'price_formatted': instance.priceFormatted,
       'total_price': instance.totalPrice,
       'total_price_formatted': instance.totalPriceFormatted,

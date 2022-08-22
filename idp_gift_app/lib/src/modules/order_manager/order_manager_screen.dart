@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
-import 'package:idp_gift_app/src/modules/order_manager/app/order_widget.dart';
-
-import '../../../themes/ui_colors.dart';
+import 'package:idp_gift_app/src/config/injection_config.dart';
+import 'package:idp_gift_app/src/modules/order_manager/order_manager_model.dart';
+import 'package:idp_gift_app/src/modules/order_manager/widget/order_widget.dart';
+import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
+import '../../themes/ui_colors.dart';
+import 'detal_order_manager/app/detail_order_screen.dart';
 
 
 class OrderScreen extends StatefulWidget {
@@ -12,8 +16,9 @@ class OrderScreen extends StatefulWidget {
   State<OrderScreen> createState() => _OrderScreenState();
 }
 
-class _OrderScreenState extends State<OrderScreen> {
+class _OrderScreenState extends ViewWidget<OrderScreen,OrderManagerModel> {
   bool? _isChecked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +102,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
            ],
          ),
-         Expanded(
+         Obx(()=> Expanded(
            child: Padding(
              padding: EdgeInsets.all(8.0),
              child: ListView(
@@ -111,29 +116,34 @@ class _OrderScreenState extends State<OrderScreen> {
                    // ),
                    physics: const NeverScrollableScrollPhysics(),
                    shrinkWrap: true,
-                   itemCount: 8,
+                   itemCount: viewModel.orders.length,
                    itemBuilder: (BuildContext context, int index) {
-                     return  OrderWidget(
-                       productID: '#12345',
-                       type:'Kun',
-                       status:'Chờ xác nhận',
-                       creator:'Khách hàng onlline',
-                       date_created:'10:30 - 28/05/2022',
-                       address:'Cửa hàng Thị Huệ',
-                       image:ImageAssets.imggiftproduct,
-                       quantity:'2',
+                     return  InkWell(
+                       onTap: ()=>Get.to(DetailOrderScreen(orderResponse: viewModel.orders[index],)),
+                       child: OrderWidget(
+                         productID:  '#${viewModel.orders[index].code}',
+                         type:'Kun',
+                         status:viewModel.orders[index].details?.first?.statusName ?? '',
+                         creator:viewModel.orders[index].customerName ?? '',
+                         date_created: viewModel.orders[index].createdDate ?? '',
+                         address:'Cửa hàng ${viewModel.orders[index].distributorName}',
+                         image:viewModel.orders[index].details?.first.thumbnail ?? '',
+                         quantity:viewModel.orders[index].details?.length.toString() ?? '0',
 
+                       ),
                      );
                    },
                  ),
                ],
              ),
            ),
-         ),
-
+         ),)
        ],
         ),
     );
 
   }
+
+  @override
+  OrderManagerModel createViewModel()=> getIt<OrderManagerModel>();
 }
