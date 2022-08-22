@@ -23,10 +23,16 @@ class DetailOrderModel extends ViewModel{
         print('load tại đây');
       }else{
         print('Không load');
-        if(orderResponse.value?.details?.first.status == 'PENDING'){
+        if(orderResponse.value?.details?.first.status == 'NEW'){
             index.value = 0;
-        }else{
-
+        }else if(orderResponse.value?.details?.first.status == 'APPROVED'){
+          index.value = 1;
+        }else if(orderResponse.value?.details?.first.status == 'SHIPPING'){
+          index.value = 1;
+        }else if(orderResponse.value?.details?.first.status == 'SHIPPED'){
+          index.value = 1;
+        }else if(orderResponse.value?.details?.first.status == 'COMPLETED'){
+          index.value = 2;
         }
       }
   }

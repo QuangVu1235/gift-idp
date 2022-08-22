@@ -15,7 +15,8 @@ SigninResponses _$SigninResponsesFromJson(Map<String, dynamic> json) =>
       ..roleCode = json['role_code'] as String?
       ..roleName = json['role_name'] as String?
       ..accountStatus = json['account_status'] as String?
-      ..groupCode = json['group_code'] as String?;
+      ..groupCode = json['group_code'] as String?
+      ..isGiftPlace = json['is_gift_place'];
 
 Map<String, dynamic> _$SigninResponsesToJson(SigninResponses instance) =>
     <String, dynamic>{
@@ -27,4 +28,5 @@ Map<String, dynamic> _$SigninResponsesToJson(SigninResponses instance) =>
       'role_name': instance.roleName,
       'account_status': instance.accountStatus,
       'group_code': instance.groupCode,
+      'is_gift_place': instance.isGiftPlace,
     };

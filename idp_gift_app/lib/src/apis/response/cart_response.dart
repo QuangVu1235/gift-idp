@@ -446,13 +446,13 @@ class Details {
 
   @JsonKey(name: 'created_by')
 
-  int? createdBy;
+  dynamic createdBy;
 
   @JsonKey(name: 'updated_at')
   String? updatedAt;
 
   @JsonKey(name: 'updated_by')
-  int? updatedBy;
+  dynamic updatedBy;
 
   Details(
       {
