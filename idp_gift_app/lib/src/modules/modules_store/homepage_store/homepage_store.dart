@@ -76,7 +76,7 @@ class _HomePageStoreState extends State<HomePageStore> {
                           ),
                           ElevatedButton(
                               onPressed: () {
-                                Get.to(CreateGiftOrder());
+
                               },
                               style: ElevatedButton.styleFrom(
                                   side: BorderSide(
@@ -124,7 +124,9 @@ class _HomePageStoreState extends State<HomePageStore> {
                             ),
                           ),
                           ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.to(CreateGiftOrder());
+                              },
                               style: ElevatedButton.styleFrom(
                                 side: BorderSide(width: 1, color: UIColors.white),
                                 shape: RoundedRectangleBorder(
