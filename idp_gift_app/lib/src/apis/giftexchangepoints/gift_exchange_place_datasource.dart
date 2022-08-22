@@ -20,6 +20,15 @@ abstract class GiftExchangeDatasource{
   //confirm order
   Future<dynamic> confirmOrderByGiftExchange(dynamic body);
 
+  //updateCartExchange
+  Future<dynamic> updateCartGiftExchange(dynamic body, String id);
+
+  Future<dynamic> addToCartAdvance(dynamic body);
+
+  Future<dynamic> updateCartAdvance(String id,dynamic body);
+
+  Future<dynamic> getOrderDetailById(String id);
+
 }
 @LazySingleton(as: GiftExchangeDatasource)
 class GiftExchangePlaceDatasourceImpl extends GiftExchangeDatasource{
@@ -50,5 +59,21 @@ class GiftExchangePlaceDatasourceImpl extends GiftExchangeDatasource{
   @override
   Future doPostCreateCard(body)
   => _exchangePlaceAPI.doPostCreateCard(body);
+
+  @override
+  Future addToCartAdvance(body)
+  => _exchangePlaceAPI.addToCartAdvance(body);
+
+  @override
+  Future updateCartAdvance(String id, body)
+  => _exchangePlaceAPI.updateCartAdvance(id,body);
+
+  @override
+  Future updateCartGiftExchange(body, String id)
+  => _exchangePlaceAPI.updateCartGiftExchange(body, id);
+
+  @override
+  Future<dynamic> getOrderDetailById(String id)
+  => _exchangePlaceAPI.getOrderDetailById(id);
 
 }

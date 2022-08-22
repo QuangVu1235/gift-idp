@@ -1,27 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:idp_gift_app/src/apis/response/order_resp.dart';
-import 'package:idp_gift_app/src/config/assets/icon_assets.dart';
-import 'package:idp_gift_app/src/config/assets/image_asset.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
-import 'package:idp_gift_app/src/modules/order_manager/detal_order_manager/app/detail_order_model.dart';
+import 'package:idp_gift_app/src/modules/modules_store/order_manager/detail/detail_order_exchange_model.dart';
 import 'package:idp_gift_app/src/modules/order_manager/widget/detail_order_widget.dart';
 import 'package:idp_gift_app/src/themes/space_values.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 
-class DetailOrderScreen extends StatefulWidget {
+class DetailOrderExchangeScreen extends StatefulWidget {
   final OrderResponse orderResponse;
-  const DetailOrderScreen({Key? key,  required this.orderResponse}) : super(key: key);
+  const DetailOrderExchangeScreen({Key? key,  required this.orderResponse}) : super(key: key);
 
   @override
-  State<DetailOrderScreen> createState() => _DetailOrderScreenState();
+  State<DetailOrderExchangeScreen> createState() => _DetailOrderExchangeScreen();
 }
 
-class _DetailOrderScreenState extends ViewWidget<DetailOrderScreen,DetailOrderModel> {
+class _DetailOrderExchangeScreen extends ViewWidget<DetailOrderExchangeScreen,DetailOrderExchangeModel> {
 
   final List<String> entries = <String>['A', 'B',];
   @override
@@ -119,58 +115,86 @@ class _DetailOrderScreenState extends ViewWidget<DetailOrderScreen,DetailOrderMo
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(width: SpaceValues.space56,height: 50,),
-                      SvgPicture.asset(
-                        IconAssets.shipping,
-                        // color: UIColors.white,
-                      ),
-                      const Expanded(
-                        child: Divider(
-                          height: 2,
-                          color: UIColors.brandA,
+                      Obx(() => SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: CircleAvatar(
+                          backgroundColor: viewModel.index.value >= 0 ? UIColors.brandA : UIColors.dividerDark,
+                          child: Icon(
+                            Icons.check,
+                            size: 15,
+                            color: viewModel.index.value > 1 ? UIColors.white : UIColors.white,
+                          ),
                         ),
+                      )),
+                      Expanded(
+                        child:Divider(height: 50, thickness: 3, color: viewModel.index.value >= 0 ? UIColors.brandA : UIColors.divider5),
                       ),
-                      SvgPicture.asset(
-                        IconAssets.shipping,
-                        // color:UIColors.white,
-                      ),
-                      const Expanded(
-                        child: Divider(
-                          height: 2,
-                          color: UIColors.brandA,
+                      Obx(() => SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: CircleAvatar(
+                          backgroundColor: viewModel.index.value > 0 ? UIColors.brandA : UIColors.dividerDark,
+                          child: Icon(
+                            Icons.check,
+                            size: 15,
+                            color: viewModel.index.value > 1 ? UIColors.white : UIColors.white,
+                          ),
                         ),
+                      )),
+                      Expanded(
+                        child:Divider(height: 50, thickness: 3, color: viewModel.index.value > 1 ? UIColors.brandA : UIColors.dividerDark),
                       ),
-                      SvgPicture.asset(
-                        IconAssets.shipping,
-                        // color: UIColors.brandA ,
-                        // height: 5,
+                      Obx(() => SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: CircleAvatar(
+                          backgroundColor: viewModel.index.value > 1 ? UIColors.brandA : UIColors.dividerDark,
+                          child: Icon(
+                            Icons.check,
+                            size: 15,
+                            color: viewModel.index.value > 1 ? UIColors.white : UIColors.white,
+                          ),
+                        ),
+                      )
                       ),
                       const SizedBox(width: SpaceValues.space48,),
                     ],
                   ),
-                  Row(
+                  Obx(()=>Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
+                    children:  [
                       // const SizedBox(width: SpaceValues.space32,),
                       Spacer(flex: 1,),
                       Text(
                         "Chờ xác nhận",
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: viewModel.index.value >= 0 ? UIColors.brandA : UIColors.black
+                        ),
                       ),
                       // const SizedBox(width: SpaceValues.space24,),
-                      Spacer(flex: 1,),
+                      Spacer(flex: 1),
                       Text(
                         "Đã xác nhận",
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: viewModel.index.value > 0 ? UIColors.brandA : UIColors.black
+                        ),
                       ),
                       Spacer(flex: 1,),
                       // const SizedBox(width: 24,),
                       Text(
                         "Hoàn thành",
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: viewModel.index.value > 1 ? UIColors.brandA : UIColors.black
+
+                        ),
                       ),
                       Spacer(flex: 1,),
                     ],
-                  ),
+                  ),),
                   const SizedBox(height: 20,)
                 ],
               ),
@@ -184,26 +208,23 @@ class _DetailOrderScreenState extends ViewWidget<DetailOrderScreen,DetailOrderMo
                   color: UIColors.black,
                 ) ,),
             ),
-            const SizedBox(height: SpaceValues.space16,),
             SizedBox(
-              child: Expanded(
-                child: ListView.separated(
-                    shrinkWrap: true,
-                    itemCount: viewModel.orderResponse.value?.details?.length ?? 0,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder:  (context, int index){
-                      return DetailWidget(
-                          productID:entries[index],
-                          image:ImageAssets.imggiftproduct,
-                          name:'Bình dữ nhiệt KUN',
-                          quantity:'2',
-                          size:'XL',
-                          color:'Xanh',
-                          price:'24'
-                      );
-                    },
-                    separatorBuilder:(context, index) => const SizedBox(height: 10,),
-                    ),
+              child: ListView.separated(
+                shrinkWrap: true,
+                itemCount: viewModel.orderResponse.value?.details?.length ?? 0,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder:  (context, int index){
+                  return DetailWidget(
+                      productID: '#${viewModel.orderResponse.value?.details?[index].productId}',
+                      name:'${viewModel.orderResponse.value?.details?[index].productName}',
+                      image:viewModel.orderResponse.value?.details?[index].thumbnail ?? '',
+                      quantity:'${viewModel.orderResponse.value?.details?[index].qty}',
+                      // size:'XL',
+                      // color:'Xanh',
+                      price:'24'
+                  );
+                },
+                separatorBuilder:(context, index) => const SizedBox(height: 10,),
               ),
             ),
             const Padding(
@@ -276,37 +297,42 @@ class _DetailOrderScreenState extends ViewWidget<DetailOrderScreen,DetailOrderMo
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children:  [
                         Text('Ngày tạo đơn'),
-                        Text('15/05/2022 11:29'),
+                        Text(
+                            viewModel.orderResponse.value?.createdDate ?? ''
+                        ),
                       ],
                     ),
                     SizedBox(height: SpaceValues.space12,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children:  [
                         Text('Người nhận'),
-                        Text('Lâm Thu Đang'),
+                        Text(viewModel.orderResponse.value?.shippingAddressFullName ?? ''),
                       ],
                     ),
                     SizedBox(height: SpaceValues.space12,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children:  [
                         Text('Số điện thoại'),
-                        Text('0398 975 708'),
+                        Text(viewModel.orderResponse.value?.shippingAddressPhone ?? ''),
                       ],
                     ),
                     SizedBox(height: SpaceValues.space12,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text('Địa chỉ:'),
                         SizedBox(width: SpaceValues.space32,),
                         Expanded
                           (child: Text(
-                          'dsd, Phường Thạnh Xuân, Quận 12, Thành phố Hồ Chí Minh',
+                          '${viewModel.orderResponse.value?.streetAddress}, '
+                              '${viewModel.orderResponse.value?.shippingAddressWard}, '
+                              '${viewModel.orderResponse.value?.shippingAddressDistrict}, '
+                              '${viewModel.orderResponse.value?.shippingAddressCity}',
                           textAlign: TextAlign.end,
                           maxLines: 3, )),
 
@@ -335,20 +361,20 @@ class _DetailOrderScreenState extends ViewWidget<DetailOrderScreen,DetailOrderMo
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Hoàng Anh Shop', style: TextStyle(
-                      fontWeight: FontWeight.w700
+                        fontWeight: FontWeight.w700
                     ),),
                     const SizedBox(
                       height: SpaceValues.space8,
                     ),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children:  [
                         Icon(Icons.store,color: UIColors.black,),
                         SizedBox(width: 8,),
                         Expanded
                           (child: Text(
-                          '17A, Trường Chinh, Quận 12, TP.HCM',
-                          textAlign: TextAlign.end,
+                          '${viewModel.orderResponse.value?.distributorName}',
+                          textAlign: TextAlign.start,
                           maxLines: 3, )),
                       ],
                     ),
@@ -386,6 +412,11 @@ class _DetailOrderScreenState extends ViewWidget<DetailOrderScreen,DetailOrderMo
                 child: ElevatedButton(
                   onPressed: () {
                     // Get.to(DetailOrderScreen2());
+                    viewModel.changeStatusOrder(
+                        viewModel.orderResponse.value?.id.toString() ?? '',
+                        'APPROVED',
+                        ''
+                    );
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -401,5 +432,5 @@ class _DetailOrderScreenState extends ViewWidget<DetailOrderScreen,DetailOrderMo
   }
 
   @override
-  DetailOrderModel createViewModel() => getIt<DetailOrderModel>();
+  DetailOrderExchangeModel createViewModel() => getIt<DetailOrderExchangeModel>();
 }

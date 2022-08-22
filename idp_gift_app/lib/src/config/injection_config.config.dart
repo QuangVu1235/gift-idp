@@ -25,31 +25,35 @@ import '../apis/signin/signin_datasource.dart' as _i22;
 import '../apis/signup/services/signup_api.dart' as _i24;
 import '../apis/signup/signup_datasource.dart' as _i25;
 import '../apis/upload_image/apis/upload_media.dart' as _i28;
-import '../apis/upload_image/upload_file_datasource.dart' as _i44;
+import '../apis/upload_image/upload_file_datasource.dart' as _i45;
 import '../core/dio_cache/dio_cache_manager.dart' as _i4;
 import '../modules/%20exchange_points/exchange_point_detail/exchange_point_detail_model.dart'
     as _i36;
 import '../modules/%20exchange_points/exchange_points_model.dart' as _i37;
-import '../modules/cart/cart_model.dart' as _i48;
-import '../modules/cart/widgets/cart_widget_model.dart' as _i49;
+import '../modules/cart/cart_model.dart' as _i49;
+import '../modules/cart/widgets/cart_widget_model.dart' as _i50;
 import '../modules/gift_exchange/lof_gift_exchange/app/list_product_model.dart'
     as _i40;
 import '../modules/main_page_model.dart' as _i6;
 import '../modules/modules_store/%20create_gift_order/create_gift_order_model.dart'
     as _i3;
 import '../modules/modules_store/main_page_store_model.dart' as _i7;
+import '../modules/modules_store/order_manager/detail/detail_order_exchange_model.dart'
+    as _i51;
+import '../modules/modules_store/order_manager/orders_exchange_model.dart'
+    as _i42;
 import '../modules/modules_store/profile_store/statistic_store/model/statistic_store_model.dart'
     as _i10;
 import '../modules/order_manager/detal_order_manager/app/detail_order_model.dart'
     as _i35;
 import '../modules/order_manager/order_manager_model.dart' as _i41;
-import '../modules/productwidget/product_widget_model.dart' as _i42;
-import '../modules/profile/add_address/add_address_model.dart' as _i46;
-import '../modules/profile/addressbook/address_model.dart' as _i47;
+import '../modules/productwidget/product_widget_model.dart' as _i43;
+import '../modules/profile/add_address/add_address_model.dart' as _i47;
+import '../modules/profile/addressbook/address_model.dart' as _i48;
 import '../modules/profile/profiled_model.dart' as _i20;
-import '../modules/profile/profiledetail/setting_model.dart' as _i50;
+import '../modules/profile/profiledetail/setting_model.dart' as _i52;
 import '../modules/signin_signup/app/form_pass/form_pass_model.dart' as _i5;
-import '../modules/signin_signup/app/signin/app/signin_model.dart' as _i43;
+import '../modules/signin_signup/app/signin/app/signin_model.dart' as _i44;
 import '../modules/splashsreen/splashsreen_model.dart' as _i27;
 import '../usecases/address_usecase.dart' as _i31;
 import '../usecases/customer_usercase.dart' as _i34;
@@ -58,7 +62,7 @@ import '../usecases/gift_exchange_usecase.dart' as _i39;
 import '../usecases/ipd/product_datasource.dart' as _i19;
 import '../usecases/signin_usecase.dart' as _i23;
 import '../usecases/signup_usecase.dart' as _i26;
-import '../usecases/upload_file_usecase.dart' as _i45;
+import '../usecases/upload_file_usecase.dart' as _i46;
 import 'injection_config.dart' as _i8; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
@@ -135,25 +139,29 @@ Future<_i1.GetIt> $initGetIt(_i1.GetIt get,
       () => _i40.ListProductModel(get<_i18.ProductDataSourceKun>()));
   gh.factory<_i41.OrderManagerModel>(
       () => _i41.OrderManagerModel(get<_i34.CustomerUserCase>()));
-  gh.factory<_i42.ProductWidgetModel>(() => _i42.ProductWidgetModel(
+  gh.factory<_i42.OrdersGiftExchangeModel>(() => _i42.OrdersGiftExchangeModel(
+      get<_i34.CustomerUserCase>(), get<_i39.GiftExchangeUseCase>()));
+  gh.factory<_i43.ProductWidgetModel>(() => _i43.ProductWidgetModel(
       get<_i34.CustomerUserCase>(), get<_i9.SharedPreferences>()));
-  gh.factory<_i43.SigninModel>(() => _i43.SigninModel(
+  gh.factory<_i44.SigninModel>(() => _i44.SigninModel(
       get<_i23.SigninUsecase>(), get<_i9.SharedPreferences>()));
-  gh.lazySingleton<_i44.UploadFileDatasource>(
-      () => _i44.UploadFileDatasourceImpl(get<_i28.UploadMedia>()));
-  gh.lazySingleton<_i45.UploadFileUsecase>(
-      () => _i45.UploadFileUsecase(get<_i44.UploadFileDatasource>()));
-  gh.factory<_i46.AddAddressModel>(() => _i46.AddAddressModel(
+  gh.lazySingleton<_i45.UploadFileDatasource>(
+      () => _i45.UploadFileDatasourceImpl(get<_i28.UploadMedia>()));
+  gh.lazySingleton<_i46.UploadFileUsecase>(
+      () => _i46.UploadFileUsecase(get<_i45.UploadFileDatasource>()));
+  gh.factory<_i47.AddAddressModel>(() => _i47.AddAddressModel(
       get<_i34.CustomerUserCase>(), get<_i31.AddressUseCase>()));
-  gh.factory<_i47.AddressModel>(
-      () => _i47.AddressModel(get<_i34.CustomerUserCase>()));
-  gh.factory<_i48.CartModel>(() => _i48.CartModel(
+  gh.factory<_i48.AddressModel>(
+      () => _i48.AddressModel(get<_i34.CustomerUserCase>()));
+  gh.factory<_i49.CartModel>(() => _i49.CartModel(
       get<_i34.CustomerUserCase>(), get<_i9.SharedPreferences>()));
-  gh.factory<_i49.CartWidgetModel>(() => _i49.CartWidgetModel(
-      get<_i34.CustomerUserCase>(), get<_i48.CartModel>()));
-  gh.factory<_i50.SettingProfileModel>(() => _i50.SettingProfileModel(
+  gh.factory<_i50.CartWidgetModel>(() => _i50.CartWidgetModel(
+      get<_i34.CustomerUserCase>(), get<_i49.CartModel>()));
+  gh.factory<_i51.DetailOrderExchangeModel>(() => _i51.DetailOrderExchangeModel(
+      get<_i34.CustomerUserCase>(), get<_i39.GiftExchangeUseCase>()));
+  gh.factory<_i52.SettingProfileModel>(() => _i52.SettingProfileModel(
       get<_i9.SharedPreferences>(),
-      get<_i45.UploadFileUsecase>(),
+      get<_i46.UploadFileUsecase>(),
       get<_i34.CustomerUserCase>(),
       get<_i31.AddressUseCase>()));
   return get;

@@ -5,7 +5,7 @@ import 'package:idp_gift_app/src/config/assets/icon_assets.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/modules_store/main_page_store_model.dart';
-import 'package:idp_gift_app/src/modules/modules_store/order_manager/order_manager_screen.dart';
+import 'package:idp_gift_app/src/modules/modules_store/order_manager/orders_exchange.dart';
 import 'package:idp_gift_app/src/modules/modules_store/profile_store/profile_store_screen.dart';
 import 'package:idp_gift_app/src/modules/modules_store/ware_house/ware_house_screen.dart';
 
@@ -41,7 +41,7 @@ class _MainPageState extends ViewWidget<MainPageStore, MainPageStoreModel> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     const HomePageStore(),
-    Text("1"),
+    const OrdersGiftExchange(),
     WareHouseScreen(),
     const ProfileStoreScreen()
   ];
