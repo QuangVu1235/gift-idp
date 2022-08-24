@@ -23,8 +23,12 @@ abstract class GiftExchangePlaceAPI {
   @POST('v1/client/add-to-cart-exchange')
   Future<dynamic> addToCartGiftExchange(@Body() dynamic body);
 
+  //updateCartExchange
+  @PUT('v1/update-product-in-cart-exchange/{id}')
+  Future<dynamic> updateCartGiftExchange(@Body() dynamic body, String id);
+
   //duyệt đơn hàng, cập nhập đơn quà
-  @PUT('v1/orders-exchange/{id}/status')
+  @POST('v1/orders-exchange/{id}/status')
   Future<dynamic> changeStatusOrder(@Path('id') String id, @Body() Map<String, dynamic> body);
 
   // hoàn thành đơn hàng
@@ -89,6 +93,12 @@ abstract class GiftExchangePlaceAPI {
   //Thêm sp vào đơn tạm ứng
   @POST('v1/client/add-to-cart')
   Future<dynamic> addToCartAdvance(@Body() dynamic body);
+
+  @PUT('v1/client/update-product-in-cart/{id}')
+  Future<dynamic> updateCartAdvance(@Path('id') String id,@Body() dynamic body);
+
+  @GET('v1/orders-exchange/{id}')
+  Future<dynamic> getOrderDetailById(@Path('id') String id);
 
 
 

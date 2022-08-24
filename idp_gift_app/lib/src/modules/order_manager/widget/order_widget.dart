@@ -74,17 +74,25 @@ class _OrderWidgetState extends State<OrderWidget> {
                       ),
                       Container(
                           decoration: BoxDecoration(
-                            color: Colors.pinkAccent,
+                            color:   widget.status == 'NEW' ? Colors.yellow[50] :
+                            widget.status == 'APPROVED' ? Colors.blue[50]:
+                            widget.status == 'COMPLETED' ? Colors.green[50] : Colors.yellow[50],
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Center(
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   left: 10, right: 10, top: 4, bottom: 4),
-                              child: Text(
-                                widget.status,
+                              child:
+                              Text(
+                                widget.status == 'NEW' ? 'Chờ xác nhận' :
+                                widget.status == 'APPROVED' ? 'Đã xác nhận':
+                                widget.status == 'COMPLETED' ? 'Đã hoàn thành' : '',
                                 style: TextStyle(
-                                    color: Colors.yellow,
+                                    color:
+                                    widget.status == 'NEW' ? Colors.yellow[700] :
+                                    widget.status == 'APPROVED' ? Colors.blue[700]:
+                                    widget.status == 'COMPLETED' ? Colors.green[700] : Colors.yellow[700],
                                     fontSize: 12,
                                     fontWeight: FontWeight.w400),
                               ),

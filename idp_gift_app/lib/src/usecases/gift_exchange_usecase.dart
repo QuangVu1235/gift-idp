@@ -3,8 +3,7 @@ import 'package:idp_gift_app/src/apis/response/order_resp.dart';
 import 'package:injectable/injectable.dart';
 
 @LazySingleton()
-class GiftExchangeUseCase{
-
+class GiftExchangeUseCase {
   final GiftExchangeDatasource _giftExchangeDatasource;
 
   @factoryMethod
@@ -13,22 +12,30 @@ class GiftExchangeUseCase{
   Future changeStatusOrder(String id, String status, String canceledReason) =>
       _giftExchangeDatasource.changeStatusOrder(id, status, canceledReason);
 
-  Future doPutComplete(String orderCode)
-  => _giftExchangeDatasource.doPutComplete(orderCode);
+  Future doPutComplete(String orderCode) =>
+      _giftExchangeDatasource.doPutComplete(orderCode);
 
-  Future addToCartGiftExchange(body)
-  => _giftExchangeDatasource.addToCartGiftExchange(body);
+  Future addToCartGiftExchange(body) =>
+      _giftExchangeDatasource.addToCartGiftExchange(body);
 
+  Future confirmOrderByGiftExchange(body) =>
+      _giftExchangeDatasource.confirmOrderByGiftExchange(body);
 
-  Future confirmOrderByGiftExchange(body)
-  => _giftExchangeDatasource.confirmOrderByGiftExchange(body);
+  Future<DataOrderResponse> doGetAllOrdersOfCustomer() =>
+      _giftExchangeDatasource.doGetAllOrdersOfCustomer();
 
+  Future doPostCreateCard(body) =>
+      _giftExchangeDatasource.doPostCreateCard(body);
 
-  Future<DataOrderResponse> doGetAllOrdersOfCustomer()
-  => _giftExchangeDatasource.doGetAllOrdersOfCustomer();
+  Future addToCartAdvance(body) =>
+      _giftExchangeDatasource.addToCartAdvance(body);
 
+  Future updateCartAdvance(String id, body) =>
+      _giftExchangeDatasource.updateCartAdvance(id, body);
 
-  Future doPostCreateCard(body)
-  => _giftExchangeDatasource.doPostCreateCard(body);
+  Future updateCartGiftExchange(body, String id) =>
+      _giftExchangeDatasource.updateCartGiftExchange(body, id);
 
+  Future<dynamic> getOrderDetailById(String id)
+  => _giftExchangeDatasource.getOrderDetailById(id);
 }

@@ -5,11 +5,7 @@ import 'package:idp_gift_app/src/utils/widgets/view_model.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class CreateGiftOrderModel extends ViewModel{
-
-
+class CreateKunGiftOrderModel extends ViewModel {
   final TextEditingController inPutSearch = TextEditingController();
   RxList<ProductResponse> dataProduct = RxList.empty();
-
-
 }

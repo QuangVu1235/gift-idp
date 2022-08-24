@@ -1,27 +1,25 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
 import 'package:idp_gift_app/src/config/assets/icon_assets.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
-import 'package:idp_gift_app/src/modules/cart/cart_kun.dart';
-import 'package:idp_gift_app/src/modules/modules_store/%20create_gift_order/create_gift_order_model.dart';
+import 'package:idp_gift_app/src/modules/modules_store/%20create_gift_order/kun_order/create_gift_kun_order_model.dart';
 import 'package:idp_gift_app/src/themes/space_values.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 
-class CreateGiftOrder extends StatefulWidget{
-  const CreateGiftOrder({Key? key}) : super(key: key);
+class CreateGiftKunOrder extends StatefulWidget {
+  const CreateGiftKunOrder({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _CreateGiftOrder();
-
+  State<CreateGiftKunOrder> createState() => _CreateGiftKunOrder();
 }
-class _CreateGiftOrder extends ViewWidget<CreateGiftOrder,CreateGiftOrderModel>  {
-    final List<String> title= <String>['Tất cả','Áo gia đình', 'Áo cặp','Gối yêu thương'];
-    final List<String> nameProduct= <String>['Bộ 04 áo gia đình LOF (1 thẻ hạnh phúc)','Bộ 04 áo gia đình LOF (1 thẻ hạnh phúc)', 'Bộ 04 áo gia đình LOF (1 thẻ hạnh phúc)','Bộ 04 áo gia đình LOF (1 thẻ hạnh phúc)'];
+
+class _CreateGiftKunOrder extends ViewWidget<CreateGiftKunOrder, CreateKunGiftOrderModel> {
+
+  final List<String> title= <String>['Tất cả','Đồng hồ', 'Áo thun','Dụng cụ học tập'];
+  final List<String> nameProduct= <String>['Bộ 04 áo gia đình LOF (1 thẻ hạnh phúc)','Bộ 04 áo gia đình LOF (1 thẻ hạnh phúc)', 'Bộ 04 áo gia đình LOF (1 thẻ hạnh phúc)','Bộ 04 áo gia đình LOF (1 thẻ hạnh phúc)'];
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,7 @@ class _CreateGiftOrder extends ViewWidget<CreateGiftOrder,CreateGiftOrderModel> 
         backgroundColor: UIColors.white,
         appBar: AppBar(
           backgroundColor: UIColors.white,
-          title: const Text('Danh sách quà LOF', style: TextStyle(color: UIColors.black,fontWeight: FontWeight.w700),),
+          title: const Text('Danh sách quà Kun', style: TextStyle(color: UIColors.black,fontWeight: FontWeight.w700),),
           shape: const Border(bottom: BorderSide(color: UIColors.black10)),
         ),
         body: Container(
@@ -91,81 +89,81 @@ class _CreateGiftOrder extends ViewWidget<CreateGiftOrder,CreateGiftOrderModel> 
                 height: MediaQuery.of(context).size.height*0.065,
                 child: ListView.builder(
                   itemCount: 4,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
                           onPressed: (){},
-                            style: ElevatedButton.styleFrom(
+                          style: ElevatedButton.styleFrom(
                               shadowColor: UIColors.white,
                               primary: UIColors.white,
                               side: BorderSide(color: UIColors.blue)
-                            ),
-                            child: Text(title[index],style: TextStyle(color: UIColors.blue),)),
-                      );
-                    },),
+                          ),
+                          child: Text(title[index],style: TextStyle(color: UIColors.blue),)),
+                    );
+                  },),
               ),
-                Expanded(
+              Expanded(
                 child: ListView.builder(
                   itemCount: 4,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        margin: EdgeInsets.only(left: 12,right: 12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          border: Border.all(
-                            color: UIColors.black10
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          margin: EdgeInsets.only(left: 12,right: 12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(
+                                color: UIColors.black10
+                            ),
                           ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                height:120,
-                                  child: Image.asset(ImageAssets.watchKun,fit: BoxFit.fill,)),
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 24.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('#1234',style: TextStyle(color: UIColors.black,fontWeight: FontWeight.w600),),
-                                      Text(nameProduct[index],style: TextStyle(color: UIColors.black,fontWeight: FontWeight.w600)),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text('Số lượng còn:'),
-                                          Text('20'),
-                                        ],
-                                      ),
-                                      SizedBox(height: 4,),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context).size.width*0.08,
-                                              child: Image.asset(ImageAssets.qrCode)),
-                                          ElevatedButton(
-                                              onPressed: (){},
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(left: 12.0,right: 12),
-                                                child: Text('Đổi ngay'),
-                                              ))
-                                        ],
-                                      ),
-                                    ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                    height:120,
+                                    child: Image.asset(ImageAssets.watchKun,fit: BoxFit.fill,)),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 24.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text('#1234',style: TextStyle(color: UIColors.black,fontWeight: FontWeight.w600),),
+                                        Text(nameProduct[index],style: TextStyle(color: UIColors.black,fontWeight: FontWeight.w600)),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Số lượng còn:'),
+                                            Text('20'),
+                                          ],
+                                        ),
+                                        SizedBox(height: 4,),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                                width: MediaQuery.of(context).size.width*0.08,
+                                                child: Image.asset(ImageAssets.qrCode)),
+                                            ElevatedButton(
+                                                onPressed: (){},
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(left: 12.0,right: 12),
+                                                  child: Text('Đổi ngay'),
+                                                ))
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      )
+                        )
                     );
                   },),
               )
@@ -195,10 +193,11 @@ class _CreateGiftOrder extends ViewWidget<CreateGiftOrder,CreateGiftOrderModel> 
 
           ),
         )
-      );
+    );
   }
 
   @override
-  CreateGiftOrderModel createViewModel() => getIt<CreateGiftOrderModel>();
+  CreateKunGiftOrderModel createViewModel() => getIt<CreateKunGiftOrderModel>();
+
 
 }
