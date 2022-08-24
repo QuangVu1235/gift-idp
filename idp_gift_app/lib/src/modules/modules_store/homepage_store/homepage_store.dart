@@ -16,13 +16,12 @@ class _HomePageStoreState extends State<HomePageStore> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("resources/images/homepage_background.png",
+                  image: AssetImage(
+                    "resources/images/homepage_background.png",
                   ),
-                  fit: BoxFit.cover
-              )
-          ),
+                  fit: BoxFit.cover)),
           child: Column(
             children: [
               Column(
@@ -34,15 +33,15 @@ class _HomePageStoreState extends State<HomePageStore> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Text(
+              const Text(
                 "DANH SÁCH CHƯƠNG TRÌNH ĐỔI QUÀ",
                 style: TextStyle(
                     fontSize: 14, fontWeight: FontWeight.w700, height: 2.4),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Padding(
@@ -55,15 +54,15 @@ class _HomePageStoreState extends State<HomePageStore> {
                       // padding:
                       // const EdgeInsets.symmetric( vertical: 25),
                       decoration: BoxDecoration(
-                        // border: Border.all(color: Colors.white, width: 0.5),
-                          color: Color(0xffDBF6FF),
+                          // border: Border.all(color: Colors.white, width: 0.5),
+                          color: const Color(0xffDBF6FF),
                           // color: Colors.red,
                           borderRadius: BorderRadius.circular(12)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           SizedBox(
-                            height:145 ,
+                            height: 145,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 30),
                               child: Image.asset(
@@ -76,17 +75,17 @@ class _HomePageStoreState extends State<HomePageStore> {
                           ),
                           ElevatedButton(
                               onPressed: () {
-                                ProductGiftExchange();
+                                Get.to(ProductGiftExchange());
                               },
                               style: ElevatedButton.styleFrom(
-                                  side: BorderSide(
+                                  side: const BorderSide(
                                       width: 1.5, color: Color(0xff086252)),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                   ),
-                                  primary: Color(0xffDBF6FF)),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
+                                  primary: const Color(0xffDBF6FF)),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 child: Text(
                                   "TẠO ĐƠN QUÀ",
@@ -96,9 +95,7 @@ class _HomePageStoreState extends State<HomePageStore> {
                                       color: Color(0xff086252)),
                                 ),
                               )),
-                          const SizedBox(
-                              height: 8
-                          )
+                          const SizedBox(height: 8)
                         ],
                       ),
                     ),
@@ -106,7 +103,7 @@ class _HomePageStoreState extends State<HomePageStore> {
                       width: MediaQuery.of(context).size.width * .44,
                       // padding:
                       decoration: BoxDecoration(
-                          color: Color(0xffFE0002),
+                          color: const Color(0xffFE0002),
                           borderRadius: BorderRadius.circular(12)),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -128,14 +125,15 @@ class _HomePageStoreState extends State<HomePageStore> {
                                 Get.to(const ProductGiftExchange());
                               },
                               style: ElevatedButton.styleFrom(
-                                side: BorderSide(width: 1, color: UIColors.white),
+                                side: const BorderSide(
+                                    width: 1, color: UIColors.white),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                primary: Color(0xffFE0002),
+                                primary: const Color(0xffFE0002),
                               ),
                               child: const Padding(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 child: Text(
                                   "TẠO ĐƠN QUÀ",
@@ -145,18 +143,15 @@ class _HomePageStoreState extends State<HomePageStore> {
                                       color: UIColors.white),
                                 ),
                               )),
-                          const SizedBox(
-                              height: 8
-                          )
+                          const SizedBox(height: 8)
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height*.25,
+                height: MediaQuery.of(context).size.height * .25,
               ),
             ],
           ),
