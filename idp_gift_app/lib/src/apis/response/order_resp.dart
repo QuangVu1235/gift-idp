@@ -21,6 +21,23 @@ class DataOrderResponse {
   }
 }
 
+class DataDetailOrderResponse {
+  OrderResponse? data;
+  DataDetailOrderResponse({this.data});
+
+  DataDetailOrderResponse.fromJson(Map<String, dynamic> json) {
+    data = json['data'] != null ? new OrderResponse.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
 class OrderResponse {
   int? id;
   String? code;

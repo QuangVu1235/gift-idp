@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:idp_gift_app/src/apis/response/order_resp.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/modules_store/order_manager/detail/detail_order_exchange_model.dart';
+import 'package:idp_gift_app/src/modules/modules_store/order_manager/orders_exchange_model.dart';
 import 'package:idp_gift_app/src/modules/order_manager/widget/detail_order_widget.dart';
 import 'package:idp_gift_app/src/themes/space_values.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
@@ -386,7 +387,7 @@ class _DetailOrderExchangeScreen extends ViewWidget<DetailOrderExchangeScreen,De
           ],
         ),
       ),
-      bottomSheet: SizedBox(
+      bottomSheet: viewModel.index.value == 0 ? SizedBox(
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -427,10 +428,176 @@ class _DetailOrderExchangeScreen extends ViewWidget<DetailOrderExchangeScreen,De
             ],
           ),
         ),
-      ),
+      )
+          : viewModel.index.value == 1 ? SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              const SizedBox(width: 6,),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Get.to(DetailOrderScreen2());
+                    viewModel.changeStatusOrder(
+                        viewModel.orderResponse.value?.id.toString() ?? '',
+                        'APPROVED',
+                        ''
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Hoàn thành đơn'),
+                  ),),
+              ),
+              const SizedBox(width: 6,),
+
+            ],
+          ),
+        ),
+      ) : SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              const SizedBox(width: 6,),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Đã hoàn thành'),
+                  ),),
+              ),
+              const SizedBox(width: 6,),
+
+            ],
+          ),
+        ),
+      )
     );
   }
 
   @override
   DetailOrderExchangeModel createViewModel() => getIt<DetailOrderExchangeModel>();
+}
+
+class ShowPopupCancel extends StatelessWidget{
+  final DetailOrderExchangeModel viewModel;
+
+  final List<int> status = <int>[1, 2, 3 ];
+
+  ShowPopupCancel({Key? key, required this.viewModel}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return  AlertDialog(
+      titlePadding: EdgeInsets.zero,
+      contentPadding: const EdgeInsets.symmetric(horizontal: SpaceValues.space16, vertical: 16),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              'Vui lòng chọn trạng thái đơn hàng:',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: SpaceValues.space8,),
+          Obx(
+                ()=>Visibility(
+              visible: true,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: MediaQuery.of(Get.context!).size.height * .5),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      for (int i = 0;
+                      i < status.length;
+                      i++)
+                        ListTile(
+                          visualDensity: const VisualDensity(
+                              horizontal: 0, vertical: -4),
+                          contentPadding: EdgeInsets.zero,
+                          horizontalTitleGap: 0,
+                          tileColor: Colors.transparent,
+                          title: Text(
+                            '123213',
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          leading: Radio(
+                            value: status[i],
+                            groupValue:  viewModel.valueRadio.value,
+                            // activeColor: Color(0xFF6200EE),
+                            onChanged: (value) {
+                              print(value);
+                              viewModel.valueRadio.value = value as int;
+                            },
+                          ),
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text(
+                            'Ghi chú',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14
+                            ),
+                          ),
+
+                        ],
+                      ),
+                      SizedBox(width: MediaQuery.of(context).size.width *1,height: SpaceValues.space12,),
+                      TextField(
+                        controller: viewModel.note,
+                        decoration: const InputDecoration(
+                            hintText: 'Nhập ghi chú (nếu có)',
+                            hintStyle: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: UIColors.black70
+                            ),
+                            floatingLabelAlignment: FloatingLabelAlignment.center
+                        ),
+                        minLines: 3,
+                        maxLines: 3,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),),
+
+          const SizedBox(
+            height: SpaceValues.space12,
+          ),
+          SizedBox(
+            width: MediaQuery.of(Get.context!).size.width * .5,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.blueAccent
+              ),
+              onPressed: () async{
+                // print(viewModel.note.text);
+                // await viewModel.PickupOrder(viewModel.orderReponese.value?.orderCode ??'',viewModel.value_status.value, viewModel.note.text,'Giao hàng không thành công').then((value) async => Get.back());
+                // Get.off(()=> HomePage(initScreen: 2,));
+              },
+              child: const Text('Xác nhận'),
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
+
 }

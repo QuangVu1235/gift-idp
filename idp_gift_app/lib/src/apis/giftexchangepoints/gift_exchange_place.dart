@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/order_resp.dart';
 import 'package:idp_gift_app/src/config/base_api.dart';
 import 'package:injectable/injectable.dart';
@@ -87,7 +88,7 @@ abstract class GiftExchangePlaceAPI {
   // }
 
   //confirm order
-  @POST('v1/gift-place-confirm-order-exchange')
+  @PUT('v1/gift-place-confirm-order-exchange')
   Future<dynamic> confirmOrderByGiftExchange(@Body() dynamic body);
 
   //Thêm sp vào đơn tạm ứng
@@ -98,7 +99,12 @@ abstract class GiftExchangePlaceAPI {
   Future<dynamic> updateCartAdvance(@Path('id') String id,@Body() dynamic body);
 
   @GET('v1/orders-exchange/{id}')
-  Future<dynamic> getOrderDetailById(@Path('id') String id);
+  Future<DataDetailOrderResponse> getOrderDetailById(@Path('id') String id);
+
+  // Lấy danh sách sản phẩm
+  @GET('v1/get-product-by-gift-exchange-points')
+  Future<List<ProductResponse>> getAllProductByGiftExchangePoints();
+
 
 
 

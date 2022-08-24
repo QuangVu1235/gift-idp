@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
-import 'package:idp_gift_app/src/modules/cart/cart_kun.dart';
+import 'package:idp_gift_app/src/modules/cart/cart.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 

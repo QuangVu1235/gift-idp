@@ -35,7 +35,7 @@ class CustomerUserCase{
   Future deleteAllCart(String sessionId)
   => _customerDataSource.deleteAllCart(sessionId);
   //update cart
-  Future<void> updateCart(String id, body)
+  Future<dynamic> updateCart(String id, body)
   => _customerDataSource.updateCart(id, body);
   // danh sách điểm đổi quà
   Future<DataGitExchangePoints> getAllGiftExchangePoints(body)

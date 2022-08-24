@@ -1,10 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:idp_gift_app/src/modules/signin_signup/app/signin/app/signin_screen.dart';
 import 'package:idp_gift_app/src/modules/signin_signup/location/app/location_screen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 

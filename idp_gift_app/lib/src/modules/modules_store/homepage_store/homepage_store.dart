@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:idp_gift_app/src/modules/modules_store/%20create_gift_order/kun_order/create_gift_kun_order.dart';
-import 'package:idp_gift_app/src/modules/modules_store/%20create_gift_order/lof_order/create_gift_lof_order.dart';
+import 'package:idp_gift_app/src/modules/modules_store/products_gift_exchange/products_gift_exchange.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 
 class HomePageStore extends StatefulWidget {
@@ -18,12 +17,11 @@ class _HomePageStoreState extends State<HomePageStore> {
       body: SingleChildScrollView(
         child: Container(
           decoration: const BoxDecoration(
-              image:  DecorationImage(
-                  image: AssetImage("resources/images/homepage_background.png",
+              image: DecorationImage(
+                  image: AssetImage(
+                    "resources/images/homepage_background.png",
                   ),
-                  fit: BoxFit.cover
-              )
-          ),
+                  fit: BoxFit.cover)),
           child: Column(
             children: [
               Column(
@@ -56,7 +54,7 @@ class _HomePageStoreState extends State<HomePageStore> {
                       // padding:
                       // const EdgeInsets.symmetric( vertical: 25),
                       decoration: BoxDecoration(
-                        // border: Border.all(color: Colors.white, width: 0.5),
+                          // border: Border.all(color: Colors.white, width: 0.5),
                           color: const Color(0xffDBF6FF),
                           // color: Colors.red,
                           borderRadius: BorderRadius.circular(12)),
@@ -64,7 +62,7 @@ class _HomePageStoreState extends State<HomePageStore> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           SizedBox(
-                            height:145 ,
+                            height: 145,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 30),
                               child: Image.asset(
@@ -77,11 +75,7 @@ class _HomePageStoreState extends State<HomePageStore> {
                           ),
                           ElevatedButton(
                               onPressed: () {
-<<<<<<< Updated upstream
-                                Get.to(const CreateGiftOrder());
-=======
-                                Get.to(CreateGiftKunOrder());
->>>>>>> Stashed changes
+                                Get.to(ProductGiftExchange());
                               },
                               style: ElevatedButton.styleFrom(
                                   side: const BorderSide(
@@ -91,7 +85,7 @@ class _HomePageStoreState extends State<HomePageStore> {
                                   ),
                                   primary: const Color(0xffDBF6FF)),
                               child: const Padding(
-                                padding:  EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 child: Text(
                                   "TẠO ĐƠN QUÀ",
@@ -101,9 +95,7 @@ class _HomePageStoreState extends State<HomePageStore> {
                                       color: Color(0xff086252)),
                                 ),
                               )),
-                          const SizedBox(
-                              height: 8
-                          )
+                          const SizedBox(height: 8)
                         ],
                       ),
                     ),
@@ -130,17 +122,18 @@ class _HomePageStoreState extends State<HomePageStore> {
                           ),
                           ElevatedButton(
                               onPressed: () {
-                                Get.to(const CreateGiftOrder());
+                                Get.to(const ProductGiftExchange());
                               },
                               style: ElevatedButton.styleFrom(
-                                side: const BorderSide(width: 1, color: UIColors.white),
+                                side: const BorderSide(
+                                    width: 1, color: UIColors.white),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 primary: const Color(0xffFE0002),
                               ),
                               child: const Padding(
-                                padding:  EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 5),
                                 child: Text(
                                   "TẠO ĐƠN QUÀ",
@@ -150,18 +143,15 @@ class _HomePageStoreState extends State<HomePageStore> {
                                       color: UIColors.white),
                                 ),
                               )),
-                          const SizedBox(
-                              height: 8
-                          )
+                          const SizedBox(height: 8)
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height*.25,
+                height: MediaQuery.of(context).size.height * .25,
               ),
             ],
           ),

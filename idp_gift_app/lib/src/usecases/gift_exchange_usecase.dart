@@ -1,4 +1,5 @@
 import 'package:idp_gift_app/src/apis/giftexchangepoints/gift_exchange_place_datasource.dart';
+import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/order_resp.dart';
 import 'package:injectable/injectable.dart';
 
@@ -36,6 +37,9 @@ class GiftExchangeUseCase {
   Future updateCartGiftExchange(body, String id) =>
       _giftExchangeDatasource.updateCartGiftExchange(body, id);
 
-  Future<dynamic> getOrderDetailById(String id)
+  Future<DataDetailOrderResponse> getOrderDetailById(String id)
   => _giftExchangeDatasource.getOrderDetailById(id);
+
+  Future<List<ProductResponse>> getAllProductByGiftExchangePoints()
+  => _giftExchangeDatasource.getAllProductByGiftExchangePoints();
 }

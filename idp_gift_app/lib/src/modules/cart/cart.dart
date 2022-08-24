@@ -18,6 +18,9 @@ import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 import '../../config/assets/icon_assets.dart';
 
 class CreateChangePointCart extends StatefulWidget{
+
+  const CreateChangePointCart({Key? key}) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _CreateChangePointCart();
 
@@ -40,7 +43,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
   ];
   final List<String> entries = <String>[ImageAssets.watchKun, ImageAssets.waterKun];
 
-  bool isChecked = false;
+  // bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -173,17 +176,16 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                             primary: UIColors.white,
                                                             elevation: 0.0,
                                                             shadowColor: Colors.transparent,
-                                                            shape:   RoundedRectangleBorder(
+                                                            shape:   const RoundedRectangleBorder(
                                                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(7),bottomLeft:Radius.circular(7)),
                                                                 side: BorderSide(color: UIColors.black10,width: 1)
                                                             )
                                                         ),
                                                         onPressed: () async{
-                                                          await viewModel.updateQuantityOrCode(viewModel.dataCart.value?.details?[index].id.toString() ?? '',
-                                                              (viewModel.dataCart.value?.details?[index].quantity ?? 0 ) - 1,
-                                                              viewModel.cartInfoCode[index].code
-                                                          );
-                                                          viewModel.refresh();
+                                                          // viewModel.dataCart.value?.details?[index].quantity =  (viewModel.dataCart.value?.details?[index].quantity ?? 0 ) - 1;
+                                                           viewModel.updateQuantityMinus( viewModel.dataCart.value?.details?[index].id.toString() ?? '',
+                                                               viewModel.dataCart.value?.details?[index].quantity ?? 0,
+                                                               viewModel.cartInfoCode[index].code, index);
                                                         },
                                                         child: Center(child: SvgPicture.asset(SvgImageAssets.minus,color: UIColors.black40,height: 10,)),
                                                       ),
@@ -223,11 +225,9 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                             )
                                                         ),
                                                         onPressed: () async{
-                                                            await viewModel.updateQuantityOrCode(viewModel.dataCart.value?.details?[index].id.toString() ?? '',
-                                                                (viewModel.dataCart.value?.details?[index].quantity ?? 0 ) + 1,
-                                                                viewModel.cartInfoCode[index].code
-                                                            );
-                                                            viewModel.refresh();
+                                                          viewModel.updateQuantityPlus( viewModel.dataCart.value?.details?[index].id.toString() ?? '',
+                                                              viewModel.dataCart.value?.details?[index].quantity ?? 0,
+                                                              viewModel.cartInfoCode[index].code, index);
                                                         },
                                                         child: Center(child: SvgPicture.asset(SvgImageAssets.plus,color: UIColors.black40,height: 10,)),
                                                       ),
@@ -266,13 +266,13 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                                               dropdownColor: UIColors.white,
                                                               isExpanded: false,
                                                               isDense: false,
-                                                              value: viewModel.cartInfoCode[index].code,
+                                                              value: viewModel.cartInfoCode[index].code ?? '',
                                                               items: viewModel.dataCart.value?.details?[index].cartInfo?.map((items)
                                                               =>  DropdownMenuItem(
                                                                 value: items.code ?? '',
                                                                 child: Padding(
                                                                   padding:  const EdgeInsets.only(left: 5),
-                                                                  child: Text(items.name ?? '',style:  const TextStyle(
+                                                                  child: Text(items.name ?? 'Thêm loại thẻ',style:  const TextStyle(
                                                                     color: UIColors.fontGray,
                                                                     fontSize: 10,
                                                                   ),),
@@ -534,58 +534,60 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                           ),
                         ),
                       ),
-                      const SizedBox(height: SpaceValues.space12,),
                       //Thông tin người nhận
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          //  ListTile(
-                          //   dense: true,
-                          //   minVerticalPadding: 0,
-                          //   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
-                          //   contentPadding: EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
-                          //   title: Text(
-                          //     "Địa chỉ nhận hàng",
-                          //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                          //   ),
-                          //   tileColor: Colors.transparent,
-                          //   onTap: null, // viewModel.selectedAddress,
-                          // ),
-                          const Text(
-                            'Thông tin người nhận',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14
+                      Obx(()=>Visibility(
+                        replacement: const SizedBox(height: 12,),
+                        visible: viewModel.checkRole.value == false,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            //  ListTile(
+                            //   dense: true,
+                            //   minVerticalPadding: 0,
+                            //   visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                            //   contentPadding: EdgeInsets.only(left: 0.0, right: 0.0, top: 0.0),
+                            //   title: Text(
+                            //     "Địa chỉ nhận hàng",
+                            //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                            //   ),
+                            //   tileColor: Colors.transparent,
+                            //   onTap: null, // viewModel.selectedAddress,
+                            // ),
+                            const Text(
+                              'Thông tin người nhận',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14
+                              ),
                             ),
-                          ),
-                          Obx(()=>TextButton(
-                              style: TextButton.styleFrom(
-                                onSurface: UIColors.brandA,
-                                primary: UIColors.brandA,
-                              ) ,
-                              onPressed: (){
-                                Get.bottomSheet(SelecteAddressDiaLog(viewModel: viewModel));
-                              }
-                              , child: Row(
-                            children: [
-                              SvgPicture.asset(SvgImageAssets.driveFileRename,color: UIColors.brandA,height: 20,),
-                              Text(viewModel.address.value != null
-                                  ? ' Thay đổi' :
-                              ' Chọn địa chỉ',
-                                style: TextStyle(color: UIColors.brandA,fontSize: 12,fontWeight: FontWeight.w400),)
-                            ],
+                            Obx(()=>TextButton(
+                                style: TextButton.styleFrom(
+                                  onSurface: UIColors.brandA,
+                                  primary: UIColors.brandA,
+                                ) ,
+                                onPressed: (){
+                                  Get.bottomSheet(SelecteAddressDiaLog(viewModel: viewModel));
+                                }
+                                , child: Row(
+                              children: [
+                                SvgPicture.asset(SvgImageAssets.driveFileRename,color: UIColors.brandA,height: 20,),
+                                Text(viewModel.address.value?.id != null
+                                    ? ' Thay đổi' :
+                                ' Chọn địa chỉ',
+                                  style: TextStyle(color: UIColors.brandA,fontSize: 12,fontWeight: FontWeight.w400),)
+                              ],
 
-                          )
-                          ))
-                        ],
-                      ),
-                      const SizedBox(height: SpaceValues.space12,),
+                            )
+                            ))
+                          ],
+                        ),
+                      ),),
                       Obx(()=> Visibility(
-                        replacement: SizedBox.shrink(),
-                        visible: viewModel.address.value != null,
+                        replacement: const SizedBox.shrink(),
+                        visible: viewModel.address.value?.id != null,
                         child: Card(
                           elevation: 0.0,
-                          margin: EdgeInsets.zero,
+                          margin: const EdgeInsets.only(top: 12,bottom: 12),
                           child: Padding(
                             padding: const EdgeInsets.all(20),
                             child: Column(
@@ -593,7 +595,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children:  [
-                                    Text(
+                                    const Text(
                                       'Người nhận',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500,
@@ -602,14 +604,14 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                     ),
                                     Text(
                                       viewModel.address.value?.fullName ?? '',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20,),
+                                const SizedBox(height: 20,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children:  [
@@ -661,7 +663,6 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                           ),
                         ),
                       ),),
-                      const SizedBox(height: SpaceValues.space12,),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: const [
@@ -689,40 +690,44 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                 children: [
                                   SvgPicture.asset(IconAssets.actionStore, color: UIColors.brandA, width: 24,),
                                   SizedBox(width: SpaceValues.space12,),
-                                  const Text(
-                                    'Nhận tại điểm đổi quà',
+                                  Text(
+                                    viewModel.checkRole.value ? 'Cửa hàng ${viewModel.dataCart.value?.distributorName}' : 'Nhận tại điểm đổi quà',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 14
                                     ),
                                   ),
                                   Expanded(child: SizedBox()),
-                                  SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: TextButton(
-                                      style: TextButton.styleFrom(
-                                        onSurface: UIColors.brandA,
-                                        primary: UIColors.brandA,
-                                      ) ,
-                                      onPressed: (){
+                                  Visibility(
+                                    replacement: SizedBox(),
+                                    visible: viewModel.checkRole.value == false,
+                                    child: SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: TextButton(
+                                        style: TextButton.styleFrom(
+                                          onSurface: UIColors.brandA,
+                                          primary: UIColors.brandA,
+                                        ) ,
+                                        onPressed: (){
 
-                                      }
-                                      , child: Checkbox(
-                                      checkColor: Colors.white,
-                                      shape: CircleBorder(),
-                                      value: viewModel.checkPoint.value,
-                                      onChanged: (bool? value){
-                                        setState(() {
-                                          // viewModel.checkPoint.value = value!;
-                                          // if(!value){
-                                          //   viewModel.dataCart.value?.distributorId = null;
-                                          //   viewModel.dataCart.refresh();
-                                          // }
-                                        });
-                                      },
-                                      activeColor: UIColors.brandA,
-                                    ),
+                                        }
+                                        , child: Checkbox(
+                                        checkColor: Colors.white,
+                                        shape: CircleBorder(),
+                                        value: viewModel.checkPoint.value,
+                                        onChanged: (bool? value){
+                                          setState(() {
+                                            // viewModel.checkPoint.value = value!;
+                                            // if(!value){
+                                            //   viewModel.dataCart.value?.distributorId = null;
+                                            //   viewModel.dataCart.refresh();
+                                            // }
+                                          });
+                                        },
+                                        activeColor: UIColors.brandA,
+                                      ),
+                                      ),
                                     ),
                                   )
                                 ],),
@@ -741,7 +746,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                                   ),
                                   Expanded(
                                     child: Text(
-                                      viewModel.dataCart.value?.distributorAddress ?? '',
+                                      viewModel.dataCart.value?.distributorAddress ?? 'Trung Mỹ Tây, Q12, TP.HCM',
                                       // maxLines: 3,
                                       // overflow: TextOverflow.fade,
                                       textAlign: TextAlign.start,
@@ -825,7 +830,7 @@ class _CreateChangePointCart extends ViewWidget<CreateChangePointCart, CartModel
                               )
                           ) ,
                           onPressed: (){
-                            viewModel.confirmOrder();
+                             viewModel.confirmOrder();
                           },
                           child: Text(
                             'Xác nhận đơn quà',

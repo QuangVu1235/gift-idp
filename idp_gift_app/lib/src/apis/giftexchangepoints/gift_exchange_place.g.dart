@@ -131,7 +131,7 @@ class _GiftExchangePlaceAPI implements GiftExchangePlaceAPI {
     final _headers = <String, dynamic>{};
     final _data = body;
     final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
+        Options(method: 'PUT', headers: _headers, extra: _extra)
             .compose(_dio.options, 'v1/gift-place-confirm-order-exchange',
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
@@ -170,17 +170,36 @@ class _GiftExchangePlaceAPI implements GiftExchangePlaceAPI {
   }
 
   @override
-  Future<dynamic> getOrderDetailById(id) async {
+  Future<DataDetailOrderResponse> getOrderDetailById(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options, 'v1/orders-exchange/${id}',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataDetailOrderResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/orders-exchange/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataDetailOrderResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<ProductResponse>> getAllProductByGiftExchangePoints() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<ProductResponse>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/get-product-by-gift-exchange-points',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => ProductResponse.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

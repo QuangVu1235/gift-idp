@@ -13,10 +13,10 @@ import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @injectable
-class CartModel extends ViewModel {
+class CartGiftExchangeModel extends ViewModel {
   final CustomerUserCase _customerUserCase;
-  final SharedPreferences _sharedPreferences;
   final GiftExchangeUseCase _giftExchangeUseCase;
+  final SharedPreferences _sharedPreferences;
   Rxn<DataCardResponse> dataCart = Rxn();
 
   Rxn<ProductResponse> productResp = Rxn();
@@ -27,10 +27,9 @@ class CartModel extends ViewModel {
   Rxn<UserAddressResponse> address = Rxn();
   RxString message = ''.obs;
   RxBool checkPoint = true.obs;
-  RxBool checkRole = false.obs;
   // RxList<String> cartInfoCode = RxList.empty();
 
-  CartModel(this._customerUserCase, this._sharedPreferences, this._giftExchangeUseCase);
+  CartGiftExchangeModel(this._customerUserCase, this._sharedPreferences, this._giftExchangeUseCase);
 
   @override
   void initState() {
@@ -39,43 +38,35 @@ class CartModel extends ViewModel {
   }
 
   Future<void> refresh() =>
-      Future.wait([doGetAllCartByUser(),getAddressByUser(),checkPoints()]);
+      Future.wait([doGetAllCartByUser(), getAddressByUser(), checkPoints()]);
 
   Future<void> doGetAllCartByUser() async {
     _customerUserCase.getCartExchangeByUser().then((value) {
       dataCart.value = value.data;
       dataCart.value?.details?.forEach((detail) async {
-         detail.cartInfo?.insert(0, CardInfo());
-         cartInfoCode.add((detail.cartInfo
-             ?.firstWhere((card) => card.code == detail.cardCode) ??
-             CardInfo()));
+        if (((detail.cardCode ?? '')).isEmpty) {
+          // cartInfoCode.add(detail.cartInfo?.first.code ?? '');
+          print('Chạy đc không');
+          cartInfoCode.add(detail.cartInfo?.first ?? CardInfo());
+          await updateQuantityOrCode(detail.id.toString(), detail.quantity,
+              detail.cartInfo?.first.code);
+        } else {
+          print(detail.cartInfo
+              ?.firstWhere((card) => card.code == detail.cardCode)
+              .code);
+          // cartInfoCode.add((detail.cartInfo?.firstWhere((card) => card.code == detail.cardCode).code) ?? '');
+          cartInfoCode.add((detail.cartInfo
+              ?.firstWhere((card) => card.code == detail.cardCode) ??
+              CardInfo()));
+        }
       });
     });
   }
 
-  Future<void> updateQuantityOrCode(String id, int? quantity, String? cardCode) async {
-      _customerUserCase.updateCart(id, ({'quantity': quantity, 'card_code': cardCode}));
-  }
-  Future<void> updateQuantityMinus(String id, int quantity, String? cardCode, int index) async {
-    if(quantity == 1){
-      deleteCart(id, index);
-    }else{
-      _customerUserCase.updateCart(id, ({'quantity': quantity - 1, 'card_code': cardCode})).then((value) => {
-          dataCart.value?.details?[index].quantity =  quantity - 1,
-          dataCart.refresh()
-      });
-    }
-  }
-  Future<void> updateQuantityPlus(String id, int quantity, String? cardCode, int index) async {
-    _customerUserCase.updateCart(id, ({'quantity': quantity + 1, 'card_code': cardCode})).then((value) => {
-      if(value?['status'] == false){
-
-      }else{
-        dataCart.value?.details?[index].quantity =  quantity + 1,
-        dataCart.refresh()
-      }
-
-    });
+  Future<void> updateQuantityOrCode(
+      String id, int? quantity, String? cardCode) async {
+    _customerUserCase.updateCart(
+        id, ({'quantity': quantity, 'card_code': cardCode}));
   }
 
   Future<void> getProductByCode() async {
@@ -85,33 +76,16 @@ class CartModel extends ViewModel {
     });
   }
 
-  Future<void> checkRoles() async {
-      if(_sharedPreferences.getString('ROLE') == 'GUEST'){
-        checkRole.value = false;
-      }else if(_sharedPreferences.getString('ROLE') == 'AGENT'){
-        checkRole.value = true;
-      }
-  }
-
   Future<void> getAddressByUser() async {
-    await checkRoles();
-    if(!checkRole.value){
-      await _customerUserCase.doGetAllAddressUser().then((value) async {
-        dataAddress.value = value.data ?? [];
-        // print('>>>>>>>>>>>>>>>>>>>');
-        // print(value.data
-        //     ?.firstWhere((address) => address.isDefault == 1)
-        //     .fullAddress);
-        // address.value =
-        //     value.data?.firstWhere((address) => address.isDefault == 1);
-        address.value = value.data?.firstWhere(
-                (address) => address.isDefault == 1,
-            orElse: () => UserAddressResponse(id: null));
-      });
-    }else{
-      print('không load');
-    }
-
+    await _customerUserCase.doGetAllAddressUser().then((value) async {
+      dataAddress.value = value.data ?? [];
+      // print('>>>>>>>>>>>>>>>>>>>');
+      // print(value.data
+      //     ?.firstWhere((address) => address.isDefault == 1)
+      //     .fullAddress);
+      // address.value =
+      //     value.data?.firstWhere((address) => address.isDefault == 1);
+    });
   }
 
   Future<void> checkPoints() async {
@@ -123,9 +97,11 @@ class CartModel extends ViewModel {
   }
 
   ConfirmOrderRequest? request;
-  // confirmOrderByGiftExchange
-
   Future<void> confirmOrder() async {
+    if (!validate()) {
+      loading(() =>  throw message.value);
+      return;
+    }
     message.value = '';
     ConfirmOrderRequest request = ConfirmOrderRequest(
         sessionId: _sharedPreferences.getString('uSessionId'),
@@ -138,46 +114,17 @@ class CartModel extends ViewModel {
         distributorId: dataCart.value?.distributorId,
         distributorCode: dataCart.value?.distributorCode,
         distributorName: dataCart.value?.distributorName,
-        orderChannel: 'APP'
-    );
-    ConfirmOrderRequest requestExchange = ConfirmOrderRequest(
-        sessionId: _sharedPreferences.getString('uSessionId'),
-        distributorId: dataCart.value?.distributorId,
-        distributorCode: dataCart.value?.distributorCode,
-        distributorName: dataCart.value?.distributorName,
-        orderChannel: 'APP'
-    );
-
+        orderChannel: 'APP');
     loading(() async {
-      if( checkRole.value == true){
-        //Exchange
-        await _giftExchangeUseCase.confirmOrderByGiftExchange(requestExchange).then((value) async {
-          await AppUtils().showPopupSuccessWarranty(
-              isSuccess: true,
-              title: 'Thành công',
-              subtitle: 'Chúc mừng bạn tạo đơn hàng thành công',
-              button: 'Tiếp tục đổi quà');
-          dataCart.value?.details?.clear();
-          dataCart.refresh();
-        });
-      }else if(checkRole.value == false){
-        //Customer
-        if (!validate()) {
-          loading(() =>  throw message.value);
-          return;
-        }
-        await _customerUserCase.confirmOrderExchange(request).then((value) async {
-          await AppUtils().showPopupSuccessWarranty(
-              isSuccess: true,
-              title: 'Thành công',
-              subtitle: 'Chúc mừng bạn tạo đơn hàng thành công',
-              button: 'Tiếp tục đổi quà');
-          dataCart.value?.details?.clear();
-          dataCart.refresh();
-        }
-        );
-      }
-
+      await _customerUserCase.confirmOrderExchange(request).then((value) async {
+        await AppUtils().showPopupSuccessWarranty(
+            isSuccess: true,
+            title: 'Thành công',
+            subtitle: 'Chúc mừng bạn tạo đơn hàng thành công',
+            button: 'Tiếp tục đổi quà');
+        dataCart.value?.details?.clear();
+        dataCart.refresh();
+      });
     }).then((value) => Get.back());
   }
 
@@ -208,7 +155,7 @@ class CartModel extends ViewModel {
           child: const Text(
             'Huỷ',
             style:
-                TextStyle(color: UIColors.black, fontWeight: FontWeight.w400),
+            TextStyle(color: UIColors.black, fontWeight: FontWeight.w400),
           )),
       const SizedBox(
         width: 8,
@@ -247,7 +194,7 @@ class CartModel extends ViewModel {
           child: const Text(
             'Huỷ',
             style:
-                TextStyle(color: UIColors.black, fontWeight: FontWeight.w400),
+            TextStyle(color: UIColors.black, fontWeight: FontWeight.w400),
           )),
       const SizedBox(
         width: 8,
