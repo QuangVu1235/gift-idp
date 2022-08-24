@@ -43,7 +43,7 @@ abstract class CustomerAPI {
 
   //update cart (số lượng, cart_code)
   @PUT('v1/update-product-in-cart-exchange-customer/{id}')
-  Future<void> updateCart(@Path('id') String id,@Body() dynamic body);
+  Future<dynamic> updateCart(@Path('id') String id,@Body() dynamic body);
 
   //duyệt đơn hàng
   @PUT('v1/orders-exchange/{id}/status')

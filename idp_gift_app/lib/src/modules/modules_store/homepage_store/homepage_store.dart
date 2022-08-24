@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:idp_gift_app/src/modules/modules_store/%20create_gift_order/create_gift_order.dart';
+import 'package:idp_gift_app/src/modules/modules_store/products_gift_exchange/products_gift_exchange.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 
 class HomePageStore extends StatefulWidget {
@@ -76,7 +76,7 @@ class _HomePageStoreState extends State<HomePageStore> {
                           ),
                           ElevatedButton(
                               onPressed: () {
-
+                                ProductGiftExchange();
                               },
                               style: ElevatedButton.styleFrom(
                                   side: BorderSide(
@@ -125,7 +125,7 @@ class _HomePageStoreState extends State<HomePageStore> {
                           ),
                           ElevatedButton(
                               onPressed: () {
-                                Get.to(CreateGiftOrder());
+                                Get.to(const ProductGiftExchange());
                               },
                               style: ElevatedButton.styleFrom(
                                 side: BorderSide(width: 1, color: UIColors.white),

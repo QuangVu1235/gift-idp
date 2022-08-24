@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
               ? const MainPage()
               : (_sharedPreferences.getString('uToken')?.isNotEmpty ?? false) &&
                       (_sharedPreferences.getString('ROLE') == 'AGENT')
-                  ? MainPageStore()
+                  ? const MainPageStore()
                   : SigninPage()),
     );
   }

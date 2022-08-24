@@ -10,7 +10,7 @@ import 'package:idp_gift_app/src/config/assets/icon_assets.dart';
 import 'package:idp_gift_app/src/config/assets/image_asset.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/%20exchange_points/exchange_point_detail/exchange_point_detail_model.dart';
-import 'package:idp_gift_app/src/modules/cart/cart_kun.dart';
+import 'package:idp_gift_app/src/modules/cart/cart.dart';
 import 'package:idp_gift_app/src/modules/cart/cart_lof.dart';
 import 'package:idp_gift_app/src/modules/productwidget/product_widget.dart';
 import 'package:idp_gift_app/src/themes/space_values.dart';

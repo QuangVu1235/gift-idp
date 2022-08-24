@@ -1,3 +1,4 @@
+import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/order_resp.dart';
 import 'package:injectable/injectable.dart';
 
@@ -27,7 +28,9 @@ abstract class GiftExchangeDatasource{
 
   Future<dynamic> updateCartAdvance(String id,dynamic body);
 
-  Future<dynamic> getOrderDetailById(String id);
+  Future<DataDetailOrderResponse> getOrderDetailById(String id);
+
+  Future<List<ProductResponse>> getAllProductByGiftExchangePoints();
 
 }
 @LazySingleton(as: GiftExchangeDatasource)
@@ -73,7 +76,11 @@ class GiftExchangePlaceDatasourceImpl extends GiftExchangeDatasource{
   => _exchangePlaceAPI.updateCartGiftExchange(body, id);
 
   @override
-  Future<dynamic> getOrderDetailById(String id)
+  Future<DataDetailOrderResponse> getOrderDetailById(String id)
   => _exchangePlaceAPI.getOrderDetailById(id);
+
+  @override
+  Future<List<ProductResponse>> getAllProductByGiftExchangePoints()
+  => _exchangePlaceAPI.getAllProductByGiftExchangePoints();
 
 }

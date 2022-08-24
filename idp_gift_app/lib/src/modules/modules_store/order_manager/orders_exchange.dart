@@ -16,7 +16,10 @@ class OrdersGiftExchange extends StatefulWidget {
 }
 
 class _OrdersGiftExchange extends ViewWidget<OrdersGiftExchange,OrdersGiftExchangeModel> {
-  bool? _isChecked = false;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

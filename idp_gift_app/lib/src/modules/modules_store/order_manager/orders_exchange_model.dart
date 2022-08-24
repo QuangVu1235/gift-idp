@@ -9,15 +9,21 @@ import 'package:injectable/injectable.dart';
 class OrdersGiftExchangeModel extends ViewModel {
   final CustomerUserCase _customerUserCase;
   final GiftExchangeUseCase _giftExchangeUseCase;
+  final Rxn<OrderResponse>  orderResponse = Rxn();
+  final RxInt index = 0.obs;
   RxList<OrderResponse> orders = RxList.empty();
+
 
   OrdersGiftExchangeModel(this._customerUserCase, this._giftExchangeUseCase);
 
   @override
   void initState() {
-    getAllOrderByUser();
+    if(orders.isEmpty){
+      Future.wait([
+        getAllOrderByUser()
+      ]);
+    }
   }
-
   Future<void> getAllOrderByUser() async {
     loading(() async {
       await _giftExchangeUseCase
@@ -25,4 +31,5 @@ class OrdersGiftExchangeModel extends ViewModel {
           .then((value) => orders.value = value.data ?? []);
     });
   }
+
 }

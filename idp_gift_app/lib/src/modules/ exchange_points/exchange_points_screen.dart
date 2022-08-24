@@ -13,7 +13,7 @@ import 'package:retrofit/http.dart';
 import '../../config/assets/icon_assets.dart';
 import '../../config/assets/image_asset.dart';
 import '../../themes/ui_colors.dart';
-import '../cart/cart_kun.dart';
+import '../cart/cart.dart';
 
 class ExchangePoints extends StatefulWidget {
   @override

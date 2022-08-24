@@ -18,7 +18,7 @@ abstract class CustomerDataSource {
 
   Future<dynamic> deleteAllCart(String sessionId);
 
-  Future<void> updateCart(String id, dynamic body);
+  Future<dynamic> updateCart(String id, dynamic body);
 
   Future<dynamic> changeStatusOrder(
       String id, String status, String canceledReason);
@@ -69,7 +69,7 @@ class CustomerDataSourceImpl extends CustomerDataSource {
   Future deleteCart(String id) => _customerAPI.deleteCart(id);
 
   @override
-  Future<void> updateCart(String id, body) => _customerAPI.updateCart(id, body);
+  Future<dynamic> updateCart(String id, body) => _customerAPI.updateCart(id, body);
 
   @override
   Future changeStatusOrder(String id, String status, String canceledReason) =>
