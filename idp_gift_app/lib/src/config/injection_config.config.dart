@@ -35,7 +35,7 @@ import '../modules/cart/widgets/cart_widget_model.dart' as _i50;
 import '../modules/gift_exchange/lof_gift_exchange/app/list_product_model.dart'
     as _i40;
 import '../modules/main_page_model.dart' as _i6;
-import '../modules/modules_store/%20create_gift_order/create_gift_order_model.dart'
+import '../modules/modules_store/ create_gift_order/lof_order/create_gift_lof_order_model.dart'
     as _i3;
 import '../modules/modules_store/main_page_store_model.dart' as _i7;
 import '../modules/modules_store/order_manager/detail/detail_order_exchange_model.dart'

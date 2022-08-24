@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:idp_gift_app/src/modules/modules_store/%20create_gift_order/create_gift_order.dart';
+import 'package:idp_gift_app/src/modules/modules_store/%20create_gift_order/kun_order/create_gift_kun_order.dart';
+import 'package:idp_gift_app/src/modules/modules_store/%20create_gift_order/lof_order/create_gift_lof_order.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 
 class HomePageStore extends StatefulWidget {
@@ -76,7 +77,11 @@ class _HomePageStoreState extends State<HomePageStore> {
                           ),
                           ElevatedButton(
                               onPressed: () {
+<<<<<<< Updated upstream
                                 Get.to(const CreateGiftOrder());
+=======
+                                Get.to(CreateGiftKunOrder());
+>>>>>>> Stashed changes
                               },
                               style: ElevatedButton.styleFrom(
                                   side: const BorderSide(
