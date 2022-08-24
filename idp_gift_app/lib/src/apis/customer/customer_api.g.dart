@@ -96,18 +96,19 @@ class _CustomerAPI implements CustomerAPI {
   }
 
   @override
-  Future<void> updateCart(id, body) async {
+  Future<dynamic> updateCart(id, body) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = body;
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
             method: 'PUT', headers: _headers, extra: _extra)
         .compose(
             _dio.options, 'v1/update-product-in-cart-exchange-customer/${id}',
             queryParameters: queryParameters, data: _data)
         .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    return null;
+    final value = _result.data;
+    return value;
   }
 
   @override

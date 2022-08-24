@@ -69,7 +69,7 @@ class CartModel extends ViewModel {
   Future<void> updateQuantityPlus(String id, int quantity, String? cardCode, int index) async {
     _customerUserCase.updateCart(id, ({'quantity': quantity + 1, 'card_code': cardCode})).then((value) => {
       if(value?['status'] == false){
-        
+
       }else{
         dataCart.value?.details?[index].quantity =  quantity + 1,
         dataCart.refresh()
