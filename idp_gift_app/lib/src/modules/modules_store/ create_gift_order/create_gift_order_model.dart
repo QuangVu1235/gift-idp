@@ -6,8 +6,6 @@ import 'package:injectable/injectable.dart';
 
 @injectable
 class CreateGiftOrderModel extends ViewModel{
-
-
   final TextEditingController inPutSearch = TextEditingController();
   RxList<ProductResponse> dataProduct = RxList.empty();
 
