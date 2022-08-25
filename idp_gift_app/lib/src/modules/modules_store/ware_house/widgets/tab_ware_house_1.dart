@@ -50,25 +50,30 @@ class _TabWareHouseState extends State<TabWareHouse> {
                 currentFocus.unfocus();
                 }
             },
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SvgPicture.asset(IconAssets.search,
-                  color: UIColors.fontGray),
-                  const SizedBox(
-                  width: 14,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(IconAssets.search,
+                      color: UIColors.fontGray),
+                      const SizedBox(
+                      width: 14,
+                      ),
+                      InkWell(
+                        onTap: (){
+
+                        },
+                        child: SvgPicture.asset(IconAssets.Filter,
+                        color: UIColors.fontGray),
+                      ),
+                      const SizedBox(
+                      width: SpaceValues.space16,
+                      ),
+                      ],
+                    ),
+                   ),
                   ),
-                  SvgPicture.asset(IconAssets.Filter,
-                  color: UIColors.fontGray),
-                  const SizedBox(
-                  width: SpaceValues.space16,
-                  ),
-                  ],
                 ),
-               ),
-              ),
-            ),
               const SizedBox(height: SpaceValues.space24,),
               const Text('KHO QUÀ KUN',style: TextStyle(
                 color: UIColors.greenKun,
