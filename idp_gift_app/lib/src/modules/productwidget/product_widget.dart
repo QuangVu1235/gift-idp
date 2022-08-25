@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/global_modules/widget/global_image.dart';
+import 'package:idp_gift_app/src/modules/productdetail/product_detail_screen.dart';
 import 'package:idp_gift_app/src/modules/productwidget/product_widget_model.dart';
 import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 import '../../themes/space_values.dart';
@@ -70,10 +71,10 @@ class _ProductWidgetState extends ViewWidget<ProductWidget,ProductWidgetModel> {
       height: MediaQuery.of(context).size.height*0.25,
       child: InkWell(
         onTap: () {
-          // Get.to(ProductDetail(
-          //   idProduct: widget.productId,
-          //   heroTag: herotag,
-          // ));
+          Get.to(ProductDetail(
+            idProduct: widget.productId,
+            heroTag: herotag,
+          ));
         },
         child: Card(
           elevation: 0.0,

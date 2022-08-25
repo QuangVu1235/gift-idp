@@ -114,12 +114,6 @@ class CartModel extends ViewModel {
     if (!checkRole.value) {
       await _customerUserCase.doGetAllAddressUser().then((value) async {
         dataAddress.value = value.data ?? [];
-        // print('>>>>>>>>>>>>>>>>>>>');
-        // print(value.data
-        //     ?.firstWhere((address) => address.isDefault == 1)
-        //     .fullAddress);
-        // address.value =
-        //     value.data?.firstWhere((address) => address.isDefault == 1);
         address.value = value.data?.firstWhere(
             (address) => address.isDefault == 1,
             orElse: () => UserAddressResponse(id: null));
@@ -161,9 +155,9 @@ class CartModel extends ViewModel {
         distributorName: dataCart.value?.distributorName,
         orderChannel: 'APP');
 
-    loading(() async {
-      if (checkRole.value == true) {
-        //Exchange
+    if (checkRole.value == true) {
+      //Exchange
+      loading(() async{
         await _giftExchangeUseCase
             .confirmOrderByGiftExchange(requestExchange)
             .then((value) async {
@@ -175,14 +169,17 @@ class CartModel extends ViewModel {
           dataCart.value?.details?.clear();
           dataCart.refresh();
         });
-      } else if (checkRole.value == false) {
-        //Customer
-        print('>>>>>>>>>>>>');
-        print(checkRole.value);
-        if (!validate()) {
-          loading(() => throw message.value);
-          return;
-        }
+      }, reCatchString: true).then((value) async {
+            Get.back();
+      });
+    } else if (checkRole.value == false) {
+      //Customer
+      if (!validate()) {
+        loading(() => throw message.value);
+        return;
+      }
+      loading(() async {
+        print('customer');
         await _customerUserCase
             .confirmOrderExchange(request)
             .then((value) async {
@@ -194,8 +191,11 @@ class CartModel extends ViewModel {
           dataCart.value?.details?.clear();
           dataCart.refresh();
         });
-      }
-    });
+      }, reCatchString: true).then((value) async {
+        Get.back();
+      });
+
+    }
   }
 
   bool validate() {

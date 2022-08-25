@@ -123,7 +123,7 @@ class _OrderScreenState extends ViewWidget<OrderScreen,OrderManagerModel> {
                        child: OrderWidget(
                          productID:  '#${viewModel.orders[index].code}',
                          type:'Kun',
-                         status:viewModel.orders[index].details?.first.statusName ?? '',
+                         status:viewModel.orders[index].status ?? '',
                          creator:viewModel.orders[index].customerName ?? '',
                          date_created: viewModel.orders[index].createdDate ?? '',
                          address:'Cửa hàng ${viewModel.orders[index].distributorName}',
