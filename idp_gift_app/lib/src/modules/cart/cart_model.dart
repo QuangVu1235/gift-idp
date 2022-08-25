@@ -30,7 +30,8 @@ class CartModel extends ViewModel {
   RxBool checkRole = false.obs;
   // RxList<String> cartInfoCode = RxList.empty();
 
-  CartModel(this._customerUserCase, this._sharedPreferences, this._giftExchangeUseCase);
+  CartModel(this._customerUserCase, this._sharedPreferences,
+      this._giftExchangeUseCase);
 
   @override
   void initState() {
@@ -39,43 +40,58 @@ class CartModel extends ViewModel {
   }
 
   Future<void> refresh() =>
-      Future.wait([doGetAllCartByUser(),getAddressByUser(),checkPoints()]);
+      Future.wait([doGetAllCartByUser(), getAddressByUser(), checkPoints()]);
 
   Future<void> doGetAllCartByUser() async {
     _customerUserCase.getCartExchangeByUser().then((value) {
       dataCart.value = value.data;
       dataCart.value?.details?.forEach((detail) async {
-         detail.cartInfo?.insert(0, CardInfo());
-         cartInfoCode.add((detail.cartInfo
-             ?.firstWhere((card) => card.code == detail.cardCode) ??
-             CardInfo()));
+        detail.cartInfo?.insert(0, CardInfo());
+        cartInfoCode.add((detail.cartInfo
+                ?.firstWhere((card) => card.code == detail.cardCode) ??
+            CardInfo()));
       });
     });
   }
 
-  Future<void> updateQuantityOrCode(String id, int? quantity, String? cardCode) async {
-      _customerUserCase.updateCart(id, ({'quantity': quantity, 'card_code': cardCode}));
+  Future<void> updateQuantityOrCode(
+      String id, int? quantity, String? cardCode) async {
+    _customerUserCase.updateCart(
+        id, ({'quantity': quantity, 'card_code': cardCode}));
   }
-  Future<void> updateQuantityMinus(String id, int quantity, String? cardCode, int index) async {
-    if(quantity == 1){
+
+  Future<void> updateQuantityMinus(
+      String id, int quantity, String? cardCode, int index) async {
+    if (quantity == 1) {
       deleteCart(id, index);
-    }else{
-      _customerUserCase.updateCart(id, ({'quantity': quantity - 1, 'card_code': cardCode})).then((value) => {
-          dataCart.value?.details?[index].quantity =  quantity - 1,
-          dataCart.refresh()
-      });
+    } else {
+      _customerUserCase
+          .updateCart(id, ({'quantity': quantity - 1, 'card_code': cardCode}))
+          .then((value) => {
+                dataCart.value?.details?[index].quantity = quantity - 1,
+                dataCart.refresh()
+              });
     }
   }
-  Future<void> updateQuantityPlus(String id, int quantity, String? cardCode, int index) async {
-    _customerUserCase.updateCart(id, ({'quantity': quantity + 1, 'card_code': cardCode})).then((value) => {
-      if(value?['status'] == false){
 
-      }else{
-        dataCart.value?.details?[index].quantity =  quantity + 1,
-        dataCart.refresh()
-      }
-
-    });
+  Future<void> updateQuantityPlus(
+      String id, int quantity, String? cardCode, int index) async {
+    _customerUserCase
+        .updateCart(id, ({'quantity': quantity + 1, 'card_code': cardCode}))
+        .then((value) => {
+              if (value?['status'] == false)
+                {
+                  AppUtils().showPopup(
+                      isSuccess: false,
+                      title: 'Có lỗi',
+                      subtitle: value?['message'])
+                }
+              else
+                {
+                  dataCart.value?.details?[index].quantity = quantity + 1,
+                  dataCart.refresh()
+                }
+            });
   }
 
   Future<void> getProductByCode() async {
@@ -86,32 +102,25 @@ class CartModel extends ViewModel {
   }
 
   Future<void> checkRoles() async {
-      if(_sharedPreferences.getString('ROLE') == 'GUEST'){
-        checkRole.value = false;
-      }else if(_sharedPreferences.getString('ROLE') == 'AGENT'){
-        checkRole.value = true;
-      }
+    if (_sharedPreferences.getString('ROLE') == 'GUEST') {
+      checkRole.value = false;
+    } else if (_sharedPreferences.getString('ROLE') == 'AGENT') {
+      checkRole.value = true;
+    }
   }
 
   Future<void> getAddressByUser() async {
     await checkRoles();
-    if(!checkRole.value){
+    if (!checkRole.value) {
       await _customerUserCase.doGetAllAddressUser().then((value) async {
         dataAddress.value = value.data ?? [];
-        // print('>>>>>>>>>>>>>>>>>>>');
-        // print(value.data
-        //     ?.firstWhere((address) => address.isDefault == 1)
-        //     .fullAddress);
-        // address.value =
-        //     value.data?.firstWhere((address) => address.isDefault == 1);
         address.value = value.data?.firstWhere(
-                (address) => address.isDefault == 1,
+            (address) => address.isDefault == 1,
             orElse: () => UserAddressResponse(id: null));
       });
-    }else{
+    } else {
       print('không load');
     }
-
   }
 
   Future<void> checkPoints() async {
@@ -138,20 +147,20 @@ class CartModel extends ViewModel {
         distributorId: dataCart.value?.distributorId,
         distributorCode: dataCart.value?.distributorCode,
         distributorName: dataCart.value?.distributorName,
-        orderChannel: 'APP'
-    );
+        orderChannel: 'APP');
     ConfirmOrderRequest requestExchange = ConfirmOrderRequest(
         sessionId: _sharedPreferences.getString('uSessionId'),
         distributorId: dataCart.value?.distributorId,
         distributorCode: dataCart.value?.distributorCode,
         distributorName: dataCart.value?.distributorName,
-        orderChannel: 'APP'
-    );
+        orderChannel: 'APP');
 
-    loading(() async {
-      if( checkRole.value == true){
-        //Exchange
-        await _giftExchangeUseCase.confirmOrderByGiftExchange(requestExchange).then((value) async {
+    if (checkRole.value == true) {
+      //Exchange
+      loading(() async{
+        await _giftExchangeUseCase
+            .confirmOrderByGiftExchange(requestExchange)
+            .then((value) async {
           await AppUtils().showPopupSuccessWarranty(
               isSuccess: true,
               title: 'Thành công',
@@ -160,13 +169,20 @@ class CartModel extends ViewModel {
           dataCart.value?.details?.clear();
           dataCart.refresh();
         });
-      }else if(checkRole.value == false){
-        //Customer
-        if (!validate()) {
-          loading(() =>  throw message.value);
-          return;
-        }
-        await _customerUserCase.confirmOrderExchange(request).then((value) async {
+      }, reCatchString: true).then((value) async {
+            Get.back();
+      });
+    } else if (checkRole.value == false) {
+      //Customer
+      if (!validate()) {
+        loading(() => throw message.value);
+        return;
+      }
+      loading(() async {
+        print('customer');
+        await _customerUserCase
+            .confirmOrderExchange(request)
+            .then((value) async {
           await AppUtils().showPopupSuccessWarranty(
               isSuccess: true,
               title: 'Thành công',
@@ -174,16 +190,17 @@ class CartModel extends ViewModel {
               button: 'Tiếp tục đổi quà');
           dataCart.value?.details?.clear();
           dataCart.refresh();
-        }
-        );
-      }
+        });
+      }, reCatchString: true).then((value) async {
+        Get.back();
+      });
 
-    }).then((value) => Get.back());
+    }
   }
 
   bool validate() {
     bool result = true;
-    if (address.value == null) {
+    if (address.value?.id == null) {
       message.value = message.value + 'Không bỏ trống địa chỉ\n';
       result = false;
     }
