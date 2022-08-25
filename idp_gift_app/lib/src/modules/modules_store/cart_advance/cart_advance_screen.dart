@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:idp_gift_app/src/config/assets/icon_assets.dart';
@@ -38,7 +39,7 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: UIColors.white,
-        title: Text('Tạo đơn tạm ứng', style: TextStyle(color: UIColors.black,fontWeight: FontWeight.w700),),
+        title: const Text('Tạo đơn tạm ứng', style: TextStyle(color: UIColors.black,fontWeight: FontWeight.w700),),
         shape: const Border(bottom: BorderSide(color: UIColors.black10)),
       ),
       body: Container(
@@ -75,8 +76,8 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children:  [
-                                      Text('#12345',
-                                        style: const TextStyle(
+                                      const Text('#12345',
+                                        style: TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w700
                                         ),
@@ -85,10 +86,10 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Expanded(
+                                          const Expanded(
                                             child: Text(
                                               'Bình nước giữ nhiệt kun',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w700
                                               ),
@@ -126,7 +127,7 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
 
                                             ),
                                           ),
-                                          SizedBox(height: 6,),
+                                          const SizedBox(height: 6,),
                                          Row(
                                            children: [
                                              SizedBox(
@@ -160,12 +161,12 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                                                          width: 1,
                                                        ))
                                                ),
-                                               child: Padding(
-                                                 padding: const EdgeInsets.only(left: 15,right: 15),
+                                               child: const Padding(
+                                                 padding:  EdgeInsets.only(left: 15,right: 15),
                                                  child: Center(
-                                                     child: Text(
+                                                     child:  Text(
                                                        '20',
-                                                       style: const TextStyle(fontSize:12 ),)),
+                                                       style: TextStyle(fontSize:12 ),)),
                                                ),
                                              ),
                                              SizedBox(
@@ -532,17 +533,110 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                             alignment: Alignment.center
                         ),
                         onPressed: (){
+                          showModalBottomSheet<void>(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                  decoration: const BoxDecoration(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
+                                    color: UIColors.white,
+                                  ),
 
+                                  height: MediaQuery.of(context).size.height*1,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: IconButton(
+                                                onPressed: () => Navigator.pop(context),
+                                                icon: const Icon(Icons.close)),
+                                          ),
+                                          const Expanded(
+                                              flex: 4,
+                                              child: Center(child: Text('Danh sách quà',style: TextStyle(fontSize: 16,color: UIColors.black,fontWeight: FontWeight.w700),))),
+                                          const Expanded(flex: 1,child: SizedBox())
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          primary: false,
+                                          // physics: AlwaysScrollableScrollPhysics(),
+                                          itemCount: 5,
+                                          itemBuilder: (context, index) {
+                                            return Card(
+                                              elevation: 0.0,
+                                              margin: const EdgeInsets.only(left: 12,right: 12,top: 8,bottom: 8),
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(child: Image.asset(ImageAssets.watchKun),),
+                                                  Expanded(child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: const[
+                                                      Text('#12345',style: TextStyle(fontSize: 15,color: UIColors.black,fontWeight: FontWeight.w500),),
+                                                      SizedBox(height: 12,),
+                                                      Text('Đồng hồ kun',style: TextStyle(fontSize: 15,color: UIColors.black,fontWeight: FontWeight.w500),
+                                                        overflow:TextOverflow.ellipsis ,)
+                                                    ],
+                                                  )),
+                                                  Checkbox(
+                                                    value: true,
+                                                    onChanged: (bool? value) {
+                                                      setState(() {
+                                                        isChecked = value!;
+                                                      });
+                                                    },)
+                                                ],
+                                              ),
+                                            );
+                                          },),
+                                      ),
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 12,right:12,bottom: 8,top: 8),
+                                        width: double.infinity,
+                                        child: ElevatedButton(
+                                            onPressed: (){},
+                                            child: const Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: Text('Thêm sản phẩm'),
+                                            )),
+                                      )
+                                    ],
+                                  )
+                                // Center(
+                                //   child: Column(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     mainAxisSize: MainAxisSize.min,
+                                //     children: <Widget>[
+                                //       const Text('Modal BottomSheet'),
+                                //       ElevatedButton(
+                                //         child: const Text('Close BottomSheet'),
+                                //         onPressed: () => Navigator.pop(context),
+                                //       )
+                                //     ],
+                                //   ),
+                                // ),
+                              );
+                            },
+                          );
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.add_circle_outline),
+                          children: const[
+                             Icon(Icons.add_circle_outline),
                             // SvgPicture.asset(SvgImageAssets.qrCode,height: 25,color: UIColors.white,),
-                            const SizedBox(width: SpaceValues.space16,),
-                            const Text(
+                              SizedBox(width: SpaceValues.space16,),
+                              Text(
                               'Thêm sản phẩm tạm ứng',
-                              style: TextStyle(
+                              style:  TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500
                               ),
@@ -550,7 +644,7 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                           ],
                         )),
                    const SizedBox(height: SpaceValues.space12,),
-                   Text('Địa điểm giao', style: TextStyle(color: UIColors.black,fontWeight: FontWeight.w700),),
+                   const Text('Địa điểm giao', style: TextStyle(color: UIColors.black,fontWeight: FontWeight.w700),),
                     const SizedBox(height: SpaceValues.space12,),
                     Card(
                       elevation: 0.0,
@@ -564,7 +658,7 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 SvgPicture.asset(IconAssets.actionStore, color: UIColors.brandA, width: 24,),
-                                SizedBox(width: SpaceValues.space12,),
+                                const SizedBox(width: SpaceValues.space12,),
                                 const Text(
                                   'Cửa hàng Thị Huệ',
                                   style: TextStyle(
@@ -572,7 +666,7 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                                       fontSize: 14
                                   ),
                                 ),
-                                Expanded(child: SizedBox()),
+                                const Expanded(child:  SizedBox()),
                               
                               ],),
                             Row(
@@ -591,7 +685,7 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                                   ),)
                               ],
                             ),
-                            SizedBox(width: SpaceValues.space12,),
+                            const SizedBox(width: SpaceValues.space12,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -664,20 +758,20 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                             // elevation: 0.0,
                             shape:  RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(5),
-                                side: BorderSide(color: UIColors.red,width: 1)
+                                side: const BorderSide(color: UIColors.red,width: 1)
                             )
                         ) ,
                         onPressed: (){
 
                         },
-                        child: Text(
+                        child: const Text(
                           'Xoá đơn tạm ứng',
                           style: TextStyle(
                               color: UIColors.red
                           ),
                         )),
                   ),
-                  SizedBox(width: 8,),
+                  const SizedBox(width: 8,),
                   Expanded(
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -691,9 +785,9 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                         onPressed: (){
 
                         },
-                        child: Text(
+                        child: const Text(
                           'Xác nhận đơn tạm ứng',
-                          style: TextStyle(
+                          style:  TextStyle(
 
                           ),
                         )),
@@ -708,5 +802,7 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
         ),
       ),
     );
+
   }
 }
+
