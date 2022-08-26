@@ -1,16 +1,13 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/cart/cart.dart';
+import 'package:idp_gift_app/src/modules/productwidget/category_widget.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
 import 'package:idp_gift_app/src/utils/widgets/view_widget.dart';
 
 import '../../../../config/assets/image_asset.dart';
-import '../../../productwidget/product_widget.dart';
 import 'list_product_model.dart';
 
 class LofGiftProductExchangeScreen extends StatefulWidget {
@@ -24,8 +21,8 @@ class _LofGiftProductExchangeScreenState extends ViewWidget<LofGiftProductExchan
   @override
   void initState() {
     super.initState();
-    viewModel.categoryId.value = widget.categoryId;
-    viewModel.doGetAllProductByCategoryId();
+    // viewModel.categoryId.value = widget.categoryId;
+    viewModel.getAllCategory();
   }
   @override
   Widget build(BuildContext context) {
@@ -43,18 +40,15 @@ class _LofGiftProductExchangeScreenState extends ViewWidget<LofGiftProductExchan
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
-                        childAspectRatio: 0.7,
+                        childAspectRatio: 0.9,
                       ),
                       shrinkWrap: true,
-                      itemCount: viewModel.dataProduct.length,
+                      itemCount: viewModel.categories.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return ProductWidget(
-                          productId: viewModel.dataProduct[index].id ?? 0,
-                          title: viewModel.dataProduct[index].name ?? '',
-                          avatar: viewModel.dataProduct[index].thumbnail ?? '',
-                          qrCode: SvgImageAssets.qrgift,
-                          quantity: viewModel.dataProduct[index].qty.toString(),
-                          card: viewModel.dataProduct[index].dataCard ?? [],
+                        return CategoryWidget(
+                          idCategory: viewModel.categories[index].id.toString(),
+                          title: viewModel.categories[index].name ?? '',
+                          avatar: viewModel.categories[index].imageUrl ?? '',
                         );
                       },
                     )
@@ -80,7 +74,11 @@ class _LofGiftProductExchangeScreenState extends ViewWidget<LofGiftProductExchan
               children: [
                 SvgPicture.asset(SvgImageAssets.cartIDP,color: UIColors.white,height: 20,),
                 SizedBox(height: 2,),
-                Text('Giỏ quà',style: TextStyle(fontSize: 9,color: Colors.white),),
+                Text('Giỏ quà',style: TextStyle(
+                    fontSize: 9,
+                    color: Colors.white,
+
+                ),),
               ],
             ),
 

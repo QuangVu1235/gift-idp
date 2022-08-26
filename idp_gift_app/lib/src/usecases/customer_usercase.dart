@@ -2,6 +2,7 @@ import 'package:idp_gift_app/src/apis/customer/customer_datasoure.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/address/user_address_response.dart';
 import 'package:idp_gift_app/src/apis/response/cart_response.dart';
+import 'package:idp_gift_app/src/apis/response/category_response.dart';
 import 'package:idp_gift_app/src/apis/response/confirmorder/confirm_order.dart';
 import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
 import 'package:idp_gift_app/src/apis/response/order_resp.dart';
@@ -78,4 +79,10 @@ class CustomerUserCase{
   //getAllOrderByUser
   Future<DataOrderResponse> getAllOrdersByUser()
   => _customerDataSource.getAllOrdersByUser();
+
+  Future<DataCategories> getAllCategories()
+  => _customerDataSource.getAllCategories();
+
+  Future<DataProductResponse> doGetAllProductByCategory(String categoryId)
+  => _customerDataSource.doGetAllProductByCategory(categoryId);
 }

@@ -71,10 +71,11 @@ class _ProductWidgetState extends ViewWidget<ProductWidget,ProductWidgetModel> {
       height: MediaQuery.of(context).size.height*0.25,
       child: InkWell(
         onTap: () {
-          Get.to(ProductDetail(
-            idProduct: widget.productId,
-            heroTag: herotag,
-          ));
+          // Get.to(ProductDetail(
+          //   title: 'Bình nước',
+          //   idCategory: widget.productId,
+          //   heroTag: herotag,
+          // ));
         },
         child: Card(
           elevation: 0.0,

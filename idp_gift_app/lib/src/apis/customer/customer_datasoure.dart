@@ -2,6 +2,7 @@ import 'package:idp_gift_app/src/apis/customer/customer_api.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/address/user_address_response.dart';
 import 'package:idp_gift_app/src/apis/response/cart_response.dart';
+import 'package:idp_gift_app/src/apis/response/category_response.dart';
 import 'package:idp_gift_app/src/apis/response/confirmorder/confirm_order.dart';
 import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
 import 'package:idp_gift_app/src/apis/response/order_resp.dart';
@@ -46,6 +47,10 @@ abstract class CustomerDataSource {
   Future<StatusOrderResp> confirmOrderExchange(dynamic body);
 
   Future<DataOrderResponse> getAllOrdersByUser();
+
+  Future<DataCategories> getAllCategories();
+
+  Future<DataProductResponse> doGetAllProductByCategory(String categoryId);
 }
 
 @LazySingleton(as: CustomerDataSource)
@@ -125,6 +130,14 @@ class CustomerDataSourceImpl extends CustomerDataSource {
   @override
   Future<DataOrderResponse> getAllOrdersByUser()
   => _customerAPI.getAllOrdersByUser();
+
+  @override
+  Future<DataCategories> getAllCategories()
+  => _customerAPI.getAllCategories();
+
+  @override
+  Future<DataProductResponse> doGetAllProductByCategory(String categoryId)
+  => _customerAPI.doGetAllProductByCategory(categoryId);
 
 
 }

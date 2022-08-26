@@ -35,7 +35,7 @@ class _CartLofWidget extends State<CartLofWidget>{
   ];
   String color = 'Màu';
   var colors = [
-    'Màu',
+    '',
     'Item 1',
   ];
   String design = 'Kiểu dáng';
@@ -285,7 +285,6 @@ class _CartLofWidget extends State<CartLofWidget>{
                           ),
                         ),
                       ),
-
                     ],
                   ),
                   SizedBox(height: SpaceValues.space8,),

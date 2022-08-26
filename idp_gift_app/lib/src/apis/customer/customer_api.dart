@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
 import 'package:idp_gift_app/src/apis/response/address/user_address_response.dart';
 import 'package:idp_gift_app/src/apis/response/cart_response.dart';
+import 'package:idp_gift_app/src/apis/response/category_response.dart';
 import 'package:idp_gift_app/src/apis/response/confirmorder/confirm_order.dart';
 import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
 import 'package:idp_gift_app/src/apis/response/order_resp.dart';
@@ -85,6 +86,16 @@ abstract class CustomerAPI {
 
   @GET('v1/my-orders-exchange')
   Future<DataOrderResponse> getAllOrdersByUser();
+
+  // tìm danh mục
+  @GET('v0/client/categories_gift')
+  Future<DataCategories> getAllCategories();
+
+  // tim product theo danh muc
+  @GET("v1/client/exchange-products")
+  Future<DataProductResponse> doGetAllProductByCategory(@Query('category_ids') String? categoryId);
+
+
   // @GET('v1/list-orders-exchange')
   // Future<DataOrderResponse> getAllOrdersByUser();
 
