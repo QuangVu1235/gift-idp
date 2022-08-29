@@ -21,11 +21,11 @@ class _WareHouseScreen extends State<WareHouseScreen>{
             Container(
               width: double.infinity,
               color: UIColors.white,
-              child: TabBar(
+              child: const TabBar(
                 labelColor: UIColors.brandA,
-                labelStyle: const TextStyle(fontWeight: FontWeight.w700),
+                labelStyle:  TextStyle(fontWeight: FontWeight.w700),
                 unselectedLabelColor: UIColors.navNonSelected,
-                unselectedLabelStyle: const TextStyle(
+                unselectedLabelStyle:  TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
@@ -37,7 +37,7 @@ class _WareHouseScreen extends State<WareHouseScreen>{
                 ],
               ),
             ),
-            Expanded(
+            const Expanded(
                 child: TabBarView(
                   children: [
                     TabWareHouse(),

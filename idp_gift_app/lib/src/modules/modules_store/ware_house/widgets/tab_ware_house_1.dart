@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:idp_gift_app/src/config/assets/icon_assets.dart';
@@ -15,6 +14,7 @@ class TabWareHouse extends StatefulWidget {
 
 class _TabWareHouseState extends State<TabWareHouse> {
   bool _customTileExpanded = false;
+  bool isChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +43,13 @@ class _TabWareHouseState extends State<TabWareHouse> {
                   ),
                   suffixIconConstraints: const BoxConstraints(
                   maxHeight: SpaceValues.space24, minWidth: 0),
-                suffixIcon: InkWell(
-                onTap: () {
-                FocusScopeNode currentFocus = FocusScope.of(context);
-                if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-                }
-            },
+                  suffixIcon: InkWell(
+                  onTap: () {
+                  FocusScopeNode currentFocus = FocusScope.of(context);
+                  if (!currentFocus.hasPrimaryFocus) {
+                  currentFocus.unfocus();
+                  }
+              },
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.min,
@@ -61,7 +61,213 @@ class _TabWareHouseState extends State<TabWareHouse> {
                       ),
                       InkWell(
                         onTap: (){
-
+                          showModalBottomSheet<void>(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                  color: UIColors.white,
+                                ),
+                                height: MediaQuery.of(context).size.height*1,
+                                child: Column(
+                                  children:[
+                                    const SizedBox(height: 8,),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: IconButton(
+                                              onPressed: () => Navigator.pop(context),
+                                              icon: const Icon(Icons.close)),
+                                        ),
+                                        const Expanded(
+                                            flex: 4,
+                                            child: Center(child: Text('Bộ lọc sản phẩm',style: TextStyle(fontSize: 16,color: UIColors.black,fontWeight: FontWeight.w700),))),
+                                        const Expanded(flex: 1,child: SizedBox())
+                                      ],
+                                    ),
+                                    const Padding(
+                                      padding:  EdgeInsets.only(left: 16.0,right: 8,top: 8,bottom: 8),
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                          child: Text('Kích thước',style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700 ),)),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.zero,
+                                              child: CheckboxListTile(
+                                                title: const Text("37"),
+                                                controlAffinity: ListTileControlAffinity.leading,
+                                                value: true,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    isChecked = value!;
+                                                  });
+                                                },),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.zero,
+                                              child: CheckboxListTile(
+                                                title: const Text("38"),
+                                                controlAffinity: ListTileControlAffinity.leading,
+                                                value: true,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    isChecked = value!;
+                                                  });
+                                                },),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.zero,
+                                              child: CheckboxListTile(
+                                                title: const Text("39"),
+                                                controlAffinity: ListTileControlAffinity.leading,
+                                                value: true,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    isChecked = value!;
+                                                  });
+                                                },),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.zero,
+                                              child: CheckboxListTile(
+                                                title: const Text("40"),
+                                                controlAffinity: ListTileControlAffinity.leading,
+                                                value: true,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    isChecked = value!;
+                                                  });
+                                                },),
+                                            ),
+                                          ),
+                                          const Expanded(
+                                            child: SizedBox(width: 20,),
+                                          ),
+                                          const SizedBox(width: 4,)
+                                        ],
+                                      ),
+                                    ),
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 16.0),
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text('Màu sắc',style:  TextStyle(fontSize: 15, fontWeight: FontWeight.w700 ), )),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.zero,
+                                              child: CheckboxListTile(
+                                                title: const Text("S"),
+                                                controlAffinity: ListTileControlAffinity.leading,
+                                                value: true,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    isChecked = value!;
+                                                  });
+                                                },),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.zero,
+                                              child: CheckboxListTile(
+                                                title: const Text("M"),
+                                                controlAffinity: ListTileControlAffinity.leading,
+                                                value: true,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    isChecked = value!;
+                                                  });
+                                                },),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.zero,
+                                              child: CheckboxListTile(
+                                                title: const Text("L"),
+                                                controlAffinity: ListTileControlAffinity.leading,
+                                                value: true,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    isChecked = value!;
+                                                  });
+                                                },),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.zero,
+                                              child: CheckboxListTile(
+                                                title: const Text("XL"),
+                                                controlAffinity: ListTileControlAffinity.leading,
+                                                value: true,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    isChecked = value!;
+                                                  });
+                                                },),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: ListTileTheme(
+                                              contentPadding: EdgeInsets.zero,
+                                              child: CheckboxListTile(
+                                                title: const Text("XXL"),
+                                                controlAffinity: ListTileControlAffinity.leading,
+                                                value: true,
+                                                onChanged: (bool? value) {
+                                                  setState(() {
+                                                    isChecked = value!;
+                                                  });
+                                                },),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 4,)
+                                        ],
+                                      ),
+                                    ),
+                                    const Divider(height: 1,color: UIColors.black,),
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 12,right:12,bottom: 8,top: 8),
+                                      width: double.infinity,
+                                      child: ElevatedButton(
+                                          onPressed: (){},
+                                          child: const Padding(
+                                            padding: EdgeInsets.all(8.0),
+                                            child: Text('Áp dụng bộ lọc'),
+                                          )),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          );
                         },
                         child: SvgPicture.asset(IconAssets.Filter,
                         color: UIColors.fontGray),

@@ -547,7 +547,6 @@ class _CartAdvanceScreenState extends State<CartAdvanceScreen> {
                                     ),
                                     color: UIColors.white,
                                   ),
-
                                   height: MediaQuery.of(context).size.height*1,
                                   child: Column(
                                     children: [
