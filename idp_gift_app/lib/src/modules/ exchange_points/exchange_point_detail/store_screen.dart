@@ -12,6 +12,7 @@ import 'package:idp_gift_app/src/config/injection_config.dart';
 import 'package:idp_gift_app/src/modules/%20exchange_points/exchange_point_detail/exchange_point_detail_model.dart';
 import 'package:idp_gift_app/src/modules/cart/cart.dart';
 import 'package:idp_gift_app/src/modules/cart/cart_lof.dart';
+import 'package:idp_gift_app/src/modules/productwidget/category_widget.dart';
 import 'package:idp_gift_app/src/modules/productwidget/product_widget.dart';
 import 'package:idp_gift_app/src/themes/space_values.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
@@ -32,8 +33,8 @@ class _StoreScreen extends ViewWidget<StoreScreen,ExChangePointsDetailModel>{
   void initState() {
     super.initState();
     viewModel.gitExchangePointsResp.value = widget.gitExchangePointsResp;
-    viewModel.exChangePointCode.value = widget.code;
-    viewModel.getAllProductInGiftExchangePoints();
+    // viewModel.exChangePointCode.value = widget.code;
+    // viewModel.getAllProductInGiftExchangePoints();
   }
   @override
   Widget build(BuildContext context) {
@@ -127,32 +128,52 @@ class _StoreScreen extends ViewWidget<StoreScreen,ExChangePointsDetailModel>{
               ),
               SizedBox(height: SpaceValues.space12,),
               Obx(()=>  Visibility(
-                visible: viewModel.dataProducts.isNotEmpty,
+                visible: viewModel.categories.isNotEmpty,
                 child: Obx(()=>Expanded(
                   // margin: const EdgeInsets.only(left: 5),
                     child: ListView(
                       children: [
-                        GridView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.7,
-                          ),
-                          shrinkWrap: true,
-                          itemCount: viewModel.dataProducts.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ProductWidget(
-                              productId:  viewModel.dataProducts[index].id ?? 0,
-                              title: viewModel.dataProducts[index].name ?? '',
-                              avatar:  viewModel.dataProducts[index].thumbnail ?? '',
-                              qrCode: SvgImageAssets.qrgift,
-                              quantity: viewModel.dataProducts[index].qty.toString(),
-                              card:  viewModel.dataProducts[index].dataCard ?? [''],
-                              gitExchangePointsResp: widget.gitExchangePointsResp,
-
-                            );
-                          },
-                        ),
+                        SizedBox(
+                          // margin: const EdgeInsets.only(left: 5),
+                            child: GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.9,
+                              ),
+                              shrinkWrap: true,
+                              itemCount: viewModel.categories.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return CategoryWidget(
+                                  idCategory: viewModel.categories[index].id.toString(),
+                                  title: viewModel.categories[index].name ?? '',
+                                  avatar:  '',
+                                  gitExchangePointsResp: viewModel.gitExchangePointsResp.value,
+                                );
+                              },
+                            )
+                        )
+                        // GridView.builder(
+                        //   physics: const NeverScrollableScrollPhysics(),
+                        //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        //     crossAxisCount: 2,
+                        //     childAspectRatio: 0.7,
+                        //   ),
+                        //   shrinkWrap: true,
+                        //   itemCount: viewModel.dataProducts.length,
+                        //   itemBuilder: (BuildContext context, int index) {
+                        //     return ProductWidget(
+                        //       productId:  viewModel.dataProducts[index].id ?? 0,
+                        //       title: viewModel.dataProducts[index].name ?? '',
+                        //       avatar:  viewModel.dataProducts[index].thumbnail ?? '',
+                        //       qrCode: SvgImageAssets.qrgift,
+                        //       quantity: viewModel.dataProducts[index].qty.toString(),
+                        //       card:  viewModel.dataProducts[index].dataCard ?? [''],
+                        //       gitExchangePointsResp: widget.gitExchangePointsResp,
+                        //
+                        //     );
+                        //   },
+                        // ),
                       ],
 
                     )

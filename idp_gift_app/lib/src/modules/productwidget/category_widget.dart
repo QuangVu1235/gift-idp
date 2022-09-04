@@ -90,11 +90,11 @@ class _ProductWidgetState
               const SizedBox(height: SpaceValues.space4),
               ElevatedButton(
                   onPressed: () {
-                    Get.to(
-                        ProductDetail(
+                    Get.to(ProductDetail(
                       title: 'Bình nước',
-                          idCategory: widget.idCategory,
+                      idCategory: widget.idCategory,
                       heroTag: herotag,
+                      distributorCode: widget.gitExchangePointsResp?.code ?? '',
                     ));
                   },
                   style: ElevatedButton.styleFrom(

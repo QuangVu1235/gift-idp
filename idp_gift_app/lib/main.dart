@@ -46,15 +46,25 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'IDP',
       theme: Themes.mainTheme,
-      home: SplashScreen(
+      home:
+      SplashScreen(
           nextScreen: (_sharedPreferences.getString('uToken')?.isNotEmpty ??
-                      false) &&
-                  (_sharedPreferences.getString('ROLE') == 'GUEST')
+              false) &&
+              (_sharedPreferences.getString('ROLE') == 'GUEST')
               ? const MainPage()
               : (_sharedPreferences.getString('uToken')?.isNotEmpty ?? false) &&
-                      (_sharedPreferences.getString('ROLE') == 'AGENT')
-                  ? const MainPageStore()
-                  : SigninPage()),
+              (_sharedPreferences.getString('ROLE') == 'AGENT')
+              ? const MainPageStore()
+              : SigninPage()),
+      // SplashScreen(
+      //     nextScreen: (_sharedPreferences.getString('uToken')?.isNotEmpty ??
+      //                 false) &&
+      //             (_sharedPreferences.getString('ROLE') == 'GUEST')
+      //         ? const MainPage()
+      //         : (_sharedPreferences.getString('uToken')?.isNotEmpty ?? false) &&
+      //                 (_sharedPreferences.getString('ROLE') == 'AGENT')
+      //             ? const MainPageStore()
+      //             : SigninPage()),
     );
   }
 }

@@ -88,12 +88,29 @@ abstract class CustomerAPI {
   Future<DataOrderResponse> getAllOrdersByUser();
 
   // tìm danh mục
-  @GET('v0/client/categories_gift')
-  Future<DataCategories> getAllCategories();
+  @GET('v1/categories-gift')
+  Future<List<Categories>> getAllCategories();
+
+  @GET('v1/categories-gift')
+  Future<List<Categories>> getAllCategories();
 
   // tim product theo danh muc
   @GET("v1/client/exchange-products")
   Future<DataProductResponse> doGetAllProductByCategory(@Query('category_ids') String? categoryId);
+
+  // tim product theo danh muc và distributor code
+  @GET("v1/client/exchange-products")
+  Future<DataProductResponse> doGetAllProductByCategoryDistributor(
+      @Query('category_ids') String? categoryId,
+      @Query('distributor_code') String? distributorCode,
+      );
+
+  //tìm phương thức theo danh muc và distributor code
+  @GET("v1/client/exchange-products")
+  Future<DataProductResponse> getAttributeByCategoriesAndDistributorId(
+      @Query('category_ids') String? categoryId,
+      @Query('distributor_code') String? distributorCode,
+      );
 
 
   // @GET('v1/list-orders-exchange')

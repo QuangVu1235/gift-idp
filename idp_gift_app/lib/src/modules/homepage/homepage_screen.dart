@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:get/get.dart';
 import 'package:idp_gift_app/src/modules/gift_exchange/lof_gift_exchange/lof_gift_exchange_screen.dart';
 import 'package:idp_gift_app/src/themes/ui_colors.dart';
+import 'package:idp_gift_app/src/utils/image_slideshow.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -26,14 +28,32 @@ class _HomePageState extends State<HomePage> {
           ),
           child: Column(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Image.asset(
-                    "resources/images/img_boarding.png",
-                    fit: BoxFit.fill,
-                  ),
-                ],
+              AspectRatio(
+                aspectRatio: 16 / 8,
+                child: ImageSlideshowGlobal(
+                    width: double.infinity,
+                    initialPage: 0,
+                    indicatorColor: Colors.red,
+                    indicatorBackgroundColor: Colors.grey,
+                    onPageChanged: (value) {
+                      debugPrint('Page changed: $value');
+                    },
+                    autoPlayInterval:null,
+                    isLoop: false,
+                    children:  [
+                      Image.asset(
+                        'resources/images/img_boarding.png',
+                        fit: BoxFit.fill,
+                      ),
+                      Image.asset(
+                        'resources/images/img_boarding.png',
+                        fit: BoxFit.fill,
+                      ),
+                      Image.asset(
+                        'resources/images/img_boarding.png',
+                        fit: BoxFit.fill,
+                      ),
+                    ]),
               ),
               SizedBox(
                 height: 20,

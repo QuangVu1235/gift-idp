@@ -5,7 +5,7 @@ import 'package:idp_gift_app/src/utils/widgets/view_model.dart';
 import 'package:injectable/injectable.dart';
 
 @injectable
-class ProductDetailModel extends ViewModel{
+class ProductDetailModel extends ViewModel {
   final CustomerUserCase _customerUserCase;
   RxInt indexSlider = 0.obs;
   int idProduct = 0;
@@ -23,16 +23,33 @@ class ProductDetailModel extends ViewModel{
   //   ]);
   // }
 
-  Future<void> getProductByCategoryId(String categoryId)async {
-      loading(() async{
-        await _customerUserCase.doGetAllProductByCategory(categoryId)
-            .then((value) {
-          productResp.value = value.data ?? [];
-
-        });
+  // Future<void> getProductByCategoryId(String categoryId)async {
+  //     loading(() async{
+  //       await _customerUserCase.doGetAllProductByCategory(categoryId)
+  //           .then((value) {
+  //         productResp.value = value.data ?? [];
+  //
+  //       });
+  //     });
+  // }
+  Future<void> getProductByCategoryIdDistributor(
+      String categoryId, String distributorCode) async {
+    loading(() async {
+      await _customerUserCase
+          .doGetAllProductByCategoryDistributor(categoryId, distributorCode)
+          .then((value) {
+        productResp.value = value.data ?? [];
       });
+    });
   }
-
-
-
+  Future<void> getAttributeByCategoriesAndDistributorId(
+      String categoryId, String distributorCode) async {
+    loading(() async {
+      await _customerUserCase
+          .doGetAllProductByCategoryDistributor(categoryId, distributorCode)
+          .then((value) {
+        productResp.value = value.data ?? [];
+      });
+    });
+  }
 }

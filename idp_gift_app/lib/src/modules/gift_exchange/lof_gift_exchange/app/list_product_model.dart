@@ -24,9 +24,8 @@ class ListProductModel extends ViewModel{
 
   Future<void> getAllCategory()async {
     loading(() async => await _customerUserCase.getAllCategories().then((value) async{
-      categories.value = value.data ?? [];
+      categories.value = value;
     }));
-
   }
 
 

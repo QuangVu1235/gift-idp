@@ -48,9 +48,11 @@ abstract class CustomerDataSource {
 
   Future<DataOrderResponse> getAllOrdersByUser();
 
-  Future<DataCategories> getAllCategories();
+  Future<List<Categories>> getAllCategories();
 
   Future<DataProductResponse> doGetAllProductByCategory(String categoryId);
+
+  Future<DataProductResponse> doGetAllProductByCategoryDistributor(String categoryId, String distributorCode,);
 }
 
 @LazySingleton(as: CustomerDataSource)
@@ -132,12 +134,16 @@ class CustomerDataSourceImpl extends CustomerDataSource {
   => _customerAPI.getAllOrdersByUser();
 
   @override
-  Future<DataCategories> getAllCategories()
+  Future<List<Categories>> getAllCategories()
   => _customerAPI.getAllCategories();
 
   @override
   Future<DataProductResponse> doGetAllProductByCategory(String categoryId)
   => _customerAPI.doGetAllProductByCategory(categoryId);
+
+  @override
+  Future<DataProductResponse> doGetAllProductByCategoryDistributor(String categoryId, String distributorCode)
+  => _customerAPI.doGetAllProductByCategoryDistributor(categoryId, distributorCode);
 
 
 }

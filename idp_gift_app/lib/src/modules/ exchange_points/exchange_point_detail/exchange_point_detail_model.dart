@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:idp_gift_app/src/apis/customer/customer_datasoure.dart';
 import 'package:idp_gift_app/src/apis/idp/kun/response/kun_response.dart';
+import 'package:idp_gift_app/src/apis/response/category_response.dart';
 import 'package:idp_gift_app/src/apis/response/gift_exchange_points_response.dart';
 import 'package:idp_gift_app/src/modules/%20exchange_points/exchange_point_detail/store_screen.dart';
 import 'package:idp_gift_app/src/usecases/customer_usercase.dart';
@@ -13,10 +14,11 @@ class ExChangePointsDetailModel extends ViewModel{
   RxString exChangePointCode = ''.obs;
   Rxn<GitExchangePointsResp> gitExchangePointsResp = Rxn();
   RxList<ProductResponse> dataProducts = RxList.empty();
+  RxList<Categories> categories = RxList.empty();
 
   @override
   void initState() {
-
+    getAllCategory();
   }
   ExChangePointsDetailModel(this._customerUserCase);
 
@@ -47,11 +49,16 @@ class ExChangePointsDetailModel extends ViewModel{
     });
   }
 
+  Future<void> getAllCategory()async {
+    loading(() async => await _customerUserCase.getAllCategories().then((value) async{
+      categories.value = value;
+    }));
+  }
+
   Future<void> findProductByName (String search) async {
     loading(() async{
       await  _customerUserCase.getProductByExchangePoint(search,exChangePointCode.value)
           .then((value) => dataProducts.value = value);
     });
-
   }
 }

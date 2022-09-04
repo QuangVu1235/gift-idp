@@ -48,7 +48,7 @@ class _LofGiftProductExchangeScreenState extends ViewWidget<LofGiftProductExchan
                         return CategoryWidget(
                           idCategory: viewModel.categories[index].id.toString(),
                           title: viewModel.categories[index].name ?? '',
-                          avatar: viewModel.categories[index].imageUrl ?? '',
+                          avatar: '',
                         );
                       },
                     )

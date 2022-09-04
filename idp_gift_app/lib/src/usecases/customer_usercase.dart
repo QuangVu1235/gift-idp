@@ -80,9 +80,12 @@ class CustomerUserCase{
   Future<DataOrderResponse> getAllOrdersByUser()
   => _customerDataSource.getAllOrdersByUser();
 
-  Future<DataCategories> getAllCategories()
+  Future<List<Categories>> getAllCategories()
   => _customerDataSource.getAllCategories();
 
   Future<DataProductResponse> doGetAllProductByCategory(String categoryId)
   => _customerDataSource.doGetAllProductByCategory(categoryId);
+
+  Future<DataProductResponse> doGetAllProductByCategoryDistributor(String categoryId, String distributorCode)
+  => _customerDataSource.doGetAllProductByCategoryDistributor(categoryId, distributorCode);
 }

@@ -312,18 +312,20 @@ class _CustomerAPI implements CustomerAPI {
   }
 
   @override
-  Future<DataCategories> getAllCategories() async {
+  Future<List<Categories>> getAllCategories() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<DataCategories>(
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<Categories>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, 'v0/client/categories_gift',
+                .compose(_dio.options, 'v1/categories-gift',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = DataCategories.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) => Categories.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 
@@ -331,6 +333,48 @@ class _CustomerAPI implements CustomerAPI {
   Future<DataProductResponse> doGetAllProductByCategory(categoryId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'category_ids': categoryId};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataProductResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/client/exchange-products',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataProductResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<DataProductResponse> doGetAllProductByCategoryDistributor(
+      categoryId, distributorCode) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'category_ids': categoryId,
+      r'distributor_code': distributorCode
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DataProductResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'v1/client/exchange-products',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DataProductResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<DataProductResponse> getAttributeByCategoriesAndDistributorId(
+      categoryId, distributorCode) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'category_ids': categoryId,
+      r'distributor_code': distributorCode
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
